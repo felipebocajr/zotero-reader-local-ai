@@ -1,0 +1,69 @@
+.reader-local-ai-actions { display: flex; gap: 6px; padding: 6px 0 2px; }
+.reader-local-ai-actions button, .reader-local-ai-popup button {
+  font: inherit; cursor: pointer; color: inherit; background: transparent;
+  border: 1px solid color-mix(in srgb, currentColor 24%, transparent); border-radius: 5px; padding: 5px 9px;
+}
+.reader-local-ai-actions button:hover, .reader-local-ai-popup button:hover {
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+.reader-local-ai-popup button:focus-visible, .reader-local-ai-popup textarea:focus-visible {
+  outline: 2px solid #3976c9; outline-offset: 2px;
+}
+.reader-local-ai-popup {
+  position: fixed !important; z-index: 2147483000; transform: none !important;
+  box-sizing: border-box; width: 400px; max-width: calc(100vw - 24px);
+  max-height: min(560px, calc(100vh - 24px)); display: flex; flex-direction: column;
+  gap: 10px; padding: 14px !important; font: 13px/1.5 system-ui, sans-serif;
+  color: #25282e; background: #fff; border: 1px solid #b7bcc4; border-radius: 9px;
+  box-shadow: 0 6px 28px #0003; overflow: hidden;
+}
+.reader-local-ai-popup header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.reader-local-ai-popup header strong { font-size: 13px; font-weight: 600; }
+.reader-local-ai-popup .reader-local-ai-close { border: 0; padding: 0 6px; font-size: 20px; line-height: 1.2; }
+.reader-local-ai-popup blockquote {
+  margin: 0; padding: 0 0 0 8px; border-left: 2px solid #8aa4c2; font-size: 12px; opacity: .8;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex-shrink: 0;
+}
+.reader-local-ai-history { overflow: auto; min-height: 0; overscroll-behavior: contain; }
+.reader-local-ai-turn + .reader-local-ai-turn { border-top: 1px solid #80808040; margin-top: 12px; padding-top: 12px; }
+.reader-local-ai-question { font-size: 12px; font-weight: 600; margin-bottom: 5px; }
+.reader-local-ai-answer { white-space: normal; overflow-wrap: anywhere; user-select: text; }
+.reader-local-ai-answer :is(h1,h2,h3,h4,h5,h6), .reader-local-ai-annotation-math :is(h1,h2,h3,h4,h5,h6) {
+  font: inherit; font-weight: 700; margin: .8em 0 .3em;
+}
+.reader-local-ai-answer :is(h1,h2), .reader-local-ai-annotation-math :is(h1,h2) { font-size: 1.12em; }
+.reader-local-ai-answer :is(h3,h4,h5,h6), .reader-local-ai-annotation-math :is(h3,h4,h5,h6) { font-size: 1em; }
+.reader-local-ai-answer :is(p,ul,ol,blockquote,pre,table), .reader-local-ai-annotation-math :is(p,ul,ol,blockquote,pre,table) { margin: 0 0 .65em; }
+.reader-local-ai-answer :is(p,ul,ol,blockquote,pre,table):last-child, .reader-local-ai-annotation-math :is(p,ul,ol,blockquote,pre,table):last-child { margin-bottom: 0; }
+.reader-local-ai-answer :is(ul,ol), .reader-local-ai-annotation-math :is(ul,ol) { padding-left: 1.5em; }
+.reader-local-ai-answer :is(pre,table), .reader-local-ai-annotation-math :is(pre,table) { max-width: 100%; overflow-x: auto; }
+.reader-local-ai-answer pre, .reader-local-ai-annotation-math pre { white-space: pre; }
+.reader-local-ai-answer code, .reader-local-ai-annotation-math code { font-size: .95em; }
+.reader-local-ai-answer blockquote, .reader-local-ai-annotation-math blockquote { padding-left: 8px; border-left: 2px solid #8aa4c2; }
+.reader-local-ai-math { white-space: normal; overflow-wrap: normal; }
+.reader-local-ai-math math { font-family: math; font-size: 1.1em; }
+.reader-local-ai-math-block { display: block; overflow-x: auto; padding: 5px 0; margin: 4px 0; }
+.reader-local-ai-math-block math { display: block; width: max-content; min-width: 100%; }
+.reader-local-ai-annotation-math { box-sizing: border-box; min-width: 0; max-width: 100%; white-space: normal; overflow-wrap: anywhere; padding: 4px 8px; user-select: text; }
+/* Keep the native editor focusable. Its original source appears while editing. */
+.reader-local-ai-math-comment:not(:focus-within) > :is(.expandable-editor, .editor) {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none;
+}
+.reader-local-ai-math-comment:focus-within > .reader-local-ai-annotation-math { display: none; }
+.reader-local-ai-popup .reader-local-ai-save-answer { margin-top: 8px; font-size: 12px; }
+.reader-local-ai-save-error { margin-top: 5px; }
+.reader-local-ai-status { font-size: 12px; opacity: .8; flex-shrink: 0; }
+.reader-local-ai-error { font-size: 12px; color: #ac3030; white-space: pre-wrap; flex-shrink: 0; }
+.reader-local-ai-popup form { display: flex; flex-direction: column; gap: 7px; flex-shrink: 0; }
+.reader-local-ai-popup textarea {
+  box-sizing: border-box; width: 100%; min-height: 70px; max-height: 110px; resize: vertical;
+  border: 1px solid #b7bcc4; border-radius: 5px; padding: 7px; background: inherit; color: inherit; font: inherit;
+}
+.reader-local-ai-footer { display: flex; flex-wrap: wrap; gap: 6px; flex-shrink: 0; }
+.reader-local-ai-popup .reader-local-ai-primary { color: white; border-color: #3268ab; background: #3268ab; }
+.reader-local-ai-popup button:disabled { opacity: .5; cursor: default; }
+.reader-local-ai-popup [hidden] { display: none !important; }
+@media (prefers-color-scheme: dark) {
+  .reader-local-ai-popup { background: #292c31; color: #e7e9ec; border-color: #565b64; }
+  .reader-local-ai-error { color: #ff9b9b; }
+}

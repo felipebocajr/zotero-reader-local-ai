@@ -1,0 +1,46 @@
+precision,caseId,correctness,grounding,clarity,notes
+F16,attention-definition,2,2,2,"Mecanismo e raiz de d_k corretos; 152 palavras, pequena ultrapassagem do limite pedido."
+F16,attention-cross-section,2,2,1,Máscara e deslocamento corretos; citação longa em inglês e atribuição ao trecho selecionado quando a informação vem de outra seção.
+F16,attention-absent,2,2,2,Reconhece ausência do MMLU; breve e sem pontuação inventada.
+F16,rmsnorm-definition,2,2,1,Mantém a propriedade central e distingue recentramento; 178 palavras com detalhes não necessários.
+F16,rmsnorm-cross-section,1,1,2,"Identifica hipótese i.i.d., mas afirma redução de custo e convergência sem ressalvas; paper relata instabilidade e ganhos nem sempre observados."
+F16,rmsnorm-absent,1,1,2,"Acerta ausência de RTX 3070; extrapola TITAN X para todos os resultados, embora exista experimento com Tesla."
+F16,rope-definition,2,2,1,"Rotação e distância relativa corretas; a expressão acompanha a equação 16, mas usa notação degradada pela extração. A afirmação geral de decaimento reproduz a seção 3.3."
+F16,rope-cross-section,0,1,1,"Intuição de diferença de posições correta, mas expressões de rotações/expoentes são incorretas e ângulo fixo dependente da posição é contraditório."
+F16,rope-absent,2,2,2,Reconhece ausência de LLaMA 3.1/MMLU no paper.
+F16,lora-definition,2,2,2,"W0 congelado, BA, dimensões e redução de parâmetros corretos; cada camada é compatível com adaptar certos pesos em cada bloco."
+F16,lora-cross-section,2,2,1,Incorporação de BA antes da inferência correta; 200 palavras e repetição extensa.
+F16,lora-absent,2,1,1,"Reconhece ausência de QLoRA, mas acrescenta autor/ano externos e repete extensamente a negativa."
+F16,llada-definition,2,2,2,"Explica mascaramento, preditor e reversão; resposta compreensível, 124 palavras."
+F16,llada-cross-section,0,1,1,"Fórmula de confiança converte um índice em multiplicação; confunde refinamento em inferência com aprendizagem e recuperação de uma sequência original; 228 palavras. Conferido visualmente no algoritmo 5, p.16."
+F16,llada-absent,2,2,2,"Reconhece ausência da comparação de quantização pedida, sem inventar resultados; 52 palavras."
+Q8_0,attention-definition,1,1,1,Fórmula central correta; fala em distribuição uniforme de atenção e estabilidade numérica em termos excessivos; 179 palavras.
+Q8_0,attention-cross-section,1,1,2,Máscara e deslocamento corretos; mistura treinamento paralelo com geração sequencial e localiza o vazamento de informação futura na inferência.
+Q8_0,attention-absent,2,2,2,"Reconhece ausência de MMLU; números BLEU adicionais correspondem ao paper, mas não são necessários."
+Q8_0,rmsnorm-definition,1,1,1,Explica invariância central; apresenta hipótese como demonstração causal e confunde custo por treinamento com velocidade de convergência; 157 palavras.
+Q8_0,rmsnorm-cross-section,1,1,2,"Hipótese i.i.d. correta; omite viés e instabilidade de estimar RMS com poucas unidades, e generaliza ganhos de eficiência."
+Q8_0,rmsnorm-absent,2,2,2,"Reconhece ausência de RTX 3070 e identifica corretamente TITAN X e RTX 2080 Ti, esta última na tabela 10."
+Q8_0,rope-definition,2,2,2,"Rotação de query/key, dependência relativa e compatibilidade com atenção linear corretas; a propriedade geral de decaimento está na seção 3.3 do paper, sem fórmula individual inventada."
+Q8_0,rope-cross-section,2,2,1,"Identifica corretamente RTheta,n-m e acompanha a equação 16; explicação de diferença relativa adequada. Fórmula aparece com símbolos degradados; decaimento geral está na seção 3.3."
+Q8_0,rope-absent,2,2,2,Reconhece ausência de LLaMA 3.1 e MMLU.
+Q8_0,lora-definition,1,1,2,"W0 congelado e BA corretos; generaliza adaptação para cada camada e diz reduzir bilhões de parâmetros a milhares, exagerando a redução total."
+Q8_0,lora-cross-section,1,1,1,"Menciona W0+BA, mas atribui ausência de latência a congelamento/ausência de gradientes em vez da incorporação única antes da inferência; 210 palavras."
+Q8_0,lora-absent,2,2,2,Reconhece ausência de QLoRA/4 bits sem números ou referências externas inventadas; 89 palavras.
+Q8_0,llada-definition,0,1,1,"Treinamento e preditor corretos, mas afirma que a inferência primeiro mascara uma sequência original no processo direto; a geração começa mascarada e executa o reverso. Generaliza superioridade/robustez e excede extensão, 192 palavras."
+Q8_0,llada-cross-section,0,0,1,"Inverte a ablação base/instruct: atribui queda ao modelo base, mas a queda sem blocos semi-autoregressivos aparece no instruct; 159 palavras."
+Q8_0,llada-absent,2,2,1,"Reconhece ausência de Q4/Q8, mas restringe a conclusão ao trecho e sugere consultar o artigo completo que já foi fornecido."
+Q4_K_M,attention-definition,2,2,2,"Produto query/key, escala por raiz de d_k, softmax e ponderação dos values corretos; 138 palavras."
+Q4_K_M,attention-cross-section,1,1,2,"Máscara causal correta, mas omite deslocamento das saídas e diz que o treinamento gera tokens sequencialmente, apesar do treinamento paralelo do Transformer."
+Q4_K_M,attention-absent,1,1,2,"Reconhece ausência de pontuação, mas inventa expansão incorreta do nome MMLU; 59 palavras."
+Q4_K_M,rmsnorm-definition,2,2,0,"Explica corretamente a invariância de escala no domínio positivo discutido no paper; resposta repetitiva com 238 palavras, bem acima do solicitado."
+Q4_K_M,rmsnorm-cross-section,0,1,1,"Fração inicial e hipótese i.i.d. corretas, mas inventa fórmula de pRMS com expoentes 1/p; garantia irrestrita de precisão também não é sustentada."
+Q4_K_M,rmsnorm-absent,1,1,2,"Reconhece ausência de RTX 3070, mas atribui as medições apenas a TITAN X, omitindo Tesla V100 e RTX 2080 Ti."
+Q4_K_M,rope-definition,0,1,1,"Rotação de query/key presente, mas fórmulas ilegíveis/incorretas e afirmação de decaimento exponencial garantido de cada produto interno; 167 palavras."
+Q4_K_M,rope-cross-section,1,1,1,"Expressão principal acompanha a equação 16, mas alterna indevidamente rótulos RTheta,m e RTheta,n-m. Notação degradada e resposta longa, 199 palavras; decaimento geral está no paper."
+Q4_K_M,rope-absent,2,2,2,"Reconhece ausência de LLaMA 3.1/MMLU, sem inventar pontuação; modelos chineses adicionais constam na seção experimental."
+Q4_K_M,lora-definition,0,1,1,"W0 congelado e BA corretos como ideia, mas dimensões de A/B tornam o produto inválido; também fornece contagem de parâmetros inadequada; 191 palavras."
+Q4_K_M,lora-cross-section,2,2,2,"Incorporação W0+BA, subtração/troca de adaptadores e ausência de módulo extra corretas. O limite de um forward pass para troca consta nesta v1, seção 3, p.4."
+Q4_K_M,lora-absent,2,1,2,"Reconhece ausência de QLoRA/4 bits sem números inventados; acrescenta informação histórica externa sobre trabalho posterior, separada do conteúdo do paper."
+Q4_K_M,llada-definition,2,2,2,"Treinamento mascarado, processo reverso e objetivo de verossimilhança corretos; resposta de 119 palavras sem afirmar que a inferência começa mascarando texto original."
+Q4_K_M,llada-cross-section,1,1,2,"Mantém/remascara conforme confiança e distingue base/instruct, mas diz recuperar tokens incertos primeiro quando a estratégia conserva primeiro os mais confiantes e adia os incertos; 144 palavras."
+Q4_K_M,llada-absent,2,2,1,"Reconhece ausência de resultados Q4/Q8; lista tópicos desnecessários, contrariando instrução de resposta em parágrafos, e sugere outra seção/artigo sem necessidade; 135 palavras."

@@ -1,0 +1,52 @@
+{
+  "zoteroVersion": "10.0.3",
+  "profile": "isolated",
+  "model": "lfm2.5-8b-a1b",
+  "checks": [
+    {
+      "name": "real runtime exposes the selected alias",
+      "passed": true
+    },
+    {
+      "name": "native preferences activate the larger model",
+      "passed": true
+    },
+    {
+      "name": "model choice survives reopening preferences",
+      "passed": true
+    },
+    {
+      "name": "real larger-model answer completes",
+      "passed": true
+    },
+    {
+      "name": "real larger-model continuation completes",
+      "passed": true
+    },
+    {
+      "name": "larger-model popup preserves its two completed turns",
+      "passed": true
+    },
+    {
+      "name": "each larger-model answer offers optional annotation saving",
+      "passed": true
+    },
+    {
+      "name": "larger-model answers create no annotations automatically",
+      "passed": true
+    }
+  ],
+  "answers": [
+    {
+      "question": "Explique a atenção por produto escalar escalonado descrita neste artigo.",
+      "answer": "O artigo introduz o mecanismo de atenção por produto escalar escalonado (Scaled Dot‑Product Attention), que mapeia uma consulta e um conjunto de chaves e valores em representações ponderadas. Cada query calcula o produto interno entre a query e todas as keys, divide esse valor por √dk para controlar a magnitude e aplica softmax, obtendo pesos que indicam a importância de cada key; os valores são então somados ponderadamente segundo esses pesos, produzindo a saída desejada. Essa formulação permite que o modelo compute dependências globais entre posições da sequência com um número constante de operações por camada, superando as limitações de recorrência e convolução tradicionais.",
+      "totalMs": 17842
+    },
+    {
+      "question": "Por que dividir os produtos escalares pela raiz quadrada da dimensão das chaves?",
+      "answer": "O artigo justifica dividir os produtos escalares pela raiz quadrada da dimensão das chaves (fator √dk) para controlar a magnitude dos valores de atenção e evitar que o produto interno se torne excessivamente grande quando as dimensões são altas; ao reduzir essa escala, os pesos resultantes do softmax permanecem estáveis numericamente e o cálculo pode ser realizado com um número constante de operações por camada, independentemente do comprimento da sequência. Essa normalização também melhora a capacidade do modelo de aprender dependências globais sem que as atenções dominem ou se atenuem indevidamente.",
+      "totalMs": 7036
+    }
+  ],
+  "errors": []
+}

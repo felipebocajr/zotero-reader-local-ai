@@ -1,0 +1,26 @@
+{
+  "status": "ok",
+  "question": "Explique a atenção por produto escalar escalonado e apresente sua fórmula em LaTeX.",
+  "model": "lfm2.5-2.6b",
+  "backend": "auto",
+  "precision": "Q4_K_M",
+  "pages": 15,
+  "paperSha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476",
+  "preflightMatchesRuntime": true,
+  "answer": "A atenção por produto escalar escalonado é o mecanismo central do Transformer, permitindo que cada posição da sequência de entrada atenda a todas as outras posições de forma paralela. Dada uma consulta \\(Q\\), chaves \\(K\\) e valores \\(V\\), a atenção calcula pesos de atenção através de um produto escalar entre \\(Q\\) e \\(K\\), seguido por normalização softmax para obter probabilidades que determinam quais elementos de \\(V\\) são mais relevantes.\n\nA fórmula é:\n\n\\[\n\\text{Attention}(Q, K, V) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right)V\n\\]\n\nonde \\(d_k\\) é a dimensão das queries/keys. O fator de escala \\(\\frac{1}{\\sqrt{d_k}}\\) evita que o produto escalar cresça excessivamente com dimensões maiores, mantendo os pesos de atenção em uma faixa estável e facilitando a treinabilidade do modelo. Essa abordagem substitui completamente as camadas recorrentes ou convolucionais das arquiteturas tradicionais, permitindo paralelização total durante o treinamento.",
+  "promptTokens": 10137,
+  "completionTokens": 570,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 10137,
+    "prompt_ms": 1589.384,
+    "prompt_per_token_ms": 0.15679037190490283,
+    "prompt_per_second": 6377.942649479296,
+    "predicted_n": 570,
+    "predicted_ms": 3770.536,
+    "predicted_per_token_ms": 6.626601054481546,
+    "predicted_per_second": 150.90692676054545
+  },
+  "firstVisibleMs": 3817.8585900000003,
+  "totalMs": 5418.623465000001
+}

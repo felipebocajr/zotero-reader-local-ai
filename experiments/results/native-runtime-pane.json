@@ -1,0 +1,18 @@
+{
+  "profile": "isolated",
+  "checks": [
+    {
+      "name": "native preferences poll status",
+      "passed": true
+    },
+    {
+      "name": "closed pane does not reschedule pending status polling",
+      "passed": true
+    },
+    {
+      "name": "late status response does not access a dead Gecko window",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

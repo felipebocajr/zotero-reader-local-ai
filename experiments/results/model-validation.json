@@ -1,0 +1,59 @@
+[
+  {
+    "id": "attention-definition",
+    "answer": "A atenção por produto escalar (scaled dot-product attention) é um mecanismo central no Transformer que permite modelar dependências globais entre posições de uma sequência sem necessidade de recorrência ou convolução. O processo consiste em calcular o produto escalar entre a query e todas as chaves, depois dividir cada resultado pela dimensão da chave (d_k) para evitar que valores grandes causem gradientes instáveis. Os pesos resultantes são aplicados à matriz de valores através de uma função softmax, produzindo um weighted sum dos valores ponderada pelos pesos calculados.\n\nEssa abordagem permite que cada posição na sequência atenda a todas as outras posições simultaneamente, eliminando a natureza estritamente sequencial das redes recorrentes. A divisão por √d_k é crucial para manter a escala adequada e evitar que o softmax gere gradientes muito grandes ou pequenos demais. O resultado final é uma representação contextualizada onde cada token incorpora informações de todo o contexto da entrada, o que contribui significativamente para o desempenho superior do Transformer em tarefas de tradução e outras aplicações de transdução sequencial.",
+    "promptTokens": 9996,
+    "completionTokens": 509,
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 9997,
+      "prompt_ms": 5003.461,
+      "prompt_per_token_ms": 0.5004962488746624,
+      "prompt_per_second": 1998.0169726515305,
+      "predicted_n": 509,
+      "predicted_ms": 11473.993,
+      "predicted_per_token_ms": 22.586600393700788,
+      "predicted_per_second": 44.27403781752351
+    },
+    "firstTextMs": 11081.966253999999,
+    "totalMs": 16539.005179
+  },
+  {
+    "id": "rmsnorm-cross-section",
+    "answer": "pRMSNorm (partial RMSNorm) é uma variante do RMSNorm proposta no artigo que estima a raiz média quadrada (RMS) apenas a partir de uma fração p% das entradas somadas, em vez de usar todas as entradas. A hipótese fundamental por trás dessa abordagem baseia-se na estrutura de independência e distribuição idêntica (i.i.d.) dos neurônios dentro de uma camada. Como os neurônios são estatisticamente independentes entre si, a propriedade de invariância à re-escala do RMS ainda se mantém quando apenas uma parte das entradas somadas é utilizada para o cálculo. Isso permite reduzir significativamente o custo computacional (ao evitar normalizar toda a soma) sem comprometer as propriedades de estabilização do modelo, como a invariância à re-escala e a regularização da magnitude dos ativações. A versão pRMSNorm com p = 6,25% foi testada experimentalmente e demonstrou desempenho competitivo em várias tarefas, mantendo a velocidade de treinamento reduzida enquanto preserva a qualidade do modelo.",
+    "promptTokens": 12914,
+    "completionTokens": 672,
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 12915,
+      "prompt_ms": 7650.463,
+      "prompt_per_token_ms": 0.5923703445605885,
+      "prompt_per_second": 1688.133123446254,
+      "predicted_n": 672,
+      "predicted_ms": 16536.569,
+      "predicted_per_token_ms": 24.644663189269746,
+      "predicted_per_second": 40.57673632299421
+    },
+    "firstTextMs": 17988.941905,
+    "totalMs": 24216.58331
+  },
+  {
+    "id": "llada-absent",
+    "answer": "Com base na análise completa do artigo \"Large Language Diffusion Models\" (Shen Nie et al., 2025), **não há informações específicas sobre quantização Q4 dos pesos ou Q8 do KV cache** nas seções apresentadas. O artigo foca principalmente em:\n\n- A introdução de LLaDA, um modelo de difusão baseado em Transformer\n- Arquitetura e treinamento (pré-treinamento e fine-tuning supervisionado)\n- Resultados em benchmarks como MMLU, GSM8K, HumanEval, etc.\n- Análise de remasking e inferência\n- Comparação com modelos ARMs tradicionais\n\nAs tabelas e seções do artigo (Tabelas 1-14) apresentam resultados de desempenho em tarefas de linguagem natural, mas não incluem métricas específicas sobre quantização de pesos (Q4) ou otimização do KV cache (Q8). O artigo menciona outras técnicas como \"Warmup-Stable-Decay\" para o scheduler de taxa de aprendizado e discussões sobre eficiência computacional, mas não apresenta dados quantitativos sobre essas otimizações específicas.\n\nPortanto, a informação solicitada **não consta no artigo** fornecido. Para obter esses resultados específicos, seria necessário consultar o documento completo ou buscar em publicações adicionais que tratem de otimização de quantização para modelos de difusão.",
+    "promptTokens": 26007,
+    "completionTokens": 1022,
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 26008,
+      "prompt_ms": 24595.993,
+      "prompt_per_token_ms": 0.9457087434635496,
+      "prompt_per_second": 1057.4080095078903,
+      "predicted_n": 1022,
+      "predicted_ms": 34495.074,
+      "predicted_per_token_ms": 33.78557688540646,
+      "predicted_per_second": 29.59842903946227
+    },
+    "firstTextMs": 48809.893408,
+    "totalMs": 59142.35195699999
+  }
+]

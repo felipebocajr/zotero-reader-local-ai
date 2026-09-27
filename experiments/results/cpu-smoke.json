@@ -1,0 +1,24 @@
+{
+  "status": "ok",
+  "backend": "cpu",
+  "precision": "Q4_K_M",
+  "pages": 15,
+  "paperSha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476",
+  "preflightMatchesRuntime": true,
+  "answer": "A atenção por produto escalar escalonado é o mecanismo central do Transformer, calculando pesos para cada posição de entrada com base na similaridade entre a query (consulta) e as chaves (keys). O cálculo envolve o produto escalar QK^T, que gera um vetor de compatibilidade; este é então dividido por √d_k (fator de escala), onde d_k é a dimensão das chaves. A aplicação do softmax sobre esses pesos produz uma distribuição normalizada que seleciona quais posições são mais relevantes para cada query.\n\nO fator de escala √d_k é crucial porque evita que os valores do produto escalar cresçam excessivamente quando d_k é grande, o que poderia resultar em gradientes muito grandes após a aplicação da função softmax. Sem essa normalização, o modelo teria dificuldade em aprender dependências de longo alcance de forma estável durante o treinamento.\n\nEm implementações práticas, múltiplas cabeças (multi-head attention) são usadas para permitir que o modelo atenda simultaneamente a diferentes subespaços de representação, melhorando a capacidade de capturar relações complexas nas sequências.",
+  "promptTokens": 10039,
+  "completionTokens": 604,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 10039,
+    "prompt_ms": 90100.415,
+    "prompt_per_token_ms": 8.975038848490884,
+    "prompt_per_second": 111.42013052881056,
+    "predicted_n": 604,
+    "predicted_ms": 44023.995,
+    "predicted_per_token_ms": 73.00828358208956,
+    "predicted_per_second": 13.697075878733857
+  },
+  "firstVisibleMs": 115681.414305,
+  "totalMs": 134189.938378
+}

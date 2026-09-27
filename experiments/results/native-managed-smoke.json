@@ -1,0 +1,26 @@
+{
+  "status": "ok",
+  "question": "Explique a atenção por produto escalar escalonado descrita neste trecho.",
+  "model": "lfm2.5-2.6b",
+  "backend": "auto",
+  "precision": "Q4_K_M",
+  "pages": 15,
+  "paperSha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476",
+  "preflightMatchesRuntime": true,
+  "answer": "A atenção por produto escalonado (scaled dot-product attention) é o mecanismo central do Transformer, calculando pesos de atenção entre uma consulta \\(Q\\), chaves \\(K\\) e valores \\(V\\). A fórmula é:\n\n\\[ \\text{Attention}(Q, K, V) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right)V \\]\n\nonde \\(QK^T\\) calcula os produtos escalares entre cada par consulta-chave, e a divisão por \\(\\sqrt{d_k}\\) (com \\(d_k\\) sendo a dimensão das chaves) evita que os valores cresçam excessivamente, garantindo gradientes estáveis. No modelo Transformer, as consultas, chaves e valores são projetadas linearmente através de matrizes aprendidas para dimensões menores (\\(d_k = d_v\\)), permitindo múltiplos \"cabeças\" (heads) que processam informações em paralelo. Cada cabeça atua como uma atenção independente, e os resultados são concatenados antes da multiplicação pelos valores ponderados. Esse design permite que o modelo capture dependências globais entre posições da sequência de entrada sem necessidade de recorrência ou convoluções.",
+  "promptTokens": 10132,
+  "completionTokens": 681,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 10132,
+    "prompt_ms": 1698.679,
+    "prompt_per_token_ms": 0.1676548559020924,
+    "prompt_per_second": 5964.63487215654,
+    "predicted_n": 681,
+    "predicted_ms": 4750.002,
+    "predicted_per_token_ms": 6.98529705882353,
+    "predicted_per_second": 143.15783445985917
+  },
+  "firstVisibleMs": 4714.790767,
+  "totalMs": 6511.183257000001
+}

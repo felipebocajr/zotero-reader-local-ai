@@ -1,0 +1,24 @@
+{
+  "artifact": "dist/reader-local-ai-0.1.0.xpi",
+  "bytes": 129817,
+  "sha256": "b5c56f45912b23fd2f5a0e4373f08e702d8ff24ab9f41afe8700b33f7d99b099",
+  "typeScriptTests": 44,
+  "runtimeTests": 18,
+  "nativeUiChecks": 35,
+  "nativeRuntimeChecks": 20,
+  "nativeRestartChecks": 8,
+  "nativePaneChecks": 3,
+  "installedMatches": true,
+  "harnessIncluded": false,
+  "nativeInstall": {
+    "artifact": "dist/reader-local-ai-0.1.0.xpi",
+    "zoteroVersion": "10.0.3",
+    "profile": "isolated",
+    "installed": true,
+    "active": true,
+    "appDisabled": false,
+    "error": 0,
+    "state": 10,
+    "harnessIncluded": false
+  }
+}

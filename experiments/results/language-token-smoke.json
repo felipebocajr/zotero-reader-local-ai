@@ -1,0 +1,27 @@
+{
+  "status": "ok",
+  "question": "Explique a atenção por produto escalar escalonado descrita neste trecho.",
+  "model": "lfm2.5-8b-a1b",
+  "responseLanguage": "en",
+  "backend": "auto",
+  "precision": "Q4_K_M",
+  "pages": 15,
+  "paperSha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476",
+  "preflightMatchesRuntime": true,
+  "answer": "The scaled dot‑product attention operates on three matrices – queries Q (dimension \\(d_{\\text{model}}\\times d_k\\)), keys K (\\(d_{\\text{model}}\\times d_k\\)) and values V (\\(d_{\\text{model}}\\times d_v\\)). First the similarity scores are computed as \\(s = QK^{\\top}/d_k\\) for each query, then a softmax is applied across this vector to obtain attention weights \\(\\alpha\\in\\mathbb{R}^{1\\times d_v}\\). These weights indicate how much each key contributes to the current position. Finally each value matrix V is multiplied element‑wise by its corresponding weight and summed, producing an output tensor \\(O\\) of shape \\((d_{\\text{model}}\\times d_v)\\) that contains a weighted representation of all positions in the input sequence.\n\nThis mechanism replaces recurrent or convolutional layers because it evaluates pairwise interactions between every pair of tokens simultaneously, enabling parallel computation while preserving long‑range dependencies without any sequential processing.",
+  "promptTokens": 10257,
+  "completionTokens": 1809,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 10257,
+    "prompt_ms": 3053.955,
+    "prompt_per_token_ms": 0.29774349224919566,
+    "prompt_per_second": 3358.595657106932,
+    "predicted_n": 1809,
+    "predicted_ms": 16389.081,
+    "predicted_per_token_ms": 9.064757190265485,
+    "predicted_per_second": 110.31735092406952
+  },
+  "firstVisibleMs": 17582.936894,
+  "totalMs": 19513.598189
+}

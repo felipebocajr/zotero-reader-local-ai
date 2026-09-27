@@ -1,0 +1,19 @@
+{
+  "baselineFingerprint": "8a4e6afb1b486aab363ba20e3efaa63c7631ad964536355b2429c897f94c919d",
+  "runsChecked": 135,
+  "actualMinusRecordedPreflightTokens": [
+    1
+  ],
+  "before": {
+    "add_special": false,
+    "clientSha256": "a04603db2b9d4b10db1cd31d2163040cdfd561a9fd93991b5fc65cb35760cec3",
+    "promptSha256": "74c9c46ec6a9e874701c833784dad49d3c038b1a51f10e4c054396543a3775e2"
+  },
+  "after": {
+    "add_special": true,
+    "parse_special": true,
+    "clientSha256": "097c2c1d3f088e5e0a8dec621d5e38e01cd1e438243851c890e5a69e175a7cd8"
+  },
+  "generationMessagesChanged": false,
+  "note": "The baseline preflight count omitted BOS; use timings.prompt_n for actual input. Fixed in the release; exact-boundary regression passes."
+}

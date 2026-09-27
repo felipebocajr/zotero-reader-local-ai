@@ -1,0 +1,24 @@
+{
+  "status": "ok",
+  "backend": "cuda",
+  "precision": "Q4_K_M",
+  "pages": 15,
+  "paperSha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476",
+  "preflightMatchesRuntime": true,
+  "answer": "A atenção por produto escalar (scaled dot-product attention) é o mecanismo central do Transformer, descrito na seção 3.2.1. Ela calcula os pesos para cada valor de saída com base no produto escalar entre a query e todas as chaves, seguido da divisão pela dimensão da query (dk). Essa normalização é crucial porque evita que o produto escalar cresça excessivamente, o que poderia levar a gradientes instáveis durante o treinamento. Após obter os pesos, aplica-se uma função softmax para converter esses pesos em probabilidades que somam 1, determinando assim quais valores são mais relevantes para cada query.\n\nA atenção então calcula um valor ponderado das saídas, onde cada peso é determinado pela compatibilidade (produto escalar) entre a query e as chaves. Esse processo permite que o modelo atenda a dependências globais na sequência de entrada sem necessidade de recurrencia ou convoluções, sendo mais paralelizável durante o treinamento. A escala pelo dk garante que a magnitude dos produtos não cause instabilidade numérica, tornando o mecanismo eficiente e escalável para longas sequências.",
+  "promptTokens": 10039,
+  "completionTokens": 609,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 10039,
+    "prompt_ms": 1537.354,
+    "prompt_per_token_ms": 0.15313816117143142,
+    "prompt_per_second": 6530.050983703168,
+    "predicted_n": 609,
+    "predicted_ms": 3944.902,
+    "predicted_per_token_ms": 6.488325657894737,
+    "predicted_per_second": 154.122966806273
+  },
+  "firstVisibleMs": 3935.780109,
+  "totalMs": 5547.742109
+}

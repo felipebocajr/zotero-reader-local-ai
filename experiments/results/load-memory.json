@@ -1,0 +1,38 @@
+[
+  {
+    "precision": "F16",
+    "backend": "cuda",
+    "gpuLayers": 24,
+    "contextTokens": 32768,
+    "cacheTypes": "f16/f16",
+    "ready": true,
+    "ramHighwaterMiB": 5479.265625,
+    "vramLoadSamplePeakMiB": 4736.0,
+    "loadSeconds": 9.780285393999293,
+    "fileCache": "not cleared; warm files"
+  },
+  {
+    "precision": "Q8_0",
+    "backend": "cuda",
+    "gpuLayers": 24,
+    "contextTokens": 32768,
+    "cacheTypes": "f16/f16",
+    "ready": true,
+    "ramHighwaterMiB": 3078.578125,
+    "vramLoadSamplePeakMiB": 2834.0,
+    "loadSeconds": 3.3940783069992904,
+    "fileCache": "not cleared; warm files"
+  },
+  {
+    "precision": "Q4_K_M",
+    "backend": "cuda",
+    "gpuLayers": 24,
+    "contextTokens": 32768,
+    "cacheTypes": "f16/f16",
+    "ready": true,
+    "ramHighwaterMiB": 1934.8984375,
+    "vramLoadSamplePeakMiB": 1948.0,
+    "loadSeconds": 2.0150335029993585,
+    "fileCache": "not cleared; warm files"
+  }
+]

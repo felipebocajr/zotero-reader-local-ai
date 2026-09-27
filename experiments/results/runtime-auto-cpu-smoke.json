@@ -1,0 +1,29 @@
+{
+  "status": "ok",
+  "backend": "auto",
+  "precision": "Q4_K_M",
+  "prompt": "Responda apenas com as palavras: teste conclu\u00eddo.",
+  "answer": "teste conclu\u00eddo",
+  "finishReason": "stop",
+  "usage": {
+    "completion_tokens": 156,
+    "prompt_tokens": 21,
+    "total_tokens": 177,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 21,
+    "prompt_ms": 204.205,
+    "prompt_per_token_ms": 9.724047619047619,
+    "prompt_per_second": 102.8378345290272,
+    "predicted_n": 156,
+    "predicted_ms": 7310.911,
+    "predicted_per_token_ms": 47.167167741935486,
+    "predicted_per_second": 21.201188196655654
+  },
+  "totalMs": 7517.832363999787,
+  "scope": "short inference; full-paper CPU validation is in cpu-smoke.json"
+}

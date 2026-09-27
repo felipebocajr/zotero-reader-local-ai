@@ -1,0 +1,36 @@
+{
+  "createdAt": "2026-09-27T23:12:04.576822+00:00",
+  "artifact": "dist/reader-local-ai-0.1.0.xpi",
+  "sha256": "fcfe2c414a46975f05eba114bff5a11d356cd7c9fc307c35729b905e7abceee2",
+  "bytes": 191835,
+  "zoteroVersion": "10.0.3",
+  "profile": "isolated",
+  "typeScriptTests": 52,
+  "runtimeTests": 18,
+  "nativeMarkdownChecks": 17,
+  "nativeMathChecks": 24,
+  "nativeUiChecks": 39,
+  "nativeAnnotationChecks": 21,
+  "licenses": [
+    "licenses/entities.txt",
+    "licenses/katex.txt",
+    "licenses/linkify-it.txt",
+    "licenses/markdown-it.txt",
+    "licenses/mdurl.txt",
+    "licenses/punycode.js.txt",
+    "licenses/uc.micro.txt"
+  ],
+  "zipValid": true,
+  "installedMatches": true,
+  "activation": {
+    "artifact": "dist/reader-local-ai-0.1.0.xpi",
+    "zoteroVersion": "10.0.3",
+    "profile": "isolated",
+    "installed": true,
+    "active": true,
+    "appDisabled": false,
+    "error": 0,
+    "state": 10,
+    "harnessIncluded": false
+  }
+}

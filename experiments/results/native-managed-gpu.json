@@ -1,0 +1,10 @@
+{
+  "unixTime": 1790540196.8776104,
+  "serverChildPid": 258218,
+  "supervisorPid": 258173,
+  "backend": "cuda",
+  "gpuLayers": "all",
+  "serverGpuMemoryMiB": [
+    2396
+  ]
+}

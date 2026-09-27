@@ -1,0 +1,197 @@
+{
+  "zoteroVersion": "10.0.3",
+  "profile": "isolated",
+  "status": "ok",
+  "checks": [
+    {
+      "name": "existing profile without language preference defaults to pt-BR",
+      "passed": true
+    },
+    {
+      "name": "native language labels are readable",
+      "passed": true
+    },
+    {
+      "name": "full English PDF is available",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-2.6b: real selected runtime is available with expected ownership",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-2.6b: native preferences save pt-BR",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-2.6b: language survives closing/reopening pt-BR",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-2.6b: final answer completes in pt-BR",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-2.6b: native preferences save en",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-2.6b: language survives closing/reopening en",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-2.6b: language change needs no server restart",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-2.6b: final answer completes in en",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-2.6b: native preferences save pt-BR",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-2.6b: language survives closing/reopening pt-BR",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-2.6b: final answer completes in pt-BR",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-2.6b: changing language preserves three completed turns",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-8b-a1b: real selected runtime is available with expected ownership",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-8b-a1b: native preferences save pt-BR",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-8b-a1b: language survives closing/reopening pt-BR",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-8b-a1b: final answer completes in pt-BR",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-8b-a1b: native preferences save en",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-8b-a1b: language survives closing/reopening en",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-8b-a1b: language change needs no server restart",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-8b-a1b: final answer completes in en",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-8b-a1b: native preferences save pt-BR",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-8b-a1b: language survives closing/reopening pt-BR",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-8b-a1b: final answer completes in pt-BR",
+      "passed": true
+    },
+    {
+      "name": "lfm2.5-8b-a1b: changing language preserves three completed turns",
+      "passed": true
+    },
+    {
+      "name": "language tests never create annotations",
+      "passed": true
+    }
+  ],
+  "answers": [
+    {
+      "model": "lfm2.5-2.6b",
+      "responseLanguage": "pt-BR",
+      "question": "Explicar trecho",
+      "answer": "O trecho selecionado apresenta o principal avanço do artigo: a proposta da arquitetura Transformer, que substitui completamente as camadas recorrentes e convolucionais por mecanismos de atenção puros. Na maioria dos modelos anteriores para tradução automática, como LSTM e GRU, a atenção era usada apenas em conjunto com redes recorrentes. O Transformer, porém, baseia-se inteiramente no mecanismo de auto-atenção (self-attention), permitindo que cada posição da sequência de entrada se conecte diretamente a todas as outras posições através de múltiplas cabeças de atenção paralelas.\n\nA atenção escalada por produto escalar é o coração do modelo, calculando pesos de atenção normalizados pela raiz quadrada da dimensão das chaves para evitar gradientes desvanecidos. Com h=8 cabeças de atenção em paralelo e projeções lineares nas chaves, valores e consultas, o Transformer consegue capturar dependências globais sem necessidade de processamento sequencial. Isso resulta em treinamento significativamente mais rápido e paralelizável, alcançando novos recordes em qualidade de tradução nas tarefas WMT 2014.",
+      "totalMs": 102598
+    },
+    {
+      "model": "lfm2.5-2.6b",
+      "responseLanguage": "en",
+      "question": "Explique por que este artigo usa atenção em vez de recorrência, em até 100 palavras.",
+      "answer": "The article uses attention instead of recurrence because self-attention enables direct connections between all positions in the input sequence simultaneously. Unlike recurrent models (LSTM/GRU) that process sequences sequentially with O(n) sequential operations per layer, attention allows each decoder position to attend to all encoder positions in parallel. This eliminates the fundamental constraint of sequential computation that limits long-range dependency learning and makes training slow. The Transformer achieves state-of-the-art translation quality while being significantly more parallelizable and requiring far less training time (e.g., 12 hours vs. days for recurrent models).",
+      "totalMs": 46448
+    },
+    {
+      "model": "lfm2.5-2.6b",
+      "responseLanguage": "pt-BR",
+      "question": "Explain how this architecture processes a sequence, in at most 100 words.",
+      "answer": "O Transformer processa uma sequência através de camadas empilhadas de auto-atenção (self-attention) em ambos os codificadores e decodificadores. Cada camada contém múltiplas cabeças de atenção que calculam pesos para cada posição, permitindo que cada token se conecte diretamente a todos os outros tokens simultaneamente. Isso elimina o processamento sequencial das redes recorrentes, tornando o treinamento muito mais paralelizável e eficiente. A arquitetura permite que o modelo capture dependências globais em uma única passagem, melhorando significativamente a qualidade da tradução.",
+      "totalMs": 76653
+    },
+    {
+      "model": "lfm2.5-8b-a1b",
+      "responseLanguage": "pt-BR",
+      "question": "Explicar trecho",
+      "answer": "Attention Is All You Need é o título e a frase‑chave que resume a proposta central do artigo: um modelo de transdução baseado exclusivamente em mecanismos de atenção auto‑regressiva, sem recorrer a redes recorrentes ou convolucionais. Essa identificação aparece no início do texto para deixar claro que o trabalho visa substituir totalmente as camadas tradicionais por variantes de atenção, permitindo que cada posição da sequência se comunique diretamente com todas as outras, eliminando dependências sequenciais e possibilitando maior paralelização.\n\nNo contexto do artigo, esse lema serve como um guia para a arquitetura proposta, onde o “self‑attention” (especificamente o *scaled dot‑product attention* com múltiplas cabeças) é utilizado tanto no encoder quanto no decoder, e as camadas de atenção são empregadas em três funções distintas: encoder‑decoder, auto‑atenção dentro do encoder e auto‑atenção restrita para evitar fluxo de informação à direita. Assim, o trecho selecionado funciona como um resumo da inovação metodológica que fundamenta todas as seções subsequentes sobre treinamento, regularização e aplicações em outras tarefas.",
+      "totalMs": 12513
+    },
+    {
+      "model": "lfm2.5-8b-a1b",
+      "responseLanguage": "en",
+      "question": "Explique por que este artigo usa atenção em vez de recorrência, em até 100 palavras.",
+      "answer": "The paper replaces recurrent and convolutional layers with a single‑stage architecture whose core is self‑attention, because it eliminates the need for sequential computation along input positions, allowing all tokens to attend globally in constant time per layer. This yields higher parallelism, faster training on GPUs, and superior translation performance while removing recurrence’s inherent latency; attention also provides interpretable positional encodings that preserve order without additional mechanisms.",
+      "totalMs": 8180
+    },
+    {
+      "model": "lfm2.5-8b-a1b",
+      "responseLanguage": "pt-BR",
+      "question": "Explain how this architecture processes a sequence, in at most 100 words.",
+      "answer": "O Transformer processa uma sequência empilhando camadas de auto‑atenção multi‑cabeça (scaled dot‑product attention) com conexões residuais e normalização por camada; cada token é transformado em representações de dimensão dmodel, combinado com codificações posicionais sinusoidais. No encoder, a atenção ocorre entre as representações do decoder e da saída anterior, permitindo que toda posição consulte todas as outras simultaneamente (complexidade O(1) por camada). No decoder, a mesma operação é aplicada com máscara para impedir fluxo à esquerda. Assim, o modelo elimina recorrência, possibilitando paralelização total e treinamento mais rápido.",
+      "totalMs": 10042
+    }
+  ],
+  "runtimes": [
+    {
+      "owned": true,
+      "pid": 351420,
+      "model": "lfm2.5-2.6b",
+      "contextTokens": 32768,
+      "backend": "cuda",
+      "gpuLayers": "auto",
+      "phase": "ready",
+      "message": "Pronto: lfm2.5-2.6b · GPU/CPU · contexto 32.768 tokens.",
+      "restartRequired": false
+    },
+    {
+      "phase": "external",
+      "owned": false,
+      "model": "lfm2.5-8b-a1b",
+      "contextTokens": 32768,
+      "message": "Servidor conectado, iniciado fora do Zotero. Encerre-o no aplicativo que o iniciou.",
+      "restartRequired": false
+    }
+  ],
+  "errors": [],
+  "paper": {
+    "title": "attention",
+    "pages": 15,
+    "totalPages": 15,
+    "chars": 36990
+  },
+  "languageReview": {
+    "reviewer": "Codex",
+    "method": "Inspeção da prosa das seis respostas; nomes, siglas e termos técnicos podem manter o idioma original.",
+    "matchesPreference": true,
+    "scope": "Idioma das amostras; não avalia a correção científica."
+  }
+}

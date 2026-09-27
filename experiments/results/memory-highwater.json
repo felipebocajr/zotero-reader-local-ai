@@ -1,0 +1,17 @@
+{
+  "source": "Linux /proc VmHWM, process lifetime",
+  "records": [
+    {
+      "precision": "Q8_0",
+      "pid": 159421,
+      "ramHighwaterMiB": 3054.6328125,
+      "includesStartup": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "pid": 186475,
+      "ramHighwaterMiB": 1934.99609375,
+      "includesStartup": true
+    }
+  ]
+}

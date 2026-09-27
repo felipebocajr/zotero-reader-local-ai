@@ -1,0 +1,110 @@
+{
+  "zoteroVersion": "10.0.3",
+  "profile": "isolated",
+  "checks": [
+    {
+      "name": "completed formula renders while streaming continues",
+      "passed": true
+    },
+    {
+      "name": "streaming formula has no save action",
+      "passed": true
+    },
+    {
+      "name": "four inline and display formulas render",
+      "passed": true
+    },
+    {
+      "name": "subscripts and product bounds are structural MathML",
+      "passed": true
+    },
+    {
+      "name": "fractions and square roots are structural MathML",
+      "passed": true
+    },
+    {
+      "name": "native MathML namespace is retained",
+      "passed": true
+    },
+    {
+      "name": "original LaTeX remains available for saving",
+      "passed": true
+    },
+    {
+      "name": "MathML has visible dimensions",
+      "passed": true
+    },
+    {
+      "name": "display equations scroll inside the popup",
+      "passed": true
+    },
+    {
+      "name": "continuation preserves rendered formulas in both answers",
+      "passed": true
+    },
+    {
+      "name": "only chosen answer creates one annotation",
+      "passed": true
+    },
+    {
+      "name": "saved comment preserves exact original TeX",
+      "passed": true
+    },
+    {
+      "name": "generated markup is never stored",
+      "passed": true
+    },
+    {
+      "name": "saved annotation shows four formatted equations",
+      "passed": true
+    },
+    {
+      "name": "native editor contains original source and no MathML",
+      "passed": true
+    },
+    {
+      "name": "native editing shows the original text",
+      "passed": true
+    },
+    {
+      "name": "formatted projection hides while editing",
+      "passed": true
+    },
+    {
+      "name": "native edits refresh math without inserting markup",
+      "passed": true
+    },
+    {
+      "name": "pre-existing annotations remain unchanged",
+      "passed": true
+    },
+    {
+      "name": "invalid formula remains readable without dropping the answer",
+      "passed": true
+    },
+    {
+      "name": "model HTML does not become executable markup",
+      "passed": true
+    },
+    {
+      "name": "prompt requests explicit LaTeX delimiters",
+      "passed": true
+    },
+    {
+      "name": "disable removes projections and restores native comments",
+      "passed": true
+    },
+    {
+      "name": "re-enable formats existing saved math",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "saved": [
+    {
+      "key": "BWDF4QG6",
+      "id": 17,
+      "comment": "Resposta da IA\n\nPergunta: Explique a fórmula da distribuição condicional.\n\nA distribuição condicional se decompõe no produto das distribuições por posição:\n\\[q_{t\\mid 0}(x_t\\mid x_0)=\\prod_{i=1}^{n}q_{t\\mid 0}(\\xi_t^{(i)}\\mid\\xi_0^{(i)})\\]\nOs termos \\(x_t\\) e $x_0$ mantêm seus índices. Frações e raízes também são preservadas: $$\\frac{QK^{\\mathsf T}}{\\sqrt{d_k}}$$."
+    }
+  ]
+}

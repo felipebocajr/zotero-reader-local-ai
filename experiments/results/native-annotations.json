@@ -1,0 +1,114 @@
+{
+  "zoteroVersion": "10.0.3",
+  "profile": "isolated",
+  "checks": [
+    {
+      "name": "streaming draft has no save action",
+      "passed": true
+    },
+    {
+      "name": "no annotation saved automatically",
+      "passed": true
+    },
+    {
+      "name": "each completed answer has its own save action",
+      "passed": true
+    },
+    {
+      "name": "duplicate click saves exactly one annotation",
+      "passed": true
+    },
+    {
+      "name": "only chosen answer and its question are saved",
+      "passed": true
+    },
+    {
+      "name": "annotation belongs to selected PDF and preserves quote",
+      "passed": true
+    },
+    {
+      "name": "annotation contains no hidden reasoning",
+      "passed": true
+    },
+    {
+      "name": "native PDF coordinates preserved",
+      "passed": true
+    },
+    {
+      "name": "readonly error is legible and does not create annotation",
+      "passed": true
+    },
+    {
+      "name": "save action works with trusted keyboard Enter",
+      "passed": true
+    },
+    {
+      "name": "retry saves a different chosen answer",
+      "passed": true
+    },
+    {
+      "name": "new question has independent unsaved answer",
+      "passed": true
+    },
+    {
+      "name": "write failure keeps answer and allows retry",
+      "passed": true
+    },
+    {
+      "name": "write retry saves only once",
+      "passed": true
+    },
+    {
+      "name": "saved response appears in native annotations tab",
+      "passed": true
+    },
+    {
+      "name": "new popup does not inherit saved conversation",
+      "passed": true
+    },
+    {
+      "name": "saved annotation survives popup and reader close",
+      "passed": true
+    },
+    {
+      "name": "pre-existing annotations preserved",
+      "passed": true
+    },
+    {
+      "name": "restart: saved annotations retain exact selected content",
+      "passed": true
+    },
+    {
+      "name": "restart: native annotations tab displays responses after restart",
+      "passed": true
+    },
+    {
+      "name": "restart: distribution XPI active after restart",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "saved": [
+    {
+      "key": "BNIA96UF",
+      "id": 19,
+      "parentID": 3,
+      "text": "AttentionIsAllYouNeedAshis",
+      "comment": "Resposta da IA\n\nPergunta: UI_SLOW: Primeira pergunta para salvar.\n\nA atenção calcula a relevância de cada chave para uma consulta e usa os pesos resultantes para combinar os valores. No artigo, a divisão pela raiz quadrada da dimensão das chaves mantém os produtos escalares numa escala adequada, evitando que o softmax fique saturado. Esta resposta simulada verifica apenas a interface; a qualidade do modelo é avaliada separadamente."
+    },
+    {
+      "key": "8A3LW8Z4",
+      "id": 20,
+      "parentID": 3,
+      "text": "AttentionIsAllYouNeedAshis",
+      "comment": "Resposta da IA\n\nPergunta: Segunda pergunta da conversa.\n\nA atenção calcula a relevância de cada chave para uma consulta e usa os pesos resultantes para combinar os valores. No artigo, a divisão pela raiz quadrada da dimensão das chaves mantém os produtos escalares numa escala adequada, evitando que o softmax fique saturado. Esta resposta simulada verifica apenas a interface; a qualidade do modelo é avaliada separadamente."
+    },
+    {
+      "key": "TE7QIT39",
+      "id": 21,
+      "parentID": 3,
+      "text": "AttentionIsAllYouNeedAshis",
+      "comment": "Resposta da IA\n\nPergunta: Terceira pergunta após reiniciar a conversa.\n\nA atenção calcula a relevância de cada chave para uma consulta e usa os pesos resultantes para combinar os valores. No artigo, a divisão pela raiz quadrada da dimensão das chaves mantém os produtos escalares numa escala adequada, evitando que o softmax fique saturado. Esta resposta simulada verifica apenas a interface; a qualidade do modelo é avaliada separadamente."
+    }
+  ]
+}

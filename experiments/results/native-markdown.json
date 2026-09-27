@@ -1,0 +1,82 @@
+{
+  "zoteroVersion": "10.0.3",
+  "profile": "isolated",
+  "checks": [
+    {
+      "name": "heading and bold render during streaming",
+      "passed": true
+    },
+    {
+      "name": "headings, bold, italic and list render as HTML elements",
+      "passed": true
+    },
+    {
+      "name": "LaTeX remains MathML alongside Markdown",
+      "passed": true
+    },
+    {
+      "name": "code keeps its literal asterisks",
+      "passed": true
+    },
+    {
+      "name": "unsafe HTML and remote image never become elements",
+      "passed": true
+    },
+    {
+      "name": "original Markdown and LaTeX stay available",
+      "passed": true
+    },
+    {
+      "name": "follow-up renders both answers",
+      "passed": true
+    },
+    {
+      "name": "only chosen follow-up is saved",
+      "passed": true
+    },
+    {
+      "name": "saved comment retains Markdown source and no generated markup",
+      "passed": true
+    },
+    {
+      "name": "annotation tab formats heading, bold and MathML",
+      "passed": true
+    },
+    {
+      "name": "native annotation editor retains the original source",
+      "passed": true
+    },
+    {
+      "name": "editing shows source instead of preview",
+      "passed": true
+    },
+    {
+      "name": "prior annotations unchanged",
+      "passed": true
+    },
+    {
+      "name": "restart: saved comment keeps exact Markdown and LaTeX source",
+      "passed": true
+    },
+    {
+      "name": "restart: saved Markdown and MathML render in release XPI",
+      "passed": true
+    },
+    {
+      "name": "restart: native editor still contains only source",
+      "passed": true
+    },
+    {
+      "name": "restart: distribution XPI active after restart",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "saved": [
+    {
+      "key": "9YDRRD5E",
+      "id": 16,
+      "comment": "Resposta da IA\n\nPergunta: UI_MARKDOWN: continue explicando.\n\n## Explicação contextual\n\nO artigo usa **atenção** para conectar posições; *cada token* recebe contexto.\n\n- Relação com o método\n- Resultado descrito\n\nA escala é \\(\\frac{QK^{\\mathsf T}}{\\sqrt{d_k}}\\). `**literal**` permanece como código.\n\n<img src=\"https://example.com/remote.png\" onerror=\"alert(1)\">\n![Figura](https://example.com/remote.png)"
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "zoteroVersion": "10.0.3",
+  "profile": "isolated",
+  "checks": [
+    {
+      "name": "native preference pane initializes",
+      "passed": true
+    },
+    {
+      "name": "native language selector offers Brazilian Portuguese and English",
+      "passed": true
+    },
+    {
+      "name": "native language selector initializes in Brazilian Portuguese",
+      "passed": true
+    },
+    {
+      "name": "native preferences save the English response preference",
+      "passed": true
+    },
+    {
+      "name": "native model selector offers both models",
+      "passed": true
+    },
+    {
+      "name": "larger model shows native launch controls and context limit",
+      "passed": true
+    },
+    {
+      "name": "native preference pane saves larger model",
+      "passed": true
+    },
+    {
+      "name": "native preference pane saves",
+      "passed": true
+    },
+    {
+      "name": "native preference pane rejects remote endpoint",
+      "passed": true
+    },
+    {
+      "name": "legible error: --model lfm2.5-8b-a1b",
+      "passed": true,
+      "text": "O modelo lfm2.5-8b-a1b não está carregado no servidor local. Reinicie-o com --model lfm2.5-8b-a1b ou escolha o modelo em uso nas configurações do plugin."
+    },
+    {
+      "name": "question field focused",
+      "passed": true
+    },
+    {
+      "name": "arrow key edits question instead of moving reader focus",
+      "passed": true
+    },
+    {
+      "name": "typing does not switch annotation tools",
+      "passed": true
+    },
+    {
+      "name": "Ctrl+A selects question text",
+      "passed": true
+    },
+    {
+      "name": "Enter submits the question",
+      "passed": true
+    },
+    {
+      "name": "final text streamed without reasoning",
+      "passed": true
+    },
+    {
+      "name": "continuation displays both turns",
+      "passed": true
+    },
+    {
+      "name": "follow-up preserves history and one article",
+      "passed": true
+    },
+    {
+      "name": "entire native extracted paper sent",
+      "passed": true,
+      "chars": 36990,
+      "pages": 15
+    },
+    {
+      "name": "new question resets history",
+      "passed": true
+    },
+    {
+      "name": "generic explanation action works",
+      "passed": true
+    },
+    {
+      "name": "generic explanation sends Portuguese after the entire English article",
+      "passed": true
+    },
+    {
+      "name": "legible error: cancelado",
+      "passed": true,
+      "text": "Pedido cancelado."
+    },
+    {
+      "name": "legible error: antes",
+      "passed": true,
+      "text": "A conexão terminou antes de confirmar a resposta completa. Tente novamente."
+    },
+    {
+      "name": "legible error: limite",
+      "passed": true,
+      "text": "A geração atingiu o limite antes de concluir a resposta final. Aumente a reserva de geração e tente novamente."
+    },
+    {
+      "name": "legible error: não será cortado",
+      "passed": true,
+      "text": "Artigo, pergunta e conversa usam 30.000 tokens. Com a reserva de geração, excedem o contexto de 32.768. Aumente o contexto do servidor/configuração ou inicie uma nova pergunta; o artigo não será cortado."
+    },
+    {
+      "name": "legible error: conectar",
+      "passed": true,
+      "text": "Não foi possível conectar ao modelo local. Inicie o llama-server e confira o endereço nas configurações."
+    },
+    {
+      "name": "popup clamped to viewport edges",
+      "passed": true,
+      "bounds": {
+        "x": 2114,
+        "y": 980.25,
+        "width": 400,
+        "height": 241.75,
+        "top": 980.25,
+        "right": 2514,
+        "bottom": 1222,
+        "left": 2114
+      },
+      "viewport": [
+        2526,
+        1307
+      ]
+    },
+    {
+      "name": "Escape closes popup",
+      "passed": true
+    },
+    {
+      "name": "popup works after zoom",
+      "passed": true
+    },
+    {
+      "name": "legible error: andamento",
+      "passed": true,
+      "text": "Já existe um pedido em andamento. Cancele-o ou aguarde a resposta antes de enviar outro."
+    },
+    {
+      "name": "multiple PDF tabs have separate popups",
+      "passed": true
+    },
+    {
+      "name": "legible error: cancelado",
+      "passed": true,
+      "text": "Pedido cancelado."
+    },
+    {
+      "name": "other tab can generate after cancellation",
+      "passed": true
+    },
+    {
+      "name": "closing reader removes popup",
+      "passed": true
+    },
+    {
+      "name": "no mandatory annotation created",
+      "passed": true
+    },
+    {
+      "name": "disable removes popups actions and styles",
+      "passed": true
+    },
+    {
+      "name": "disable removes preference pane",
+      "passed": true
+    },
+    {
+      "name": "plugin can be re-enabled",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

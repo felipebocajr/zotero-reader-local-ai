@@ -1,0 +1,26 @@
+{
+  "createdAt": "2026-09-27T21:59:16.891178+00:00",
+  "artifact": "dist/reader-local-ai-0.1.0.xpi",
+  "sha256": "75f048f3ac3cd415e6a402a1232c38c7b7a90e1ef61c977caa8dde3e3878c1be",
+  "bytes": 130562,
+  "typeScriptTests": 48,
+  "runtimeTests": 18,
+  "nativeUiChecks": 39,
+  "nativeLanguageChecks": 28,
+  "realLanguageAnswers": 6,
+  "promptTokens": 10257,
+  "preflightMatchesRuntime": true,
+  "installedMatches": true,
+  "harnessIncluded": false,
+  "activation": {
+    "artifact": "dist/reader-local-ai-0.1.0.xpi",
+    "zoteroVersion": "10.0.3",
+    "profile": "isolated",
+    "installed": true,
+    "active": true,
+    "appDisabled": false,
+    "error": 0,
+    "state": 10,
+    "harnessIncluded": false
+  }
+}

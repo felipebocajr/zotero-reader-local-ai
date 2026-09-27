@@ -1,0 +1,228 @@
+{
+  "measuredAt": "2026-09-27T16:58:27.332069+00:00",
+  "runtimeTag": "b11206",
+  "runtimeCommit": "2b129ccfa03aea330d2d9ac4650a10de393dbe3a",
+  "model": {
+    "repository": "LiquidAI/LFM2.5-8B-A1B-GGUF",
+    "revision": "49c14831707011e64d70b2ebd8462ba08d608434",
+    "maxContextTokens": 128000,
+    "variants": {
+      "Q4_K_M": {
+        "filename": "LFM2.5-8B-A1B-Q4_K_M.gguf",
+        "size": 5155564768,
+        "sha256": "4923ec14f06b968b74d663e5949867d2d9c3bf13a20b8be1a9f9af39989b2bb0"
+      },
+      "Q8_0": {
+        "filename": "LFM2.5-8B-A1B-Q8_0.gguf",
+        "size": 9010195680,
+        "sha256": "33ab3b8ce6a964fb8ebac89360c9b3cf72c4fa418d5e4c0a94d46883124d5c02"
+      },
+      "F16": {
+        "filename": "LFM2.5-8B-A1B-F16.gguf",
+        "size": 16947260640,
+        "sha256": "c6eb857414327e26d32654d996838d305cb57c01c06def0894bde244f7baa159"
+      }
+    }
+  },
+  "downloadedAndSha256Verified": [
+    "Q4_K_M"
+  ],
+  "testedPrecisions": [
+    "Q4_K_M"
+  ],
+  "supervisor": {
+    "supervisorPid": 80528,
+    "model": "lfm2.5-8b-a1b",
+    "precision": "Q4_K_M",
+    "contextTokens": 32768,
+    "cacheTypes": "f16/f16",
+    "attempts": [
+      {
+        "backend": "cuda",
+        "gpuLayers": "all",
+        "fit": false,
+        "pid": 80555,
+        "exitCode": -15,
+        "gpuMemoryError": true,
+        "ready": false
+      },
+      {
+        "backend": "cuda",
+        "gpuLayers": "auto",
+        "fit": true,
+        "pid": 80801,
+        "ready": true
+      }
+    ],
+    "phase": "ready",
+    "childPid": 80801,
+    "backend": "cuda",
+    "gpuLayers": "auto"
+  },
+  "computeProcesses": [
+    "1476, /usr/bin/voxtype, 1555 MiB",
+    "1702, /usr/lib/voxtype/voxtype-osd-gtk4, 5 MiB",
+    "48778, /home/felipebocajr/Projects/Zotero Plugin/.runtime/llama-cuda/llama-b11206/llama-server, 2398 MiB",
+    "80801, /home/felipebocajr/Projects/Zotero Plugin/.runtime/llama-cuda/llama-b11206/llama-server, 2214 MiB"
+  ],
+  "serverRamKernelSample": [
+    "VmHWM:\t 5619500 kB",
+    "VmRSS:\t 5247176 kB"
+  ],
+  "serverAlias": "lfm2.5-8b-a1b",
+  "actualContext": 32768,
+  "slots": 1,
+  "modelMeta": {
+    "vocab_type": 2,
+    "n_vocab": 128000,
+    "n_ctx": 32768,
+    "n_ctx_train": 128000,
+    "n_embd": 2048,
+    "n_params": 8467856832,
+    "size": 5147326208,
+    "ftype": "Q4_K - Medium"
+  },
+  "cpuTensorOverridesObserved": true,
+  "limitations": [
+    "Other GPU applications including a 2.6B llama-server remained running; this is not a controlled model comparison.",
+    "Only Q4_K_M was tested; pinned Q8_0 and F16 were not downloaded or executed.",
+    "No comparative answer-quality evaluation was performed."
+  ],
+  "gpuSampleAfterNativeInference": "NVIDIA GeForce RTX 3070, 8192 MiB, 7262 MiB, 556 MiB, 40 %",
+  "gpuSamplesDuringRepeatInference": [
+    {
+      "elapsedSeconds": 0.042,
+      "gpu": "7274 MiB, 544 MiB, 40 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 1.088,
+      "gpu": "7261 MiB, 557 MiB, 99 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 2.132,
+      "gpu": "7290 MiB, 528 MiB, 99 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 3.175,
+      "gpu": "7290 MiB, 528 MiB, 98 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 4.213,
+      "gpu": "7274 MiB, 544 MiB, 98 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 5.257,
+      "gpu": "7288 MiB, 529 MiB, 98 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 6.302,
+      "gpu": "7289 MiB, 529 MiB, 98 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 7.361,
+      "gpu": "7288 MiB, 530 MiB, 72 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 8.416,
+      "gpu": "7274 MiB, 544 MiB, 28 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 9.473,
+      "gpu": "7288 MiB, 530 MiB, 29 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 10.528,
+      "gpu": "7288 MiB, 530 MiB, 26 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 11.583,
+      "gpu": "7288 MiB, 530 MiB, 28 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 12.637,
+      "gpu": "7274 MiB, 544 MiB, 29 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 13.697,
+      "gpu": "7288 MiB, 530 MiB, 29 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 14.751,
+      "gpu": "7288 MiB, 530 MiB, 29 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 15.806,
+      "gpu": "7288 MiB, 530 MiB, 29 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 16.861,
+      "gpu": "7274 MiB, 544 MiB, 29 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    },
+    {
+      "elapsedSeconds": 17.911,
+      "gpu": "7288 MiB, 530 MiB, 30 %",
+      "serverVram": "80801, 2214 MiB",
+      "generationProcessRunning": true
+    }
+  ],
+  "repeatInference": {
+    "status": "ok",
+    "model": "lfm2.5-8b-a1b",
+    "backend": "auto",
+    "precision": "Q4_K_M",
+    "pages": 15,
+    "paperSha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476",
+    "preflightMatchesRuntime": true,
+    "answer": "Na aten\u00e7\u00e3o por produto escalar escalonado, cada posi\u00e7\u00e3o da sequ\u00eancia gera vetores de consulta (Q), chave (K) e valor (V); calcula\u2011se o produto interno entre Q e K, divide\u2011se por\u202f\u221ad\u2096 para evitar que os valores sejam excessivamente grandes e aplica\u2011se a fun\u00e7\u00e3o softmax sobre esses produtos para obter pesos que indicam a import\u00e2ncia de cada chave na posi\u00e7\u00e3o atual; o resultado \u00e9 uma combina\u00e7\u00e3o linear ponderada dos vetores de valor, onde as dimens\u00f5es s\u00e3o concatenadas ao longo da dire\u00e7\u00e3o do output.",
+    "promptTokens": 10038,
+    "completionTokens": 674,
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 10038,
+      "prompt_ms": 6680.279,
+      "prompt_per_token_ms": 0.6654990037856147,
+      "prompt_per_second": 1502.6318511547197,
+      "predicted_n": 674,
+      "predicted_ms": 11395.006,
+      "predicted_per_token_ms": 16.93165824665676,
+      "predicted_per_second": 59.06096056465438
+    },
+    "firstVisibleMs": 16005.458265000001,
+    "totalMs": 18139.786096
+  },
+  "repeatExitCode": 0
+}

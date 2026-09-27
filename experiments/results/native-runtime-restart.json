@@ -1,0 +1,72 @@
+{
+  "zoteroVersion": "10.0.3",
+  "profile": "isolated",
+  "checks": [
+    {
+      "name": "full Zotero process restart",
+      "passed": true
+    },
+    {
+      "name": "closing Zotero reaped previous supervisor",
+      "passed": true
+    },
+    {
+      "name": "closing Zotero reaped previous llama child",
+      "passed": true
+    },
+    {
+      "name": "automatic startup owns a fresh ready process",
+      "passed": true
+    },
+    {
+      "name": "automatic startup retains model/context",
+      "passed": true
+    },
+    {
+      "name": "native checkbox survives Zotero restart",
+      "passed": true
+    },
+    {
+      "name": "restart fixture restores automatic startup preference",
+      "passed": true
+    },
+    {
+      "name": "restoring fixture reaps the new server",
+      "passed": true
+    }
+  ],
+  "beforePid": 245806,
+  "afterPid": 257852,
+  "errors": [],
+  "state": {
+    "owned": true,
+    "pid": 258173,
+    "model": "lfm2.5-2.6b",
+    "contextTokens": 32768,
+    "backend": "cuda",
+    "gpuLayers": "all",
+    "phase": "ready",
+    "message": "Pronto: lfm2.5-2.6b · GPU inteira · contexto 32.768 tokens.",
+    "restartRequired": false
+  },
+  "status": {
+    "supervisorPid": 258173,
+    "model": "lfm2.5-2.6b",
+    "precision": "Q4_K_M",
+    "contextTokens": 32768,
+    "cacheTypes": "f16/f16",
+    "attempts": [
+      {
+        "backend": "cuda",
+        "gpuLayers": "all",
+        "fit": false,
+        "pid": 258218,
+        "ready": true
+      }
+    ],
+    "phase": "ready",
+    "childPid": 258218,
+    "backend": "cuda",
+    "gpuLayers": "all"
+  }
+}

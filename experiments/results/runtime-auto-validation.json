@@ -1,0 +1,237 @@
+{
+  "runtimeTag": "b11206",
+  "cases": [
+    {
+      "label": "q4-all-gpu",
+      "capturedAt": "2026-09-27T16:09:28.661872+00:00",
+      "statusBeforeStop": {
+        "supervisorPid": 26608,
+        "precision": "Q4_K_M",
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "attempts": [
+          {
+            "backend": "cuda",
+            "gpuLayers": "all",
+            "fit": false,
+            "pid": 26655,
+            "ready": true
+          }
+        ],
+        "phase": "ready",
+        "childPid": 26655,
+        "backend": "cuda",
+        "gpuLayers": "all"
+      },
+      "actualContextTokens": 32768,
+      "actualSlots": 1,
+      "gpuMiB": 2396,
+      "ramMiB": {
+        "VmHWM": 1934.98828125,
+        "VmRSS": 672.18359375
+      },
+      "gpuSample": "after request, not a peak",
+      "statusAfterStop": {
+        "supervisorPid": 26608,
+        "precision": "Q4_K_M",
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "attempts": [
+          {
+            "backend": "cuda",
+            "gpuLayers": "all",
+            "fit": false,
+            "pid": 26655,
+            "ready": true
+          }
+        ],
+        "phase": "stopped",
+        "childPid": null,
+        "backend": "cuda",
+        "gpuLayers": "all"
+      },
+      "childExited": true,
+      "smokeArtifact": "runtime-auto-q4-smoke.json",
+      "requestTotalMs": 5984.020877999999
+    },
+    {
+      "label": "f16-oom-shared-completed",
+      "capturedAt": "2026-09-27T16:14:02.857039+00:00",
+      "statusBeforeStop": {
+        "supervisorPid": 32294,
+        "precision": "F16",
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "attempts": [
+          {
+            "backend": "cuda",
+            "gpuLayers": "all",
+            "fit": false,
+            "pid": 32334,
+            "exitCode": 1,
+            "gpuMemoryError": true,
+            "ready": false
+          },
+          {
+            "backend": "cuda",
+            "gpuLayers": "auto",
+            "fit": true,
+            "pid": 32407,
+            "ready": true
+          }
+        ],
+        "phase": "ready",
+        "childPid": 32407,
+        "backend": "cuda",
+        "gpuLayers": "auto"
+      },
+      "actualContextTokens": 32768,
+      "actualSlots": 1,
+      "gpuMiB": 4610,
+      "ramMiB": {
+        "VmHWM": 5486.953125,
+        "VmRSS": 2439.4609375
+      },
+      "gpuSample": "after request, not a peak",
+      "allocationLogEvidence": [
+        "0.00.586.337 E ggml_backend_cuda_buffer_type_alloc_buffer: allocating 5145.00 MiB on device 0: cudaMalloc failed: out of memory",
+        "common_params_fit_impl: context size set by user to 32768 -> no change",
+        "common_fit_params: successfully fit params to free device memory",
+        "load_tensors: offloaded 23/31 layers to GPU",
+        "load_tensors:   CPU_Mapped model buffer size =  1740.27 MiB",
+        "load_tensors:        CUDA0 model buffer size =  3904.73 MiB",
+        "llama_kv_cache:        CPU KV buffer size =   128.00 MiB",
+        "llama_kv_cache:      CUDA0 KV buffer size =   384.00 MiB"
+      ],
+      "actualGpuLayers": {
+        "offloaded": 23,
+        "total": 31
+      },
+      "statusAfterStop": {
+        "supervisorPid": 32294,
+        "precision": "F16",
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "attempts": [
+          {
+            "backend": "cuda",
+            "gpuLayers": "all",
+            "fit": false,
+            "pid": 32334,
+            "exitCode": 1,
+            "gpuMemoryError": true,
+            "ready": false
+          },
+          {
+            "backend": "cuda",
+            "gpuLayers": "auto",
+            "fit": true,
+            "pid": 32407,
+            "ready": true
+          }
+        ],
+        "phase": "stopped",
+        "childPid": null,
+        "backend": "cuda",
+        "gpuLayers": "auto"
+      },
+      "childExited": true,
+      "smokeArtifact": "runtime-auto-f16-smoke.json",
+      "requestTotalMs": 40944.419986
+    },
+    {
+      "label": "cuda-unavailable-cpu",
+      "capturedAt": "2026-09-27T16:17:56.316483+00:00",
+      "statusBeforeStop": {
+        "supervisorPid": 37083,
+        "precision": "Q4_K_M",
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "attempts": [
+          {
+            "backend": "cpu",
+            "gpuLayers": 0,
+            "fit": false,
+            "pid": 37155,
+            "ready": true
+          }
+        ],
+        "phase": "ready",
+        "childPid": 37155,
+        "backend": "cpu",
+        "gpuLayers": 0
+      },
+      "actualContextTokens": 32768,
+      "actualSlots": 1,
+      "gpuMiB": 0,
+      "ramMiB": {
+        "VmHWM": 3225.15234375,
+        "VmRSS": 3225.15234375
+      },
+      "gpuSample": "after request, not a peak",
+      "allocationLogEvidence": [
+        "load_tensors: offloaded 0/31 layers to GPU",
+        "load_tensors:   CPU_Mapped model buffer size =  1580.03 MiB",
+        "load_tensors:   CPU_REPACK model buffer size =  1138.50 MiB",
+        "llama_kv_cache:        CPU KV buffer size =   512.00 MiB"
+      ],
+      "actualGpuLayers": {
+        "offloaded": 0,
+        "total": 31
+      },
+      "statusAfterStop": {
+        "supervisorPid": 37083,
+        "precision": "Q4_K_M",
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "attempts": [
+          {
+            "backend": "cpu",
+            "gpuLayers": 0,
+            "fit": false,
+            "pid": 37155,
+            "ready": true
+          }
+        ],
+        "phase": "stopped",
+        "childPid": null,
+        "backend": "cpu",
+        "gpuLayers": 0
+      },
+      "childExited": true,
+      "smokeArtifact": "runtime-auto-cpu-smoke.json",
+      "requestTotalMs": 7517.832363999787
+    }
+  ],
+  "gpu": "NVIDIA GeForce RTX 3070, 8192 MiB",
+  "driver": "610.57.04",
+  "modelRevision": "e7caca5d835a3901a8e0d63e94009429bafafdfc",
+  "fullPaper": "Attention Is All You Need, v1, 15 pages",
+  "tests": {
+    "typescript": 18,
+    "runtimeAndInstaller": 12,
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "xpi": {
+    "sha256": "d90a715582736e13910de2e7f531a4887e76c6d3cb6eee6938abc9c298d696bc",
+    "unchanged": true
+  },
+  "controlledInterruption": {
+    "precision": "F16",
+    "backend": "cuda-auto-fit",
+    "childExited": true,
+    "clientReportedError": "A conexão foi interrompida antes de completar a resposta. Tente novamente.",
+    "scope": "supervisor termination during generation, not a runtime OOM during decode"
+  },
+  "installer": {
+    "verifiedBothRuntimesAndQ4": true,
+    "atomicReinstallDuringCpuInference": "passed"
+  },
+  "limitations": [
+    "Usage validation, not a precision benchmark or quality assessment.",
+    "CPU fallback was exercised by hiding CUDA for this process, not by exhausting both GPU placements.",
+    "OOM during generation and failure of both GPU placements are covered by automated tests.",
+    "GPU samples are after request, not peaks; RAM high-water includes startup."
+  ]
+}

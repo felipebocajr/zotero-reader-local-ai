@@ -1,0 +1,24 @@
+{
+  "status": "ok",
+  "backend": "auto",
+  "precision": "F16",
+  "pages": 15,
+  "paperSha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476",
+  "preflightMatchesRuntime": true,
+  "answer": "A atenção por produto escalar escalonado (Scaled Dot-Product Attention) é o mecanismo central do modelo Transformer descrito no artigo. Ela calcula a atenção entre uma sequência de queries (consultas) e um conjunto de keys (chaves) e values (valores). O processo consiste em computar o produto escalar entre cada query e todas as keys, dividir cada resultado por √dk (onde dk é a dimensão das queries/keys), e então aplicar uma função softmax para obter pesos que indicam a importância de cada key. Esses pesos são usados para ponderar os values, produzindo um vetor de saída que combina informações relevantes da sequência de entrada. Essa abordagem permite que o modelo atenda globalmente a qualquer posição da sequência de entrada, eliminando a necessidade de recorrência ou convoluções, e possibilitando maior paralelização durante o treinamento. O fator de escala √dk é crucial para evitar valores muito grandes no produto escalar, garantindo gradientes estáveis durante o treinamento.",
+  "promptTokens": 10039,
+  "completionTokens": 639,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 10039,
+    "prompt_ms": 6343.455,
+    "prompt_per_token_ms": 0.6318811634624962,
+    "prompt_per_second": 1582.5760567387963,
+    "predicted_n": 639,
+    "predicted_ms": 34535.36,
+    "predicted_per_token_ms": 54.130658307210034,
+    "predicted_per_second": 18.473819297091442
+  },
+  "firstVisibleMs": 28928.745547,
+  "totalMs": 40944.419986
+}

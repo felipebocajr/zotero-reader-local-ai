@@ -1,0 +1,24 @@
+{
+  "os": {
+    "NAME": "Omarchy",
+    "ID": "omarchy",
+    "PRETTY_NAME": "Omarchy",
+    "ID_LIKE": "arch",
+    "BUILD_ID": "4.0.4",
+    "VERSION_ID": "4.0.4",
+    "ANSI_COLOR": "38;2;158;206;106",
+    "HOME_URL": "https://omarchy.org/",
+    "DOCUMENTATION_URL": "https://learn.omacom.io/2/the-omarchy-manual",
+    "SUPPORT_URL": "https://discord.gg/tXFUdasqhY",
+    "BUG_REPORT_URL": "https://github.com/basecamp/omarchy/issues",
+    "LOGO": "omarchy"
+  },
+  "kernel": "7.2.5-3-omarchy",
+  "machine": "x86_64",
+  "cpu": "AMD Ryzen 7 5700X 8-Core Processor",
+  "logicalCpus": 16,
+  "memory": {
+    "MemTotal": "16290536 kB",
+    "SwapTotal": "32580816 kB"
+  }
+}

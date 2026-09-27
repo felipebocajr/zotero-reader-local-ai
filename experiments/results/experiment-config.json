@@ -1,0 +1,106 @@
+{
+  "fingerprint": "8a4e6afb1b486aab363ba20e3efaa63c7631ad964536355b2429c897f94c919d",
+  "runtime": {
+    "llamaCpp": {
+      "tag": "b11206",
+      "commit": "2b129ccfa03aea330d2d9ac4650a10de393dbe3a",
+      "linuxX64Cpu": {
+        "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11206/llama-b11206-bin-ubuntu-x64.tar.gz",
+        "sha256": "aea9ff64167ea473bf5cf463f07b42beac16c857cdffce57c7ed9cc323ea4da5"
+      },
+      "linuxX64Cuda": {
+        "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11206/llama-b11206-bin-ubuntu-cuda-12.8-x64.tar.gz",
+        "sha256": "fa78d7d80b8dca117638c49fc4aa58d6b01407541804483876c27323ebb887de"
+      },
+      "cudaLibraries": {
+        "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11206/cudart-llama-b11206-bin-ubuntu-cuda-12.8-x64.tar.gz",
+        "sha256": "bcc52b864ad3edbdd18d10d8061bb84af2c085c50621d0cc19e135130cc360e8"
+      }
+    },
+    "model": {
+      "repository": "LiquidAI/LFM2.5-2.6B-GGUF",
+      "revision": "e7caca5d835a3901a8e0d63e94009429bafafdfc",
+      "variants": {
+        "Q4_K_M": {
+          "filename": "LFM2.5-2.6B-Q4_K_M.gguf",
+          "size": 1674455040,
+          "sha256": "02a8b7e17487d326e46d68ce0ba24211e1b80a14c4cd0597fa73c1cd697f52ed"
+        },
+        "Q8_0": {
+          "filename": "LFM2.5-2.6B-Q8_0.gguf",
+          "size": 2874779648,
+          "sha256": "1e22128dfa128bdfb684da167e74e072d0a056baa7d06d9f280291e2839b0fc9"
+        },
+        "F16": {
+          "filename": "LFM2.5-2.6B-F16.gguf",
+          "size": 5403158528,
+          "sha256": "e041c231351185eb390f9c417d3bfd1815869a50a8589f3f86e5b9add3c529f1"
+        }
+      }
+    }
+  },
+  "settings": {
+    "baseUrl": "http://127.0.0.1:18084",
+    "model": "lfm2.5-2.6b",
+    "contextTokens": 32768,
+    "generationTokens": 4096,
+    "timeoutMs": 600000
+  },
+  "gpuLayers": 24,
+  "binary": "/home/felipebocajr/Projects/Zotero Plugin/.runtime/llama-cuda/llama-b11206/llama-server",
+  "gpu": "NVIDIA GeForce RTX 3070, 610.57.04, 8192 MiB",
+  "repetitions": 3,
+  "cachePrompt": false,
+  "memorySamplingMs": {
+    "ram": 500,
+    "gpu": 1000
+  },
+  "papers": [
+    {
+      "id": "attention",
+      "title": "Attention Is All You Need",
+      "arxiv": "1706.03762v1",
+      "url": "https://arxiv.org/pdf/1706.03762v1",
+      "pages": 15,
+      "sha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476",
+      "characters": 37304
+    },
+    {
+      "id": "rmsnorm",
+      "title": "Root Mean Square Layer Normalization",
+      "arxiv": "1910.07467v1",
+      "url": "https://arxiv.org/pdf/1910.07467v1",
+      "pages": 14,
+      "sha256": "a38ab771022fc10525d2b6b23de40307b2ca7b2bf463f5219da6a0ba1c41225f",
+      "characters": 46675
+    },
+    {
+      "id": "rope",
+      "title": "RoFormer: Enhanced Transformer with Rotary Position Embedding",
+      "arxiv": "2104.09864v1",
+      "url": "https://arxiv.org/pdf/2104.09864v1",
+      "pages": 12,
+      "sha256": "2987844c31e154ee10c2e59b64b0ba2f793447bc0c6eeeb2bf435141ed0b69db",
+      "characters": 30896
+    },
+    {
+      "id": "lora",
+      "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+      "arxiv": "2106.09685v1",
+      "url": "https://arxiv.org/pdf/2106.09685v1",
+      "pages": 20,
+      "sha256": "38a259c1926b724363fcfbd8e5f80fcadf0dd8d9ab6944fea8c00e74fd7590b0",
+      "characters": 60531
+    },
+    {
+      "id": "llada",
+      "title": "Large Language Diffusion Models",
+      "arxiv": "2502.09992v1",
+      "url": "https://arxiv.org/pdf/2502.09992v1",
+      "pages": 24,
+      "sha256": "270a2a5c8902ee7f29de411c918a32020c684cb39a8a4b94a723b4d93fd331ad",
+      "characters": 86992
+    }
+  ],
+  "started": "2026-09-27T05:32:17.540Z"
+}

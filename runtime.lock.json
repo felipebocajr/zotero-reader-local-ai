@@ -1,0 +1,52 @@
+{
+  "llamaCpp": {
+    "tag": "b11206",
+    "commit": "2b129ccfa03aea330d2d9ac4650a10de393dbe3a",
+    "linuxX64Cpu": {
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11206/llama-b11206-bin-ubuntu-x64.tar.gz",
+      "sha256": "aea9ff64167ea473bf5cf463f07b42beac16c857cdffce57c7ed9cc323ea4da5"
+    },
+    "linuxX64Cuda": {
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11206/llama-b11206-bin-ubuntu-cuda-12.8-x64.tar.gz",
+      "sha256": "fa78d7d80b8dca117638c49fc4aa58d6b01407541804483876c27323ebb887de"
+    },
+    "cudaLibraries": {
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11206/cudart-llama-b11206-bin-ubuntu-cuda-12.8-x64.tar.gz",
+      "sha256": "bcc52b864ad3edbdd18d10d8061bb84af2c085c50621d0cc19e135130cc360e8"
+    }
+  },
+  "model": {
+    "repository": "LiquidAI/LFM2.5-2.6B-GGUF",
+    "revision": "e7caca5d835a3901a8e0d63e94009429bafafdfc",
+    "maxContextTokens": 131072,
+    "variants": {
+      "Q4_K_M": { "filename": "LFM2.5-2.6B-Q4_K_M.gguf", "size": 1674455040, "sha256": "02a8b7e17487d326e46d68ce0ba24211e1b80a14c4cd0597fa73c1cd697f52ed" },
+      "Q8_0": { "filename": "LFM2.5-2.6B-Q8_0.gguf", "size": 2874779648, "sha256": "1e22128dfa128bdfb684da167e74e072d0a056baa7d06d9f280291e2839b0fc9" },
+      "F16": { "filename": "LFM2.5-2.6B-F16.gguf", "size": 5403158528, "sha256": "e041c231351185eb390f9c417d3bfd1815869a50a8589f3f86e5b9add3c529f1" }
+    }
+  },
+  "additionalModels": {
+    "lfm2.5-8b-a1b": {
+      "repository": "LiquidAI/LFM2.5-8B-A1B-GGUF",
+      "revision": "49c14831707011e64d70b2ebd8462ba08d608434",
+      "maxContextTokens": 128000,
+      "variants": {
+        "Q4_K_M": {
+          "filename": "LFM2.5-8B-A1B-Q4_K_M.gguf",
+          "size": 5155564768,
+          "sha256": "4923ec14f06b968b74d663e5949867d2d9c3bf13a20b8be1a9f9af39989b2bb0"
+        },
+        "Q8_0": {
+          "filename": "LFM2.5-8B-A1B-Q8_0.gguf",
+          "size": 9010195680,
+          "sha256": "33ab3b8ce6a964fb8ebac89360c9b3cf72c4fa418d5e4c0a94d46883124d5c02"
+        },
+        "F16": {
+          "filename": "LFM2.5-8B-A1B-F16.gguf",
+          "size": 16947260640,
+          "sha256": "c6eb857414327e26d32654d996838d305cb57c01c06def0894bde244f7baa159"
+        }
+      }
+    }
+  }
+}

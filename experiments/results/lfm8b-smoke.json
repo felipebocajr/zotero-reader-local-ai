@@ -1,0 +1,25 @@
+{
+  "status": "ok",
+  "model": "lfm2.5-8b-a1b",
+  "backend": "auto",
+  "precision": "Q4_K_M",
+  "pages": 15,
+  "paperSha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476",
+  "preflightMatchesRuntime": true,
+  "answer": "Na atenção por produto escalar escalonado, cada posição da sequência gera vetores de consulta (Q), chave (K) e valor (V); calcula‑se o produto interno entre Q e K, divide‑se por √dₖ para evitar que os valores sejam excessivamente grandes e aplica‑se a função softmax sobre esses produtos para obter pesos que indicam a importância de cada chave na posição atual; o resultado é uma combinação linear ponderada dos vetores de valor, onde as dimensões são concatenadas ao longo da direção do output.",
+  "promptTokens": 10038,
+  "completionTokens": 674,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 10038,
+    "prompt_ms": 6914.163,
+    "prompt_per_token_ms": 0.6887988643156007,
+    "prompt_per_second": 1451.8026260011516,
+    "predicted_n": 674,
+    "predicted_ms": 11891.506,
+    "predicted_per_token_ms": 17.669399702823178,
+    "predicted_per_second": 56.59501832652652
+  },
+  "firstVisibleMs": 16382.118745000002,
+  "totalMs": 18875.542373
+}

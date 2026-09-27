@@ -1,0 +1,553 @@
+{
+  "fingerprint": "8a4e6afb1b486aab363ba20e3efaa63c7631ad964536355b2429c897f94c919d",
+  "completed": 135,
+  "precisions": [
+    {
+      "precision": "F16",
+      "successful": 45,
+      "failed": 0,
+      "rated": 15,
+      "firstVisibleMedianSeconds": 32.302117443999975,
+      "totalMedianSeconds": 41.27921973499999,
+      "decodeMedianTokensPerSecond": 17.49072190229519,
+      "prefillMedianTokensPerSecond": 1408.6743884503928,
+      "ramPeakMiB": 2267.4765625,
+      "ramRequestSamplePeakMiB": 2267.4765625,
+      "ramLifetimeHighwaterMiB": null,
+      "loadMemoryProbe": {
+        "precision": "F16",
+        "backend": "cuda",
+        "gpuLayers": 24,
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "ready": true,
+        "ramHighwaterMiB": 5479.265625,
+        "vramLoadSamplePeakMiB": 4736.0,
+        "loadSeconds": 9.780285393999293,
+        "fileCache": "not cleared; warm files"
+      },
+      "vramPeakMiB": 4768,
+      "over150Words": 18,
+      "under80Words": 9,
+      "correctnessMean": 1.6,
+      "groundingMean": 1.6666666666666667,
+      "clarityMean": 1.5333333333333334
+    },
+    {
+      "precision": "Q8_0",
+      "successful": 45,
+      "failed": 0,
+      "rated": 15,
+      "firstVisibleMedianSeconds": 28.341910614000167,
+      "totalMedianSeconds": 32.573870267000046,
+      "decodeMedianTokensPerSecond": 27.98383800585128,
+      "prefillMedianTokensPerSecond": 1610.8425751538914,
+      "ramPeakMiB": 1363.9453125,
+      "ramRequestSamplePeakMiB": 1363.9453125,
+      "ramLifetimeHighwaterMiB": 3054.6328125,
+      "loadMemoryProbe": {
+        "precision": "Q8_0",
+        "backend": "cuda",
+        "gpuLayers": 24,
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "ready": true,
+        "ramHighwaterMiB": 3078.578125,
+        "vramLoadSamplePeakMiB": 2834.0,
+        "loadSeconds": 3.3940783069992904,
+        "fileCache": "not cleared; warm files"
+      },
+      "vramPeakMiB": 2848,
+      "over150Words": 18,
+      "under80Words": 9,
+      "correctnessMean": 1.3333333333333333,
+      "groundingMean": 1.4,
+      "clarityMean": 1.5333333333333334
+    },
+    {
+      "precision": "Q4_K_M",
+      "successful": 45,
+      "failed": 0,
+      "rated": 15,
+      "firstVisibleMedianSeconds": 22.037331802000292,
+      "totalMedianSeconds": 26.17227120999992,
+      "decodeMedianTokensPerSecond": 40.663650768824084,
+      "prefillMedianTokensPerSecond": 1734.8914015825712,
+      "ramPeakMiB": 1118.7578125,
+      "ramRequestSamplePeakMiB": 1118.7578125,
+      "ramLifetimeHighwaterMiB": 1934.99609375,
+      "loadMemoryProbe": {
+        "precision": "Q4_K_M",
+        "backend": "cuda",
+        "gpuLayers": 24,
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "ready": true,
+        "ramHighwaterMiB": 1934.8984375,
+        "vramLoadSamplePeakMiB": 1948.0,
+        "loadSeconds": 2.0150335029993585,
+        "fileCache": "not cleared; warm files"
+      },
+      "vramPeakMiB": 1964,
+      "over150Words": 12,
+      "under80Words": 12,
+      "correctnessMean": 1.2666666666666666,
+      "groundingMean": 1.4,
+      "clarityMean": 1.5333333333333334
+    }
+  ],
+  "cases": [
+    {
+      "precision": "F16",
+      "caseId": "attention-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 28.978637447999994,
+      "totalMedianSeconds": 41.037766272,
+      "promptTokensActual": 10039,
+      "decodeMedianTokensPerSecond": 18.459740651060006,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "attention-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 28.990546229,
+      "totalMedianSeconds": 41.20145582099998,
+      "promptTokensActual": 10050,
+      "decodeMedianTokensPerSecond": 18.186037923076935,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "attention-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 17.948413368999958,
+      "totalMedianSeconds": 22.202606881999994,
+      "promptTokensActual": 10041,
+      "decodeMedianTokensPerSecond": 18.397248073076632,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "rmsnorm-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 20.817494901,
+      "totalMedianSeconds": 36.86226131800003,
+      "promptTokensActual": 12950,
+      "decodeMedianTokensPerSecond": 17.73343640155853,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "rmsnorm-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 29.038737921000052,
+      "totalMedianSeconds": 40.61190864900005,
+      "promptTokensActual": 12957,
+      "decodeMedianTokensPerSecond": 17.498910748182222,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "rmsnorm-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 32.302117443999975,
+      "totalMedianSeconds": 40.28874527199997,
+      "promptTokensActual": 12950,
+      "decodeMedianTokensPerSecond": 16.760733269592155,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "rope-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 38.58426533299999,
+      "totalMedianSeconds": 49.60975476799999,
+      "promptTokensActual": 9702,
+      "decodeMedianTokensPerSecond": 17.90513340864369,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "rope-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 25.973602159000002,
+      "totalMedianSeconds": 39.86261100600008,
+      "promptTokensActual": 9706,
+      "decodeMedianTokensPerSecond": 18.43106853972646,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "rope-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 28.249662159000057,
+      "totalMedianSeconds": 33.021883066000065,
+      "promptTokensActual": 9707,
+      "decodeMedianTokensPerSecond": 18.444119160985522,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "lora-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 118.81890961500012,
+      "totalMedianSeconds": 134.22641156500006,
+      "promptTokensActual": 18518,
+      "decodeMedianTokensPerSecond": 15.859956160074871,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "lora-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 43.261469301000005,
+      "totalMedianSeconds": 62.12773032400012,
+      "promptTokensActual": 18531,
+      "decodeMedianTokensPerSecond": 15.907170553169564,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "lora-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 44.26861452399986,
+      "totalMedianSeconds": 59.68160222400003,
+      "promptTokensActual": 18518,
+      "decodeMedianTokensPerSecond": 15.720446906296607,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "llada-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 131.25052083000028,
+      "totalMedianSeconds": 146.11571512099985,
+      "promptTokensActual": 26048,
+      "decodeMedianTokensPerSecond": 14.7403946763469,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "llada-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 45.84244726500008,
+      "totalMedianSeconds": 71.21363365800026,
+      "promptTokensActual": 26053,
+      "decodeMedianTokensPerSecond": 15.096591442034056,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "F16",
+      "caseId": "llada-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 48.306213932999874,
+      "totalMedianSeconds": 53.92286865799967,
+      "promptTokensActual": 26050,
+      "decodeMedianTokensPerSecond": 14.8440654736007,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "attention-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 12.433009745999705,
+      "totalMedianSeconds": 22.09391714899987,
+      "promptTokensActual": 10039,
+      "decodeMedianTokensPerSecond": 29.864872523976135,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "attention-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 16.172589329999873,
+      "totalMedianSeconds": 23.28669887099974,
+      "promptTokensActual": 10050,
+      "decodeMedianTokensPerSecond": 30.222038265203988,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "attention-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 14.23411583200004,
+      "totalMedianSeconds": 17.736247433000244,
+      "promptTokensActual": 10041,
+      "decodeMedianTokensPerSecond": 29.997227675571274,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "rmsnorm-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 21.405952148000242,
+      "totalMedianSeconds": 30.528454127000177,
+      "promptTokensActual": 12950,
+      "decodeMedianTokensPerSecond": 28.142118951465747,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "rmsnorm-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 21.4507862689998,
+      "totalMedianSeconds": 27.504656986000015,
+      "promptTokensActual": 12957,
+      "decodeMedianTokensPerSecond": 28.164932818668866,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "rmsnorm-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 28.341910614000167,
+      "totalMedianSeconds": 32.573870267000046,
+      "promptTokensActual": 12950,
+      "decodeMedianTokensPerSecond": 27.937371601433043,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "rope-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 32.1212404169999,
+      "totalMedianSeconds": 39.71168750500027,
+      "promptTokensActual": 9702,
+      "decodeMedianTokensPerSecond": 28.786166422558626,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "rope-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 17.452929565000346,
+      "totalMedianSeconds": 24.972456267000176,
+      "promptTokensActual": 9706,
+      "decodeMedianTokensPerSecond": 29.403244043803987,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "rope-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 19.395744484999682,
+      "totalMedianSeconds": 23.33220255399961,
+      "promptTokensActual": 9707,
+      "decodeMedianTokensPerSecond": 28.8519608076713,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "lora-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 40.256317352999936,
+      "totalMedianSeconds": 47.4787812359999,
+      "promptTokensActual": 18518,
+      "decodeMedianTokensPerSecond": 22.724843234941428,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "lora-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 32.84047230200004,
+      "totalMedianSeconds": 46.194354693999976,
+      "promptTokensActual": 18531,
+      "decodeMedianTokensPerSecond": 23.644765952882615,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "lora-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 31.250276614999866,
+      "totalMedianSeconds": 37.44900968299992,
+      "promptTokensActual": 18518,
+      "decodeMedianTokensPerSecond": 23.82468162450501,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "llada-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 45.52530036700005,
+      "totalMedianSeconds": 60.392895689000376,
+      "promptTokensActual": 26048,
+      "decodeMedianTokensPerSecond": 21.629128612343916,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "llada-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 40.70411977799982,
+      "totalMedianSeconds": 54.12774679700006,
+      "promptTokensActual": 26053,
+      "decodeMedianTokensPerSecond": 20.219902928651493,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q8_0",
+      "caseId": "llada-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 47.23099886099994,
+      "totalMedianSeconds": 53.9775898319995,
+      "promptTokensActual": 26050,
+      "decodeMedianTokensPerSecond": 21.634886508391798,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "attention-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 10.41119050399959,
+      "totalMedianSeconds": 15.129910525999962,
+      "promptTokensActual": 10039,
+      "decodeMedianTokensPerSecond": 44.90800146819226,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "attention-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 15.869660461000167,
+      "totalMedianSeconds": 20.67617013899982,
+      "promptTokensActual": 10050,
+      "decodeMedianTokensPerSecond": 44.11722984458842,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "attention-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 11.763560347000137,
+      "totalMedianSeconds": 14.097372537000105,
+      "promptTokensActual": 10041,
+      "decodeMedianTokensPerSecond": 42.661564373040235,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "rmsnorm-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 26.161380481999366,
+      "totalMedianSeconds": 35.34940259800013,
+      "promptTokensActual": 12950,
+      "decodeMedianTokensPerSecond": 40.505064732448595,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "rmsnorm-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 22.037331802000292,
+      "totalMedianSeconds": 27.064443970000372,
+      "promptTokensActual": 12957,
+      "decodeMedianTokensPerSecond": 40.78576693264813,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "rmsnorm-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 21.3198576539997,
+      "totalMedianSeconds": 23.460988010999746,
+      "promptTokensActual": 12950,
+      "decodeMedianTokensPerSecond": 40.867903698143515,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "rope-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 12.433506404000335,
+      "totalMedianSeconds": 19.39336766599957,
+      "promptTokensActual": 9702,
+      "decodeMedianTokensPerSecond": 45.32533396684605,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "rope-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 15.019042948999441,
+      "totalMedianSeconds": 22.437960105999373,
+      "promptTokensActual": 9706,
+      "decodeMedianTokensPerSecond": 45.642829792491504,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "rope-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 11.16568924999982,
+      "totalMedianSeconds": 13.258844446999952,
+      "promptTokensActual": 9707,
+      "decodeMedianTokensPerSecond": 45.94474016629218,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "lora-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 30.409737881000154,
+      "totalMedianSeconds": 39.40682706100028,
+      "promptTokensActual": 18518,
+      "decodeMedianTokensPerSecond": 35.69211885568286,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "lora-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 22.91596645800024,
+      "totalMedianSeconds": 28.253329467999748,
+      "promptTokensActual": 18531,
+      "decodeMedianTokensPerSecond": 35.932927487832345,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "lora-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 23.782993483999743,
+      "totalMedianSeconds": 26.17227120999992,
+      "promptTokensActual": 18518,
+      "decodeMedianTokensPerSecond": 35.558805037249236,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "llada-definition",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 44.20730800799932,
+      "totalMedianSeconds": 50.81032824699953,
+      "promptTokensActual": 26048,
+      "decodeMedianTokensPerSecond": 30.211143788488265,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "llada-cross-section",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 48.48155459900014,
+      "totalMedianSeconds": 56.75635908699967,
+      "promptTokensActual": 26053,
+      "decodeMedianTokensPerSecond": 30.23188811874399,
+      "identicalAnswersAcrossRepeats": true
+    },
+    {
+      "precision": "Q4_K_M",
+      "caseId": "llada-absent",
+      "successful": 3,
+      "firstVisibleMedianSeconds": 43.73779143800028,
+      "totalMedianSeconds": 51.322998417000285,
+      "promptTokensActual": 26050,
+      "decodeMedianTokensPerSecond": 30.319012577638738,
+      "identicalAnswersAcrossRepeats": true
+    }
+  ],
+  "qualityReviewer": "Codex, revisão assistida contra os PDFs fixados e reference-validation.md; sem avaliador humano independente",
+  "independentHumanReview": false
+}

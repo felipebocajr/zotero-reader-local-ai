@@ -1,0 +1,24 @@
+{
+  "artifact": "dist/reader-local-ai-0.1.0.xpi",
+  "size": 14922,
+  "sha256": "a98723e6e5b242d769333a48d7a82f7b58e09695b9e41aa1138dc3f789bf204d",
+  "installedCopyMatches": true,
+  "addonManager": {
+    "artifact": "dist/reader-local-ai-0.1.0.xpi",
+    "zoteroVersion": "10.0.3",
+    "profile": "isolated",
+    "installed": true,
+    "active": true,
+    "appDisabled": false,
+    "error": 0,
+    "state": 10,
+    "harnessIncluded": false
+  },
+  "checks": {
+    "typeScript": 27,
+    "pythonRuntimeAndSetup": 15,
+    "nativeMockUI": 35,
+    "nativeLargerModel": 8
+  },
+  "harnessIncluded": false
+}

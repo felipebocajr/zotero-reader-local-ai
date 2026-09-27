@@ -1,0 +1,11 @@
+{
+  "backend": "cuda",
+  "precision": "Q4_K_M",
+  "requestedGpuLayers": -1,
+  "contextTokens": 32768,
+  "kvCache": "f16/f16",
+  "realNativeGenerations": 4,
+  "ramLifetimeHighwaterMiB": 1932.9453125,
+  "vramAfterInferenceMiB": 2398.0,
+  "note": "Functional all-layer CUDA profile, separate from the fixed-24-layer precision benchmark."
+}

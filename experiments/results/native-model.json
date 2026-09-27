@@ -1,0 +1,60 @@
+{
+  "zoteroVersion": "10.0.3",
+  "profile": "isolated",
+  "model": "LFM2.5-2.6B Q4_K_M",
+  "cases": [
+    {
+      "paper": "attention",
+      "question": "Explique a atenção por produto escalar escalonado e o motivo do fator de escala.",
+      "followup": false,
+      "conversationTurns": 1,
+      "selectedPage": 1,
+      "extractedPages": 15,
+      "totalPages": 15,
+      "paperChars": 36990,
+      "answer": "A atenção por produto escalar escalonada (Scaled Dot-Product Attention) calcula os pesos de atenção como uma função softmax sobre os produtos escalares entre as consultas (queries) e as chaves (keys). Especificamente, para cada query, calcula-se o produto escalar com todas as chaves, divide-se cada resultado por √dk (onde dk é a dimensão das queries/keys), e aplica-se a função softmax para obter os pesos. O fator de escala de 1/√dk foi introduzido para evitar que os produtos escalares cresçam excessivamente quando dk é grande, o que poderia resultar em valores muito grandes após a multiplicação. Isso ajuda a manter os pesos da atenção em uma faixa mais gerenciável, evitando gradientes instáveis ou explosivos durante o treinamento. Sem essa escala, modelos com dimensões de representação maiores poderiam ter problemas de estabilidade numérica na otimização.",
+      "firstFinalTokenMs": 5835,
+      "totalMs": 7273
+    },
+    {
+      "paper": "attention",
+      "question": "Como o decoder impede acesso aos tokens futuros durante o treinamento?",
+      "followup": true,
+      "conversationTurns": 2,
+      "selectedPage": 1,
+      "extractedPages": 15,
+      "totalPages": 15,
+      "paperChars": 36990,
+      "answer": "O decoder impede o acesso aos tokens futuros durante o treinamento através de uma técnica de máscara na camada de auto-atenção. Especificamente, o decoder possui uma terceira sub-camada que realiza auto-atenção sobre a saída do stack do encoder. Essa auto-atenção é modificada para evitar que as posições atinjam posições subsequentes (futuras). Além disso, os embeddings de saída são deslocados por uma posição, garantindo que as previsões para a posição i dependam apenas dos outputs conhecidos nas posições anteriores a i. Esse mecanismo assegura que o decoder mantenha sua propriedade auto-regressiva durante o treinamento, onde cada token é gerado sequencialmente com base apenas em tokens já produzidos.",
+      "firstFinalTokenMs": 1985,
+      "totalMs": 3127
+    },
+    {
+      "paper": "rmsnorm",
+      "question": "O que é pRMSNorm e qual hipótese permite estimar a RMS usando apenas parte das unidades?",
+      "followup": false,
+      "conversationTurns": 1,
+      "selectedPage": 1,
+      "extractedPages": 14,
+      "totalPages": 14,
+      "paperChars": 46410,
+      "answer": "pRMSNorm é uma variante do RMSNorm que estima a raiz média quadrada (RMS) usando apenas uma fração das entradas somadas. Em vez de utilizar todos os elementos do vetor de entrada para calcular o RMS, pRMSNorm considera apenas os primeiros p% dos elementos. A hipótese por trás dessa abordagem é que as neurônios em uma camada frequentemente têm estrutura independente e identicamente distribuída (i.i.d.), o que permite estimar a RMS de forma mais eficiente sem perder as propriedades de invariância. O parâmetro p controla a proporção de entradas usadas na estimativa, mantendo as mesmas propriedades de invariância do RMSNorm conforme mostrado na Tabela 1.",
+      "firstFinalTokenMs": 6597,
+      "totalMs": 7804
+    },
+    {
+      "paper": "llada",
+      "question": "Quais resultados o artigo apresenta para quantização Q4 dos pesos e Q8 do KV cache?",
+      "followup": false,
+      "conversationTurns": 1,
+      "selectedPage": 1,
+      "extractedPages": 24,
+      "totalPages": 24,
+      "paperChars": 85883,
+      "answer": "A informação sobre quantização Q4 dos pesos e Q8 do KV cache não consta no artigo fornecido. O texto foca na introdução e avaliação de LLaDA, um modelo de difusão com base em Transformers, comparando-o com outros LLMs como LLaMA 2/3 e abordando escalabilidade, treinamento supervisionado e tarefas de benchmark. Não há menções específicas a técnicas de quantização Q4/Q8 ou resultados relacionados a esse tema no conteúdo apresentado. Para obter essas informações, seria necessário consultar o artigo original completo ou fontes adicionais que tratem especificamente dessas otimizações de memória.",
+      "firstFinalTokenMs": 7778,
+      "totalMs": 8831
+    }
+  ],
+  "errors": []
+}

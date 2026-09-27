@@ -1,0 +1,39 @@
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      xmlns:html="http://www.w3.org/1999/xhtml" onload="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.init()">
+  <groupbox>
+    <label><html:h2>Assistente local de leitura</html:h2></label>
+    <description>O plugin envia o texto completo do PDF somente ao servidor local.</description>
+    <html:form id="reader-local-ai-preferences" style="display:grid;gap:12px;max-width:560px" onsubmit="event.preventDefault();Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.save()">
+      <html:label>Modelo <html:select id="reader-local-ai-model" style="width:100%" onchange="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.updateModel()" /></html:label>
+      <html:p id="reader-local-ai-model-description" style="margin:0;font-size:12px" />
+      <html:label>Idioma das respostas <html:select id="reader-local-ai-responseLanguage" style="width:100%" /></html:label>
+      <html:p style="margin:0;font-size:12px">Preferência para novas respostas, inclusive nas continuações. Você pode pedir outro idioma na pergunta. Não é necessário reiniciar o servidor.</html:p>
+      <html:fieldset style="display:grid;gap:10px;border:1px solid var(--color-border,#999);border-radius:6px">
+        <html:legend>Servidor local</html:legend>
+        <html:label>Pasta do projeto <html:input id="reader-local-ai-projectRoot" type="text" style="width:100%" placeholder="Pasta que contém scripts/serve.py e .runtime" /></html:label>
+        <html:button type="button" id="reader-local-ai-choose-folder" onclick="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.chooseFolder()">Escolher pasta…</html:button>
+        <html:p style="margin:0;font-size:12px">Prepare o runtime e os pesos uma vez nessa pasta. O início pelo Zotero usa Q4 e tenta GPU inteira, GPU/CPU e CPU, nessa ordem.</html:p>
+        <html:label><html:input id="reader-local-ai-autoStart" type="checkbox" /> Iniciar automaticamente ao abrir o Zotero</html:label>
+        <html:div style="display:flex;gap:8px;flex-wrap:wrap">
+          <html:button type="button" id="reader-local-ai-start-server" onclick="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.run('startRuntime')">Iniciar servidor</html:button>
+          <html:button type="button" id="reader-local-ai-stop-server" onclick="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.run('stopRuntime')">Parar</html:button>
+          <html:button type="button" id="reader-local-ai-restart-server" onclick="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.run('restartRuntime')">Reiniciar</html:button>
+        </html:div>
+        <html:p id="reader-local-ai-runtime-status" role="status" aria-live="polite" style="margin:0" />
+        <html:details id="reader-local-ai-runtime-details" hidden="hidden"><html:summary>Detalhes do erro</html:summary><html:pre id="reader-local-ai-runtime-log" style="white-space:pre-wrap;overflow-wrap:anywhere;max-height:180px;overflow:auto;font-size:11px" /></html:details>
+      </html:fieldset>
+      <html:details>
+        <html:summary>Contexto e conexão</html:summary>
+        <html:div style="display:grid;gap:10px;padding-top:10px">
+          <html:label>Endereço <html:input id="reader-local-ai-baseUrl" type="text" style="width:100%" /></html:label>
+          <html:label>Contexto em tokens <html:input id="reader-local-ai-contextTokens" type="number" min="8192" max="131072" /></html:label>
+          <html:label>Reserva de geração em tokens <html:input id="reader-local-ai-generationTokens" type="number" min="256" /></html:label>
+          <html:p style="margin:0;font-size:12px">A reserva inclui o raciocínio e a resposta. Iniciar ou reiniciar pelo Zotero aplica o modelo, a porta e o contexto escolhidos. Um servidor externo precisa ser configurado separadamente.</html:p>
+          <html:label>Tempo limite em segundos <html:input id="reader-local-ai-timeoutSeconds" type="number" min="1" max="3600" /></html:label>
+        </html:div>
+      </html:details>
+      <html:button type="submit">Salvar configurações</html:button>
+      <html:p id="reader-local-ai-settings-status" role="status" />
+    </html:form>
+  </groupbox>
+</vbox>

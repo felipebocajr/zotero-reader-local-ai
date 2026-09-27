@@ -1,0 +1,15 @@
+{
+  "feature": "optional-save-selected-answer-as-native-pdf-annotation",
+  "artifact": "dist/reader-local-ai-0.1.0.xpi",
+  "sha256": "4dca35a2a994ca7f6a24154d490a6e3a628faa6f3068032cad8b671f59d3d70e",
+  "bytes": 14136,
+  "typescriptTests": 24,
+  "runtimeTests": 12,
+  "nativeAnnotationChecks": 21,
+  "nativeUiChecks": 31,
+  "typecheck": "passed",
+  "build": "passed",
+  "installedXpiMatchesBuild": true,
+  "harnessIncluded": false,
+  "restartedZoteroPersistence": "passed"
+}
