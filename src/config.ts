@@ -9,13 +9,13 @@ export const MODEL_OPTIONS = [
 ] as const;
 
 export const RESPONSE_LANGUAGE_OPTIONS = [
+  { id: "en", label: "English" },
   { id: "pt-BR", label: "Português (Brasil)" },
-  { id: "en", label: "Inglês" },
 ] as const;
 
 export const DEFAULTS: Settings = {
   baseUrl: "http://127.0.0.1:8080", model: "lfm2.5-2.6b",
-  responseLanguage: "pt-BR",
+  responseLanguage: "en",
   contextTokens: 64000, generationTokens: 4096, timeoutMs: 600000,
 };
 export const PREF_PREFIX = "extensions.reader-local-ai.";

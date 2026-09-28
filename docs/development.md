@@ -53,7 +53,7 @@ Depois da suíte simulada, com Q4 dos dois modelos preparado:
 python3 scripts/rdp.py --file scripts/zotero-language-tests.js
 ```
 
-O teste abre o seletor nativo, verifica o padrão `pt-BR` numa atualização sem preferência anterior e a persistência ao reabrir a janela. Com o artigo completo em inglês, gera uma explicação em português, troca para inglês com uma pergunta em português e volta para português com uma pergunta em inglês na mesma conversa. Faz esse fluxo com ambos os modelos; o idioma não exige reiniciar o servidor. Revise os textos em `experiments/results/native-languages.json`: verificações de interface/protocolo não substituem a inspeção do idioma real.
+O teste abre o seletor nativo, verifica o padrão `en` num perfil sem preferência salva e a persistência ao reabrir a janela. Com o artigo completo em inglês, gera uma explicação em inglês, troca para português (Brasil) com uma pergunta em português e volta para inglês com uma pergunta em inglês na mesma conversa. Faz esse fluxo com ambos os modelos; o idioma não exige reiniciar o servidor. Revise os textos em `experiments/results/native-languages-en-default.json`: verificações de interface/protocolo não substituem a inspeção do idioma real.
 
 O teste usa a porta 18095 e encerra somente o runtime que iniciou. Se já houver um servidor 8B compatível na porta 8080 (um slot e contexto 32.768), aproveita-o como servidor externo e o preserva. Nenhuma anotação é criada, e as preferências do perfil isolado são restauradas. Capturas ficam em `.runtime/native-language-*.png`.
 

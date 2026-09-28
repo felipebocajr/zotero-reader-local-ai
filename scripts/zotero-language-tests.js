@@ -6,7 +6,7 @@
   const original = api.getSettings(), originalRuntime = api.getRuntimePreferences();
   const languagePref = "extensions.reader-local-ai.responseLanguage";
   const hadLanguagePref = Services.prefs.prefHasUserValue(languagePref);
-  const output = root + "/experiments/results/native-languages.json";
+  const output = root + "/experiments/results/native-languages-en-default.json";
   const results = { zoteroVersion: Zotero.version, profile: "isolated", status: "running", checks: [], answers: [], runtimes: [], errors: [] };
   const save = () => IOUtils.writeUTF8(output, JSON.stringify(results, null, 2));
   const sleep = ms => new Promise(resolve => win.setTimeout(resolve, ms));
@@ -61,9 +61,9 @@
     if (api.getRuntimeState().owned) throw new Error("Stop the existing isolated runtime before this test");
     // A profile upgrading from the previous XPI has no user preference yet.
     Services.prefs.clearUserPref(languagePref);
-    check("existing profile without language preference defaults to pt-BR", api.getSettings().responseLanguage === "pt-BR");
+    check("existing profile without language preference defaults to English", api.getSettings().responseLanguage === "en");
     await preferences();
-    check("native language labels are readable", [...pref.document.getElementById("reader-local-ai-responseLanguage").options].map(option => option.textContent).join(",") === "Português (Brasil),Inglês");
+    check("native language labels are readable", [...pref.document.getElementById("reader-local-ai-responseLanguage").options].map(option => option.textContent).join(",") === "English,Português (Brasil)");
     await snapshot(pref, "native-language-preferences"); pref.close(); pref = null;
     reader = Zotero.Reader.getByTabID(win.Zotero_Tabs.selectedID) || Zotero.Reader._readers.at(-1);
     const attachment = Zotero.Items.get(reader.itemID), before = attachment.getAnnotations().length;
@@ -80,14 +80,14 @@
           external = models.data.some(item => item.id === model) && props.total_slots === 1 && props.default_generation_settings?.n_ctx === 32768;
         } catch { /* Use a new isolated runtime if no matching external server exists. */ }
       }
-      api.saveConfiguration({ ...original, baseUrl: "http://127.0.0.1:" + (external ? 8080 : 18095), model, responseLanguage: "pt-BR", contextTokens: 32768 }, { projectRoot: root, autoStart: false });
+      api.saveConfiguration({ ...original, baseUrl: "http://127.0.0.1:" + (external ? 8080 : 18095), model, responseLanguage: "en", contextTokens: 32768 }, { projectRoot: root, autoStart: false });
       await api.startRuntime();
       await wait(() => ["ready", "error", "external"].includes(api.getRuntimeState().phase), "managed runtime");
       const state = api.getRuntimeState();
       check(model + ": real selected runtime is available with expected ownership",
         state.phase === (external ? "external" : "ready") && state.owned === !external && state.model === model);
       const pid = state.pid; results.runtimes.push(state);
-      await language("pt-BR", model);
+      await language("en", model);
       popup()?.querySelector(".reader-local-ai-close").click();
       const view = reader._internalReader._primaryView;
       await view.initializedPromise;
@@ -97,12 +97,12 @@
       await wait(() => doc().querySelector(".reader-local-ai-actions"), "selection actions", 15000);
       [...doc().querySelector(".reader-local-ai-actions").querySelectorAll("button")].find(button => button.textContent === "Explicar trecho").click();
       await wait(popup, "explanation popup", 15000);
-      await answer(model, "pt-BR", "Explicar trecho");
-      await language("en", model);
-      check(model + ": language change needs no server restart", api.getRuntimeState().pid === pid && !api.getRuntimeState().restartRequired);
-      await answer(model, "en", "Explique por que este artigo usa atenção em vez de recorrência, em até 100 palavras.", true);
+      await answer(model, "en", "Explain this passage.");
       await language("pt-BR", model);
-      await answer(model, "pt-BR", "Explain how this architecture processes a sequence, in at most 100 words.", true);
+      check(model + ": language change needs no server restart", api.getRuntimeState().pid === pid && !api.getRuntimeState().restartRequired);
+      await answer(model, "pt-BR", "Explique por que este artigo usa atenção em vez de recorrência, em até 100 palavras.", true);
+      await language("en", model);
+      await answer(model, "en", "Explain how this architecture processes a sequence, in at most 100 words.", true);
       check(model + ": changing language preserves three completed turns", popup().querySelectorAll(".reader-local-ai-turn").length === 3);
       await snapshot(win, "native-language-" + model);
       popup().querySelector(".reader-local-ai-close").click();

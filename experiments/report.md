@@ -1,5 +1,7 @@
 # Avaliação do assistente local de leitura
 
+> **Baseline histórico:** esta avaliação usa a versão do prompt anterior à mudança do idioma padrão para inglês. Os resultados são preservados e não avaliam o comportamento do prompt atual; novas comparações devem usar outro `LFM_RESULTS_DIR`.
+
 Medições realizadas em 27/09/2026. **135/135 gerações concluídas**, sem falta de memória ou interrupção. O Q4 consumiu menos memória e foi mais rápido neste perfil; houve erros científicos nas três precisões. A revisão de qualidade é assistida por Codex, sem avaliador humano independente.
 
 ## Configuração fixada

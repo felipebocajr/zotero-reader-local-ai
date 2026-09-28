@@ -1,5 +1,7 @@
 # Preferência de idioma
 
+> **Historical validation:** These results were collected when Brazilian Portuguese was the default. The current implementation defaults to English and keeps Brazilian Portuguese as an option. The results below are preserved as evidence of the earlier behavior; they do not validate the new default.
+
 O XPI oferece **Português (Brasil)**, padrão, e **Inglês** em **Configurações → Assistente local → Idioma das respostas**. A instrução aparece no system e após cada pergunta, além do artigo completo. Um pedido explícito de outro idioma tem prioridade. A preferência é lida por pedido; mudar o idioma não reinicia o servidor nem reescreve respostas anteriores.
 
 ## Validação

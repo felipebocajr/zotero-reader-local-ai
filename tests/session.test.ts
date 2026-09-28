@@ -18,13 +18,13 @@ test("session reads the language for each request, including an existing convers
     requests.push(messages); return { answer: "Original answer " + requests.length, promptTokens: 1 };
   }, () => {}, undefined, () => settings);
   await session.ask("Explain this English passage.");
-  settings = { ...settings, responseLanguage: "en" };
-  await session.ask("Uma continuação em português.", true);
   settings = { ...settings, responseLanguage: "pt-BR" };
+  await session.ask("Uma continuação em português.", true);
+  settings = { ...settings, responseLanguage: "en" };
   await session.ask("Outra continuação.", true);
-  assert.match(requests[0][0].content, /^Answer in Brazilian Portuguese/);
-  assert.match(requests[1].at(-1)!.content, /Answer in English \(en\)/);
-  assert.match(requests[2].at(-1)!.content, /Answer in Brazilian Portuguese/);
+  assert.match(requests[0][0].content, /^Answer in English \(en\)/);
+  assert.match(requests[1].at(-1)!.content, /Answer in Brazilian Portuguese \(pt-BR\)/);
+  assert.match(requests[2].at(-1)!.content, /Answer in English \(en\)/);
   assert.deepEqual(session.state.history.map(turn => turn.question), ["Explain this English passage.", "Uma continuação em português.", "Outra continuação."]);
   assert.deepEqual(session.state.history.map(turn => turn.answer), ["Original answer 1", "Original answer 2", "Original answer 3"]);
 });

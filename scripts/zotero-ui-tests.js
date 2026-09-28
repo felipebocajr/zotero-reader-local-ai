@@ -60,19 +60,21 @@
   const originalSettings = Zotero.ReaderLocalAI.getSettings();
   try {
     // The mock serves 2.6B only; persisted optional-model preferences are unrelated.
-    Zotero.ReaderLocalAI.saveSettings({...originalSettings,baseUrl:"http://127.0.0.1:18080",model:"lfm2.5-2.6b",responseLanguage:"pt-BR",contextTokens:32768,generationTokens:4096});
+    Zotero.ReaderLocalAI.saveSettings({...originalSettings,baseUrl:"http://127.0.0.1:18080",model:"lfm2.5-2.6b",responseLanguage:"en",contextTokens:32768,generationTokens:4096});
     const settingsBefore = Zotero.ReaderLocalAI.getSettings();
     const pref = Zotero.Utilities.Internal.openPreferences("reader-local-ai@local.invalid-preferences");
     await wait(() => pref.document.getElementById("reader-local-ai-baseUrl")?.value, "preferences loaded");
     check("native preference pane initializes", pref.document.getElementById("reader-local-ai-baseUrl").value === settingsBefore.baseUrl);
     const languageSelect = pref.document.getElementById("reader-local-ai-responseLanguage");
-    check("native language selector offers Brazilian Portuguese and English", languageSelect.localName === "select" &&
-      [...languageSelect.options].map(option=>option.value).join(",") === "pt-BR,en");
-    check("native language selector initializes in Brazilian Portuguese", languageSelect.value === "pt-BR");
+    check("native language selector offers English and Brazilian Portuguese", languageSelect.localName === "select" &&
+      [...languageSelect.options].map(option=>option.value).join(",") === "en,pt-BR");
+    check("native language selector initializes in English", languageSelect.value === "en");
+    languageSelect.value = "pt-BR";
+    pref.document.getElementById("reader-local-ai-preferences").requestSubmit();
+    check("native preferences save the Brazilian Portuguese response preference", Zotero.ReaderLocalAI.getSettings().responseLanguage === "pt-BR");
     languageSelect.value = "en";
     pref.document.getElementById("reader-local-ai-preferences").requestSubmit();
     check("native preferences save the English response preference", Zotero.ReaderLocalAI.getSettings().responseLanguage === "en");
-    languageSelect.value = "pt-BR";
     const modelSelect = pref.document.getElementById("reader-local-ai-model");
     check("native model selector offers both models", modelSelect.localName === "select" &&
       [...modelSelect.options].map(option=>option.value).join(",") === "lfm2.5-2.6b,lfm2.5-8b-a1b");
@@ -143,9 +145,9 @@
     await open(reader, true); await complete(reader);
     check("generic explanation action works", popup(reader).querySelector(".reader-local-ai-question").textContent.includes("Explique"));
     requests = await (await win.fetch("http://127.0.0.1:18080/requests")).json();
-    check("generic explanation sends Portuguese after the entire English article",
-      requests.at(-1).messages[0].content.startsWith("Answer in Brazilian Portuguese") &&
-      requests.at(-1).messages.at(-1).content.lastIndexOf("Answer in Brazilian Portuguese") > requests.at(-1).messages.at(-1).content.indexOf("</artigo>"));
+    check("generic explanation sends English after the entire article",
+      requests.at(-1).messages[0].content.startsWith("Answer in English (en)") &&
+      requests.at(-1).messages.at(-1).content.lastIndexOf("Answer in English (en)") > requests.at(-1).messages.at(-1).content.indexOf("</artigo>"));
     await open(reader); submit(reader, "UI_SLOW: aguarde");
     await wait(() => !button(reader, "Cancelar").hidden, "cancel button");
     await sleep(300); button(reader, "Cancelar").click(); await expectError(reader, "cancelado");

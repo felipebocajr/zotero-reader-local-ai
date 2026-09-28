@@ -15,14 +15,14 @@ test("full article appears once, including final page, across follow-ups", () =>
   assert.deepEqual(messages.slice(2).map(m => [m.role, m.content.split("\n\nRESPONSE LANGUAGE")[0]]), [["assistant", "Explicação."], ["user", "Por quê?"], ["assistant", "Motivo."], ["user", "E o resultado?"]]);
   assert.equal(buildMessages(paper, "trecho", "Independente").length, 2);
 });
-test("Portuguese is the default even with a long English article and English question", () => {
-  const article = { ...paper, text: "The selected excerpt describes the model architecture.\n".repeat(3000) };
-  const messages = buildMessages(article, "model architecture", "Explain this passage.");
-  assert.equal(DEFAULTS.responseLanguage, "pt-BR");
-  assert.match(messages[0].content, /Answer in Brazilian Portuguese \(pt-BR\)/);
+test("English is the default regardless of article and question language", () => {
+  const article = { ...paper, text: "O trecho selecionado descreve a arquitetura do modelo.\n".repeat(3000) };
+  const messages = buildMessages(article, "arquitetura do modelo", "Explique este trecho.");
+  assert.equal(DEFAULTS.responseLanguage, "en");
+  assert.match(messages[0].content, /Answer in English \(en\)/);
   assert.ok(messages[1].content.includes(article.text));
   assert.ok(messages[1].content.indexOf("RESPONSE LANGUAGE") > messages[1].content.indexOf("</artigo>"));
-  assert.match(messages.at(-1)!.content, /Explain this passage\.\n\nRESPONSE LANGUAGE[\s\S]*Answer in Brazilian Portuguese/);
+  assert.match(messages.at(-1)!.content, /Explique este trecho\.\n\nRESPONSE LANGUAGE[\s\S]*Answer in English/);
 });
 test("language changes apply to follow-ups without altering stored turns or copying the article", () => {
   const history = [{ question: "Primeira?", answer: "Resposta original." }, { question: "Segunda?", answer: "Another original answer." }];
@@ -40,11 +40,12 @@ test("language changes apply to follow-ups without altering stored turns or copy
 });
 test("only supported language preferences are accepted and explicit requests remain possible", () => {
   assert.equal(validateSettings({ ...DEFAULTS, responseLanguage: "en" }).responseLanguage, "en");
+  assert.equal(validateSettings({ ...DEFAULTS, responseLanguage: "pt-BR" }).responseLanguage, "pt-BR");
   assert.throws(() => validateSettings({ ...DEFAULTS, responseLanguage: "fr" as ResponseLanguage }), /idioma das respostas/);
   assert.throws(() => buildMessages(paper, "trecho", "Pergunta", [], "fr" as ResponseLanguage), /idioma das respostas/);
   const messages = buildMessages(paper, "trecho", "Responda em inglês, por favor.");
   assert.ok(messages[1].content.includes("Responda em inglês, por favor."));
-  assert.match(messages[0].content, /Só mude de idioma se o usuário pedir explicitamente/);
+  assert.match(messages[0].content, /Change language only if the user explicitly requests it/);
 });
 test("blank questions and selections are rejected", () => {
   assert.throws(() => buildMessages(paper, "trecho", " "));
