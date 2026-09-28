@@ -21,7 +21,10 @@ DEFAULT_MODEL = "lfm2.5-2.6b"
 MODELS = {DEFAULT_MODEL: LOCK["model"], **LOCK["additionalModels"]}
 
 
-def command(precision="Q4_K_M", context=32768, port=8080, threads=8, binary=None,
+DEFAULT_CONTEXT = 64000
+
+
+def command(precision="Q4_K_M", context=DEFAULT_CONTEXT, port=8080, threads=8, binary=None,
             gpu_layers=0, backend="cpu", fit=False, model_id=DEFAULT_MODEL):
     candidates = sorted((ROOT / ".runtime" / ("llama-cuda" if backend == "cuda" else "llama")).rglob("llama-server"))
     executable = Path(binary) if binary else (candidates[0] if candidates else None)
@@ -211,7 +214,7 @@ def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", choices=MODELS, default=DEFAULT_MODEL)
     parser.add_argument("--precision", choices=LOCK["model"]["variants"], default="Q4_K_M")
-    parser.add_argument("--context", type=int, default=32768)
+    parser.add_argument("--context", type=int, default=DEFAULT_CONTEXT)
     parser.add_argument("--port", type=int, default=8080)
     parser.add_argument("--threads", type=int, default=8)
     parser.add_argument("--backend", choices=["auto", "cpu", "cuda"], default="auto",

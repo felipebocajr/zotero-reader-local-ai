@@ -12,7 +12,7 @@ function fixture(options: { tokenCount?: number; runtimeContext?: number; slots?
     requests.push({ path, body });
     const json = (data: unknown) => new Response(JSON.stringify(data), { headers: { "Content-Type": "application/json" } });
     if (path === "/health") return json({ status: "ok" });
-    if (path === "/props") return json({ default_generation_settings: { n_ctx: options.runtimeContext ?? 32768 }, total_slots: options.slots ?? 1 });
+    if (path === "/props") return json({ default_generation_settings: { n_ctx: options.runtimeContext ?? DEFAULTS.contextTokens }, total_slots: options.slots ?? 1 });
     if (path === "/v1/models") return json({ data: [{ id: options.loadedModel ?? DEFAULTS.model }] });
     if (path === "/apply-template") return json({ prompt: "TEMPLATE COMPLETO" });
     if (path === "/tokenize") return json({ tokens: Array((options.tokenCount ?? 100) + (body.add_special ? 1 : 0)).fill(1) });
@@ -28,7 +28,7 @@ function fixture(options: { tokenCount?: number; runtimeContext?: number; slots?
 }
 const messages = [{ role: "user" as const, content: "Artigo inteiro, inclusive referências." }];
 test("real token budget prevents generation before any context can be dropped", async () => {
-  const { client, requests } = fixture({ tokenCount: 30000 });
+  const { client, requests } = fixture({ tokenCount: DEFAULTS.contextTokens - DEFAULTS.generationTokens });
   await assert.rejects(client.generate(messages, new AbortController().signal, () => {}), /artigo não será cortado/);
   assert.ok(!requests.some(r => r.path === "/v1/chat/completions"));
   assert.deepEqual(requests.find(r => r.path === "/apply-template")!.body.messages, messages);
@@ -37,8 +37,9 @@ test("real token budget prevents generation before any context can be dropped", 
 });
 test("initial model token is included at the exact context boundary", async () => {
   const signal = new AbortController().signal;
-  assert.equal(await fixture({ tokenCount: 28671 }).client.prepare(messages, signal), 28672);
-  await assert.rejects(fixture({ tokenCount: 28672 }).client.prepare(messages, signal), /excedem/);
+  const inputBudget = DEFAULTS.contextTokens - DEFAULTS.generationTokens;
+  assert.equal(await fixture({ tokenCount: inputBudget - 1 }).client.prepare(messages, signal), inputBudget);
+  await assert.rejects(fixture({ tokenCount: inputBudget }).client.prepare(messages, signal), /excedem/);
 });
 test("uses actual server context and refuses multiple slots", async () => {
   await assert.rejects(fixture({ runtimeContext: 8192, tokenCount: 5000 }).client.prepare(messages, new AbortController().signal), /excedem/);

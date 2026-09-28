@@ -18,7 +18,7 @@ O comando de uso é:
 python3 scripts/serve.py
 ```
 
-O modo `auto` mantém Q4_K_M, contexto 32.768, oito threads, um slot, cache K/V f16 e nenhum descarte automático de contexto. Tenta, nesta ordem:
+O modo `auto` mantém Q4_K_M, contexto padrão de 64.000, oito threads, um slot, cache K/V f16 e nenhum descarte automático de contexto. Tenta, nesta ordem:
 
 1. CUDA com todas as camadas, sem ajuste de memória.
 2. Após falta de VRAM, CUDA com distribuição ajustada entre GPU e CPU. O ajuste reserva aproximadamente 512 MiB de margem na GPU.
@@ -39,7 +39,7 @@ python3 scripts/serve.py --model lfm2.5-8b-a1b
 
 Selecione **LFM2.5-8B-A1B — maior capacidade** nas configurações do Zotero e clique em **Reiniciar** para trocar um servidor gerenciado. No terminal, encerre o servidor anterior antes de iniciar outro na mesma porta. O plugin recusa um alias diferente antes de enviar o artigo. Ele não baixa pesos nem troca o servidor apenas por salvar a seleção.
 
-Ambos usam contexto inicial de 32.768 tokens e a mesma política GPU → GPU/CPU → CPU. O modelo maior mantém todos os seus especialistas em memória, embora ative apenas parte deles por token. Seus arquivos oficiais Q4_K_M, Q8_0 e F16 ocupam aproximadamente 5,16, 9,01 e 16,95 GB, respectivamente. Os hashes e a revisão estão fixados em `runtime.lock.json`; `--precision all` baixa apenas as precisões do modelo selecionado. O limite aceito por `--context` é 128.000 para o 8B-A1B e 131.072 para o 2.6B. O fallback conserva o modelo escolhido.
+Ambos usam contexto padrão de **64.000 tokens** e a mesma política GPU → GPU/CPU → CPU. Esse padrão é exatamente metade dos 128.000 tokens do 8B-A1B. O modelo maior mantém todos os seus especialistas em memória, embora ative apenas parte deles por token. Seus arquivos oficiais Q4_K_M, Q8_0 e F16 ocupam aproximadamente 5,16, 9,01 e 16,95 GB, respectivamente. Os hashes e a revisão estão fixados em `runtime.lock.json`; `--precision all` baixa apenas as precisões do modelo selecionado. O limite aceito por `--context` é 128.000 para o 8B-A1B e 131.072 para o 2.6B. O fallback conserva o modelo escolhido.
 
 ## Preparação e modos fixos
 

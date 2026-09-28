@@ -12,7 +12,7 @@ LFM_RESULTS_DIR="$PWD/experiments/results-repeat" LFM_BINARY="$PWD/.runtime/llam
 
 Para CPU, prepare `--backend cpu --precision all` e execute `LFM_RESULTS_DIR="$PWD/experiments/results-cpu" npm run experiment` sem as variáveis CUDA. Não compare números CPU com CUDA como se apenas a precisão tivesse mudado.
 
-O script lança e encerra seu próprio servidor, uma precisão por vez, na porta 18084. Mantém 24 camadas GPU no perfil CUDA acima, oito threads, contexto 32.768, K/V f16, reserva 4.096, temperatura 0,1 e seed 42. O prompt é o mesmo do plugin. `cache_prompt:false` força processamento do contexto em cada repetição; reutilização de prefixo fica desativada.
+O script lança e encerra seu próprio servidor, uma precisão por vez, na porta 18084. Mantém 24 camadas GPU no perfil CUDA acima, oito threads, contexto 32.768, K/V f16, reserva 4.096, temperatura 0,1 e seed 42. O contexto de comparação é explícito e independente do padrão de uso de 64.000 tokens do plugin/launcher. O prompt é o mesmo do plugin. `cache_prompt:false` força processamento do contexto em cada repetição; reutilização de prefixo fica desativada.
 
 O benchmark seleciona backend e camadas explicitamente, com ajuste automático e fallback desabilitados. O modo padrão de uso (`scripts/serve.py`) prefere GPU inteira e pode compartilhar com CPU; seus tempos ficam em artefatos separados. Novos identificadores experimentais incluem também o código do launcher. A comparação já entregue permanece intacta.
 

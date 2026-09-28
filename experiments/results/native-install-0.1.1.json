@@ -1,0 +1,12 @@
+{
+  "artifact": "dist/reader-local-ai-0.1.1.xpi",
+  "version": "0.1.1",
+  "zoteroVersion": "10.0.3",
+  "profile": "isolated",
+  "installed": true,
+  "active": true,
+  "appDisabled": false,
+  "error": 0,
+  "state": 10,
+  "harnessIncluded": false
+}

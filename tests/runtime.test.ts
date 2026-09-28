@@ -55,13 +55,13 @@ test("an external server is never adopted, stopped or restarted, even with a dif
 
 test("ready state requires both the owned PID and matching HTTP model/context", async () => {
   const f = fixture(); await f.controller.start();
-  f.setProbe({ ready: true, model: DEFAULTS.model, contextTokens: 32768, slots: 1 });
+  f.setProbe({ ready: true, model: DEFAULTS.model, contextTokens: DEFAULTS.contextTokens, slots: 1 });
   f.setStatus({ supervisorPid: 99, phase: "ready", backend: "cuda", gpuLayers: "all" });
   await f.controller.refresh(); assert.equal(f.controller.getState().phase, "starting");
   f.setStatus({ supervisorPid: 42, phase: "ready", backend: "cuda", gpuLayers: "all" });
-  f.setProbe({ ready: true, model: "wrong", contextTokens: 32768, slots: 1 });
+  f.setProbe({ ready: true, model: "wrong", contextTokens: DEFAULTS.contextTokens, slots: 1 });
   await f.controller.refresh(); assert.equal(f.controller.getState().phase, "starting");
-  f.setProbe({ ready: true, model: DEFAULTS.model, contextTokens: 32768, slots: 1 });
+  f.setProbe({ ready: true, model: DEFAULTS.model, contextTokens: DEFAULTS.contextTokens, slots: 1 });
   await f.controller.refresh(); assert.match(f.controller.getState().message, /GPU inteira/);
   assert.equal(f.controller.getState().phase, "ready"); await f.controller.dispose();
 });
@@ -71,7 +71,7 @@ test("fallback transitions preserve ownership and show shared GPU/CPU then CPU",
   f.setStatus({ supervisorPid: 42, phase: "loading", backend: "cuda", gpuLayers: "auto" });
   await f.controller.refresh(); assert.match(f.controller.getState().message, /GPU\/CPU/);
   f.setStatus({ supervisorPid: 42, phase: "ready", backend: "cpu", gpuLayers: 0 });
-  f.setProbe({ ready: true, model: DEFAULTS.model, contextTokens: 32768, slots: 1 });
+  f.setProbe({ ready: true, model: DEFAULTS.model, contextTokens: DEFAULTS.contextTokens, slots: 1 });
   await f.controller.refresh(); assert.equal(f.controller.getState().backend, "cpu");
   assert.equal(f.controller.getState().owned, true); await f.controller.dispose();
 });

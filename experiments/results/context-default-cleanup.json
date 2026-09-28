@@ -1,0 +1,11 @@
+{
+  "testProcessesRemaining": [],
+  "testPortsListening": {
+    "18085": false,
+    "18096": false
+  },
+  "originalServer": {
+    "contextTokens": 32768,
+    "model": "lfm2.5-8b-a1b"
+  }
+}

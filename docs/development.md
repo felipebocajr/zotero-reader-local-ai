@@ -129,7 +129,7 @@ python3 scripts/rdp.py --file scripts/zotero-real-model.js
 
 O script importa três papers na biblioteca isolada e faz quatro perguntas reais pelo popup, incluindo uma continuação, uma que usa outra seção e uma sem resposta no artigo. Salva respostas e tempos em `experiments/results/native-model.json`, com capturas em `.runtime/native-model-*.png`. Não execute outro modelo ao mesmo tempo que o benchmark: a disputa de recursos distorceria os tempos.
 
-Para validar o XPI de distribuição sem harness, execute `python3 scripts/rdp.py --file scripts/install_release.js` no perfil isolado. A evidência fica em `experiments/results/native-install.json`.
+Para validar o XPI de distribuição sem harness, execute `python3 scripts/rdp.py --file scripts/install_release.js` no perfil isolado. O script lê a versão de `addon/manifest.json` e grava a evidência em `experiments/results/native-install-<versão>.json`.
 
 Após alterar o código:
 

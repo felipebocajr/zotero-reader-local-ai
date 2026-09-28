@@ -54,19 +54,20 @@ class RuntimeTests(unittest.TestCase):
         shared = serve.command(backend="cuda", gpu_layers="auto", fit=True)
         cpu = serve.command(backend="cpu", gpu_layers=0)
         for launch in [full, shared, cpu]:
-            for flag, value in [("--ctx-size", "32768"), ("--parallel", "1"), ("--cache-type-k", "f16"), ("--cache-type-v", "f16")]:
+            for flag, value in [("--ctx-size", "64000"), ("--parallel", "1"), ("--cache-type-k", "f16"), ("--cache-type-v", "f16")]:
                 self.assertEqual(launch[launch.index(flag) + 1], value)
             self.assertEqual(launch[launch.index("--model") + 1], full[full.index("--model") + 1])
             self.assertIn("--no-context-shift", launch)
-        self.assertEqual(shared[shared.index("--fit-ctx") + 1], "32768")
+        self.assertEqual(shared[shared.index("--fit-ctx") + 1], "64000")
         self.assertEqual(full[full.index("--fit") + 1], "off")
         self.assertEqual(cpu[cpu.index("--device") + 1], "none")
 
     def test_explicit_placement_stays_fixed_for_experiments(self):
-        args = serve.parse_args(["--backend", "cuda", "--gpu-layers", "24"])
-        launch = serve.command(backend=args.backend, gpu_layers=args.gpu_layers)
+        args = serve.parse_args(["--backend", "cuda", "--gpu-layers", "24", "--context", "32768"])
+        launch = serve.command(backend=args.backend, gpu_layers=args.gpu_layers, context=args.context)
         self.assertEqual(launch[launch.index("--n-gpu-layers") + 1], "24")
         self.assertEqual(launch[launch.index("--fit") + 1], "off")
+        self.assertEqual(launch[launch.index("--ctx-size") + 1], "32768")
         self.assertIsNone(serve.parse_args(["--backend", "cuda"]).gpu_layers)
 
     def test_selected_moe_model_keeps_its_weights_alias_and_context_across_fallback(self):
@@ -77,7 +78,7 @@ class RuntimeTests(unittest.TestCase):
                     for call in supervisor.run_attempt.call_args_list for backend, layers in [call.args]]
         for launch in launches:
             self.assertEqual(Path(launch[launch.index("--model") + 1]).name, "LFM2.5-8B-A1B-Q4_K_M.gguf")
-            for flag, value in [("--alias", model_id), ("--ctx-size", "32768"), ("--cache-type-k", "f16"), ("--cache-type-v", "f16")]:
+            for flag, value in [("--alias", model_id), ("--ctx-size", "64000"), ("--cache-type-k", "f16"), ("--cache-type-v", "f16")]:
                 self.assertEqual(launch[launch.index(flag) + 1], value)
 
     def test_model_specific_context_limit_and_missing_weight_do_not_select_another_model(self):
@@ -122,7 +123,7 @@ class RuntimeTests(unittest.TestCase):
             original(**fields)
             if fields.get("phase") == "ready": stopped.set()
         supervisor.publish = publish
-        props = {"default_generation_settings": {"n_ctx": 32768}, "total_slots": 1}
+        props = {"default_generation_settings": {"n_ctx": serve.DEFAULT_CONTEXT}, "total_slots": 1}
         with patch.object(serve.subprocess, "Popen", return_value=child), patch.object(serve, "local_json", side_effect=[{}, props]), patch.object(serve, "stop_child") as stop:
             self.assertEqual(supervisor.run_attempt("cuda", "all"), "stopped")
             stop.assert_called_once_with(child)
@@ -147,7 +148,7 @@ class RuntimeTests(unittest.TestCase):
                 release.set()
                 self.assertTrue(consumed.wait(timeout=2))
         supervisor.publish = publish
-        props = {"default_generation_settings": {"n_ctx": 32768}, "total_slots": 1}
+        props = {"default_generation_settings": {"n_ctx": serve.DEFAULT_CONTEXT}, "total_slots": 1}
         with patch.object(serve.subprocess, "Popen", return_value=child), patch.object(serve, "local_json", side_effect=[{}, props]), patch.object(serve, "stop_child") as stop:
             self.assertEqual(supervisor.run_attempt("cuda", "all"), "oom")
             stop.assert_called_with(child)

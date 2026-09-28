@@ -25,7 +25,7 @@ def main():
         log_path = ROOT / f".runtime/startup-{precision}.log"
         with log_path.open("w") as log:
             child = subprocess.Popen(["python3", str(ROOT / "scripts/serve.py"), "--precision", precision,
-                "--backend", args.backend, "--gpu-layers", str(args.gpu_layers if args.backend == "cuda" else 0), "--port", "18086"],
+                "--backend", args.backend, "--context", "32768", "--gpu-layers", str(args.gpu_layers if args.backend == "cuda" else 0), "--port", "18086"],
                 cwd=ROOT, stdout=log, stderr=log)
             highwater = 0
             vram_peak = None

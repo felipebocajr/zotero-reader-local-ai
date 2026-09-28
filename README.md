@@ -18,7 +18,7 @@ Interface com respostas simuladas no perfil de teste:
 
 ## Obter o projeto
 
-O código está em [felipebocajr/zotero-reader-local-ai](https://github.com/felipebocajr/zotero-reader-local-ai). Baixe o `.xpi` instalável na [versão v0.1.0](https://github.com/felipebocajr/zotero-reader-local-ai/releases/tag/v0.1.0) e mantenha uma cópia do projeto para preparar e iniciar o servidor local:
+O código está em [felipebocajr/zotero-reader-local-ai](https://github.com/felipebocajr/zotero-reader-local-ai). Baixe o `.xpi` instalável na [versão v0.1.1](https://github.com/felipebocajr/zotero-reader-local-ai/releases/tag/v0.1.1) e mantenha uma cópia do projeto para preparar e iniciar o servidor local:
 
 ```bash
 git clone https://github.com/felipebocajr/zotero-reader-local-ai.git
@@ -30,7 +30,7 @@ Pesos, binários, PDFs de teste e perfis locais não fazem parte do Git. O check
 
 ## Usar neste computador
 
-Use o XPI baixado da versão publicada ou o arquivo `dist/reader-local-ai-0.1.0.xpi` gerado pelo build. Após preparar o runtime, os binários e modelos ficam em `.runtime/`.
+Use o XPI baixado da versão publicada ou o arquivo `dist/reader-local-ai-0.1.1.xpi` gerado pelo build. Após preparar o runtime, os binários e modelos ficam em `.runtime/`.
 
 1. No Zotero, abra **Ferramentas → Plugins**, use a engrenagem → **Instalar plugin de arquivo** e escolha o XPI.
 2. Abra **Configurações → Assistente local**, clique em **Escolher pasta…** e selecione a pasta deste projeto, que contém `scripts/serve.py` e `.runtime`.
@@ -50,7 +50,9 @@ python3 scripts/serve.py --backend cpu
 
 CPU funciona, mas papers longos podem levar vários minutos. O tempo limite inicial é de dez minutos. Um servidor iniciado no terminal é encerrado com `Ctrl+C`; o supervisor também encerra seu processo filho. Se faltar VRAM durante uma resposta, o pedido será interrompido: espere o novo backend ficar pronto e repita a pergunta. Veja [os modos e o diagnóstico do runtime](docs/runtime.md).
 
-As configurações ficam em **Configurações → Assistente local**: endereço `http://127.0.0.1:8080`, seletor de modelo, contexto 32.768 tokens e reserva de geração 4.096 tokens. O 2.6B continua como padrão. Expanda **Contexto e conexão** para ajustar esses valores. **Reiniciar** aplica o contexto ao servidor gerenciado pelo Zotero; num servidor externo, ajuste também `--context` no launcher. O consumo de memória aumenta mesmo com pesos Q4, porque o cache K/V permanece em f16.
+As configurações ficam em **Configurações → Assistente local**: endereço `http://127.0.0.1:8080`, seletor de modelo, contexto padrão de **64.000 tokens** e reserva de geração de 4.096 tokens. O contexto é exatamente metade do limite de 128.000 do 8B-A1B e deixa 59.904 tokens para artigo, instruções, pergunta e histórico. O 2.6B continua como modelo padrão. Expanda **Contexto e conexão** para ajustar esses valores. **Reiniciar** aplica o contexto ao servidor gerenciado pelo Zotero; num servidor externo, ajuste também `--context` no launcher. O consumo de memória aumenta mesmo com pesos Q4, porque o cache K/V permanece em f16.
+
+A versão 0.1.1 aplica o novo padrão quando não existe uma preferência de contexto salva. Valores personalizados continuam valendo; para adotar o novo padrão numa instalação já configurada, informe `64000` nesse campo e clique em **Reiniciar**. Um servidor já iniciado mantém seu contexto até ser reiniciado.
 
 Em **Idioma das respostas**, escolha **Português (Brasil)** (padrão) ou **Inglês** e clique em **Salvar configurações**. A preferência vale para o próximo pedido, inclusive numa conversa aberta, sem reiniciar o servidor. O idioma do artigo ou da pergunta não muda essa preferência; um pedido explícito de outro idioma na pergunta tem prioridade. Respostas já geradas e anotações salvas mantêm seu texto original. O plugin reforça o idioma no início das instruções e após cada pergunta, depois do contexto completo.
 
@@ -87,6 +89,8 @@ O manifest exige uma URL HTTPS de atualização. Este protótipo aponta para `ht
 - As respostas são auxiliares de leitura. A [avaliação de 135 gerações](experiments/report.md) encontrou erros de conceitos/fórmulas nas três precisões e cumprimento irregular da extensão pedida. Texto completo no contexto não garante precisão científica.
 
 ## Validação
+
+A versão 0.1.1 passou por [oito verificações nativas do contexto padrão](experiments/results/context-default-native.json) e por uma inferência real do 8B-A1B com 64.000 tokens configurados. Com pouca VRAM disponível, o modo automático usou CPU e concluiu a resposta com a contagem de tokens conferida. Veja [a validação e seus limites](experiments/context-default-validation.md). As medições anteriores abaixo usaram o contexto documentado em cada experimento, geralmente 32.768.
 
 O XPI de distribuição foi instalado e ativado no Zotero 10.0.3 em perfil isolado. A interface passou por 39 verificações nativas com respostas simuladas, incluindo seleção de modelo/idioma e rejeição de um servidor com alias diferente. Os 52 testes TypeScript cobrem contexto, cache, streaming, ciclo da conversa, idioma por pedido, renderização de Markdown e LaTeX, gravação de respostas escolhidas e ciclo de vida do servidor. O 2.6B real respondeu a quatro pedidos em três PDFs, incluindo continuação e pergunta sem resposta no artigo.
 

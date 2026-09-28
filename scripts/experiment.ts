@@ -23,7 +23,7 @@ const backend = gpuLayers === 0 ? "cpu" : "cuda";
 const port = Number(process.env.LFM_EXPERIMENT_PORT ?? "18084");
 const precisions = process.env.LFM_PRECISIONS?.split(",") ?? ["Q4_K_M", "Q8_0", "F16"];
 const repetitions = 3;
-const settings = { ...DEFAULTS, baseUrl: `http://127.0.0.1:${port}`, timeoutMs: 600000 };
+const settings = { ...DEFAULTS, contextTokens: 32768, baseUrl: `http://127.0.0.1:${port}`, timeoutMs: 600000 };
 let gpu = "CPU only";
 try { gpu = (await exec("nvidia-smi", ["--query-gpu=name,driver_version,memory.total", "--format=csv,noheader"])) .stdout.trim(); } catch {}
 const fingerprint = createHash("sha256").update(JSON.stringify({ lock, dataset, papers, settings, binary, gpuLayers, repetitions }))

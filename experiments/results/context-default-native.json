@@ -1,0 +1,41 @@
+{
+  "profile": "isolated",
+  "zoteroVersion": "10.0.3",
+  "version": "0.1.1",
+  "checks": [
+    {
+      "name": "distribution XPI 0.1.1 active",
+      "passed": true
+    },
+    {
+      "name": "native default preference is 64000",
+      "passed": true
+    },
+    {
+      "name": "generation default remains 4096",
+      "passed": true
+    },
+    {
+      "name": "profile without saved context reads new default",
+      "passed": true
+    },
+    {
+      "name": "native preferences show 64000",
+      "passed": true
+    },
+    {
+      "name": "custom context remains configurable",
+      "passed": true
+    },
+    {
+      "name": "custom context survives preferences reopening",
+      "passed": true
+    },
+    {
+      "name": "clearing custom preference restores 64000",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "status": "ok"
+}

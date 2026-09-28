@@ -16,7 +16,7 @@ export const RESPONSE_LANGUAGE_OPTIONS = [
 export const DEFAULTS: Settings = {
   baseUrl: "http://127.0.0.1:8080", model: "lfm2.5-2.6b",
   responseLanguage: "pt-BR",
-  contextTokens: 32768, generationTokens: 4096, timeoutMs: 600000,
+  contextTokens: 64000, generationTokens: 4096, timeoutMs: 600000,
 };
 export const PREF_PREFIX = "extensions.reader-local-ai.";
 
