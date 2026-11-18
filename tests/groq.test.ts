@@ -125,6 +125,8 @@ test("Groq maps common provider errors without exposing credentials", async () =
     const { client } = fixture({ status, body: "upstream error" });
     await assert.rejects(client.generate(messages, new AbortController().signal, () => {}), pattern);
   }
+  const rateLimited = fixture({ status: 429, body: "service tier on_demand on input tokens per minute (ITPM): Limit 7000, Requested 22682" });
+  await assert.rejects(rateLimited.client.generate(messages, new AbortController().signal, () => {}), /7000.*22682/);
   const { client } = fixture({ settings: { ...groqSettings, apiKey: "" } });
   await assert.rejects(client.generate(messages, new AbortController().signal, () => {}), /Informe a chave da API do Groq/);
 });

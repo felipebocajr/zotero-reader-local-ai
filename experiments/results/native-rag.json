@@ -1,0 +1,38 @@
+{
+  "zoteroVersion": "10.0.8",
+  "profile": "isolated",
+  "checks": [
+    {
+      "name": "managed embedding server ready",
+      "passed": true,
+      "phase": "ready",
+      "owned": true,
+      "model": "qwen3-embedding-0.6b",
+      "pid": 241675,
+      "message": "Embeddings prontos: qwen3-embedding-0.6b."
+    },
+    {
+      "name": "prompt declares retrieved excerpts",
+      "passed": true
+    },
+    {
+      "name": "prompt omits the full article",
+      "passed": true
+    },
+    {
+      "name": "prompt uses excerpt-specific rules",
+      "passed": true
+    },
+    {
+      "name": "popup shows the retrieval note",
+      "passed": true
+    },
+    {
+      "name": "RAG answer is rendered",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "promptChars": 22524,
+  "retrievalNote": "Trechos relevantes: 24 de 45 · ~7.168 tokens"
+}

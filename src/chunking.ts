@@ -121,9 +121,9 @@ export function findHeadingSpans(text: string): HeadingSpan[] {
     // a title-like word after the number keeps formulas and table rows such as
     // "2 D1 (p, q)" out. A final question mark is allowed in section titles.
     const numbering = value.match(/\b\d+(?:\.\d+)*[A-Z]/g)?.length ?? 0;
-    const equationLike = /[=⌊⌋√∑∫≤≥]|\d[a-z]|\b\d+\s+[a-z]/.test(value);
+    const equationLike = /[=⌊⌋√∑∫≤≥]|\d[a-z]|\b\d+\s+[a-z]{2,}/.test(value);
     const numbered = numbering <= 1 && !equationLike &&
-      /^\d+(?:\.\d+)*\.?\s*(?:[A-Z][a-z]|[A-Z]{2,})[^.!?]{0,90}\??$/.test(value);
+      /^\d+(?:\.\d+)*\.?\s*(?:[a-z]?[A-Z][a-z]|[a-z]?[A-Z]{2,})[^.!?]{0,90}\??$/.test(value);
     if (known) {
       headings.push({ start: offset, end: offset + line.length, text: value });
       if (/^references$/i.test(value)) inReferences = true;

@@ -32,7 +32,7 @@ export class PaperCache {
       const after = await this.source.describe(id);
       if (JSON.stringify([after.path, after.modified, after.size]) !== signature) throw new ReaderError("changed-paper", "O PDF mudou durante a extração. Tente novamente.");
       abortIfNeeded(signal);
-      const paper: Paper = { ...raw, title: info.title };
+      const paper: Paper = { ...raw, title: info.title, signature };
       this.cache.set(id, { signature, paper });
       while (this.cache.size > this.maxEntries) this.cache.delete(this.cache.keys().next().value!);
       return paper;

@@ -89,6 +89,8 @@ test("headings are attached, but formulas and table rows are not headings", () =
     "1FlashAttention-3does not run on B200\n\n" +
     "5.1Baselines\nBody");
   assert.deepEqual(findHeadingSpans(falsePositives).map(heading => heading.text), ["5.1Baselines"]);
+  const lowercaseHeading = normalizePaperText("4.2 Gradient Analysis\nBody\n\n5 pRMSNorm\nThe re-scaling invariance...");
+  assert.deepEqual(findHeadingSpans(lowercaseHeading).map(heading => heading.text), ["4.2 Gradient Analysis", "5 pRMSNorm"]);
 });
 
 test("chunks never cross a detected section heading", () => {

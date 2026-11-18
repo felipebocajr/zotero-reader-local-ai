@@ -37,7 +37,7 @@
     await IOUtils.write(base+"/.runtime/"+name+".png",new Uint8Array(await blob.arrayBuffer()));
   }
   try {
-    Zotero.ReaderLocalAI.saveSettings({...original,baseUrl:"http://127.0.0.1:18080",model:"lfm2.5-8b-a1b"});
+    Zotero.ReaderLocalAI.saveSettings({...original,baseUrl:"http://127.0.0.1:18080",model:"lfm2.5-8b-a1b",retrievalMode:"full"});
     await win.fetch("http://127.0.0.1:18080/control",{method:"POST",body:JSON.stringify({tokens:10000,math:true})});
     const id=Zotero.Prefs.get("extensions.reader-local-ai.devAttachmentID",true);
     reader=await Zotero.Reader.open(id);await reader._initPromise;

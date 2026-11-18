@@ -82,7 +82,7 @@
           external = models.data.some(item => item.id === model) && props.total_slots === 1 && props.default_generation_settings?.n_ctx === 32768;
         } catch { /* Use a new isolated runtime if no matching external server exists. */ }
       }
-      api.saveConfiguration({ ...original, baseUrl: "http://127.0.0.1:" + (external ? 8080 : 18095), model, responseLanguage: "en", contextTokens: 32768 }, { projectRoot: root, autoStart: false });
+      api.saveConfiguration({ ...original, baseUrl: "http://127.0.0.1:" + (external ? 8080 : 18095), model, responseLanguage: "en", retrievalMode: "full", contextTokens: 32768 }, { projectRoot: root, autoStart: false });
       await api.startRuntime();
       await wait(() => ["ready", "error", "external"].includes(api.getRuntimeState().phase), "managed runtime");
       const state = api.getRuntimeState();

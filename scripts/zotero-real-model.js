@@ -21,7 +21,7 @@
     {paper:"llada",question:"Quais resultados o artigo apresenta para quantização Q4 dos pesos e Q8 do KV cache?"},
   ];
   try {
-    Zotero.ReaderLocalAI.saveSettings({...Zotero.ReaderLocalAI.getSettings(),baseUrl:"http://127.0.0.1:18080",timeoutMs:600000});
+    Zotero.ReaderLocalAI.saveSettings({...Zotero.ReaderLocalAI.getSettings(),baseUrl:"http://127.0.0.1:18080",retrievalMode:"full",timeoutMs:600000});
     for (const test of cases) {
       const attachment = await Zotero.Attachments.importFromFile({file:base + "/experiments/data/" + test.paper + ".pdf"});
       const reader = await Zotero.Reader.open(attachment.id); await reader._initPromise;

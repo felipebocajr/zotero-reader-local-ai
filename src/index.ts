@@ -1,8 +1,11 @@
 import { LlamaClient } from "./client.ts";
 import type { ChatClient } from "./client.ts";
-import { DEFAULTS, GROQ_BASE_URL, GROQ_DEFAULT_MODEL, GROQ_MAX_CONTEXT, MODEL_OPTIONS, RESPONSE_LANGUAGE_OPTIONS, PREF_PREFIX, validateSettings } from "./config.ts";
+import { DEFAULTS, EMBEDDING_BASE_URL, EMBEDDING_DIMENSIONS, EMBEDDING_MODEL, GROQ_BASE_URL, GROQ_DEFAULT_MODEL, GROQ_MAX_CONTEXT, MODEL_OPTIONS, RESPONSE_LANGUAGE_OPTIONS, PREF_PREFIX, validateSettings } from "./config.ts";
+import { EmbeddingClient } from "./embeddings.ts";
+import { EmbeddingController } from "./embedding-runtime.ts";
 import { GroqClient, parseGroqModels } from "./groq.ts";
 import type { GroqModel } from "./groq.ts";
+import { RetrievalService } from "./retrieval.ts";
 import { PaperCache } from "./paper.ts";
 import { EXPLAIN_BRIEF_QUESTION, EXPLAIN_QUESTION } from "./prompt.ts";
 import { ReadingSession, RequestGate } from "./session.ts";
@@ -50,6 +53,7 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
       model: provider === "groq" ? groqModel : localModel,
       apiKey: String(zotero.Prefs.get(PREF_PREFIX + "apiKey", true) ?? ""),
       responseLanguage: String(value("responseLanguage")) as ResponseLanguage,
+      retrievalMode: String(value("retrievalMode")) === "full" ? "full" : "embeddings",
       contextTokens,
       generationTokens: Number(value("generationTokens")),
       timeoutMs: Number(value("timeoutMs")),
@@ -67,6 +71,15 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
   }
   const runtime = new RuntimeController(host.runtime, settings, runtimePreferences, () => {
     for (const entry of popups.values()) entry.session.cancel();
+  });
+  const embeddingRuntime = new EmbeddingController(host.runtime, runtimePreferences, EMBEDDING_BASE_URL, EMBEDDING_MODEL, () => {
+    for (const entry of popups.values()) entry.session.cancel();
+  });
+  const retrieval = new RetrievalService({
+    client: new EmbeddingClient(host.fetch, { baseUrl: EMBEDDING_BASE_URL, model: EMBEDDING_MODEL, batchSize: 16 }),
+    ensureReady: signal => embeddingRuntime.ensureReady(signal),
+    model: EMBEDDING_MODEL,
+    dimensions: EMBEDDING_DIMENSIONS,
   });
   function prepareDocument(doc: Document): void {
     // Reader events and existing-reader lookup can expose different Gecko wrappers.
@@ -101,7 +114,7 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
         popups.get(reader)?.view.close();
         let view: PopupView;
         const session = new ReadingSession(reader.itemID, selection!, papers, gate, chatClient, settings,
-          state => view.render(state), createAnswerAnnotationWriter(zotero, reader.itemID, params.annotation!));
+          state => view.render(state), createAnswerAnnotationWriter(zotero, reader.itemID, params.annotation!), retrieval);
         view = createPopup(doc, anchor, selection!, {
           ask: (question, followup) => { void session.ask(question, followup); },
           explainDetail: () => { void session.ask(EXPLAIN_QUESTION, true, "detail"); },
@@ -224,6 +237,16 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
     getRuntimeState: () => runtime.getState(),
     refreshRuntime: () => runtime.refresh(),
     requestRuntimeRefresh: () => { void runtime.refresh(); },
+    getEmbeddingState: () => embeddingRuntime.getState(),
+    startEmbeddings: () => embeddingRuntime.start(),
+    stopEmbeddings: () => embeddingRuntime.stop(),
+    requestEmbeddingRefresh: () => { void embeddingRuntime.refresh(); },
+    runEmbeddingAction(action: string): void {
+      if (action === "start") void embeddingRuntime.start().catch(() => {});
+      else if (action === "stop") void embeddingRuntime.stop();
+      else if (action === "refresh") void embeddingRuntime.refresh();
+      else throw new Error("Ação de embeddings inválida.");
+    },
     runRuntimeAction(action: string): void {
       const actions = { startRuntime: "start", stopRuntime: "stop", restartRuntime: "restart" } as const;
       if (!(action in actions)) throw new Error("Ação de servidor inválida.");
@@ -245,7 +268,9 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
     for (const entry of [...preferenceWindows.values()]) entry.clean();
     delete zotero.ReaderLocalAI;
     if (paneId) zotero.PreferencePanes.unregister(paneId);
-    return runtime.dispose();
+    const stoppingRuntime = runtime.dispose();
+    const stoppingEmbeddings = embeddingRuntime.dispose();
+    return Promise.all([stoppingRuntime, stoppingEmbeddings]).then(() => undefined);
   };
   zotero.Reader.registerEventListener("renderTextSelectionPopup", handleSelection, data.id);
   zotero.Reader.registerEventListener("renderSidebarAnnotationHeader", handleAnnotationHeader, data.id);

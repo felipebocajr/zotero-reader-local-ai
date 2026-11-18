@@ -22,6 +22,7 @@ var ReaderLocalAIPreferences = {
     for (const key of ["responseLanguage", "contextTokens", "generationTokens"]) {
       document.getElementById("reader-local-ai-" + key).value = settings[key];
     }
+    document.getElementById("reader-local-ai-retrievalMode").value = settings.retrievalMode === "full" ? "full" : "embeddings";
     document.getElementById("reader-local-ai-baseUrl").value = Zotero.ReaderLocalAI.getLocalBaseUrl();
     document.getElementById("reader-local-ai-timeoutSeconds").value = settings.timeoutMs / 1000;
     document.getElementById("reader-local-ai-apiKey").value = String(settings.apiKey ?? "");
@@ -38,6 +39,7 @@ var ReaderLocalAIPreferences = {
     document.getElementById("reader-local-ai-autoStart").checked = runtime.autoStart;
     this.updateProvider();
     this.renderRuntime();
+    this.renderEmbedding();
     this.poll();
   },
   provider() {
@@ -53,9 +55,7 @@ var ReaderLocalAIPreferences = {
     document.getElementById("reader-local-ai-model-label").hidden = groq;
     document.getElementById("reader-local-ai-model-description").hidden = groq;
     document.getElementById("reader-local-ai-baseUrl-label").hidden = groq;
-    document.getElementById("reader-local-ai-provider-description").textContent = groq
-      ? "O artigo completo será enviado ao Groq pela internet. A chave fica salva nas preferências do Zotero."
-      : "O artigo completo é enviado somente ao servidor local.";
+    this.updateRetrieval();
     if (groq) {
       const context = document.getElementById("reader-local-ai-contextTokens");
       context.max = 131072;
@@ -63,6 +63,20 @@ var ReaderLocalAIPreferences = {
     } else this.updateModel();
     this.renderGroqModels();
     this.renderRuntime();
+    this.renderEmbedding();
+  },
+  updateRetrieval() {
+    const embeddings = document.getElementById("reader-local-ai-retrievalMode").value !== "full";
+    const groq = this.provider() === "groq";
+    document.getElementById("reader-local-ai-embedding-settings").hidden = !embeddings;
+    document.getElementById("reader-local-ai-retrieval-description").textContent = embeddings
+      ? "Somente os trechos recuperados do artigo são enviados ao provedor. Os embeddings são gerados localmente; no Groq, apenas esses trechos vão pela internet."
+      : "O artigo completo é enviado ao provedor. No Groq, isso exige um limite de tokens maior que o plano free.";
+    document.getElementById("reader-local-ai-provider-description").textContent = groq
+      ? (embeddings ? "Trechos recuperados serão enviados ao Groq pela internet. A chave fica salva nas preferências do Zotero."
+        : "O artigo completo será enviado ao Groq pela internet. A chave fica salva nas preferências do Zotero.")
+      : (embeddings ? "Trechos recuperados serão enviados somente ao servidor local."
+        : "O artigo completo é enviado somente ao servidor local.");
   },
   updateModel() {
     const id = document.getElementById("reader-local-ai-model").value;
@@ -177,12 +191,13 @@ var ReaderLocalAIPreferences = {
         model: provider === "groq" ? (this.groqModel || Zotero.ReaderLocalAI.getGroqModel()) : read("model"),
         apiKey: read("apiKey"),
         responseLanguage: read("responseLanguage"),
+        retrievalMode: read("retrievalMode"),
         contextTokens: Number(read("contextTokens")),
         generationTokens: Number(read("generationTokens")),
         timeoutMs: Number(read("timeoutSeconds")) * 1000,
       }, { projectRoot: read("projectRoot"), autoStart: document.getElementById("reader-local-ai-autoStart").checked });
       status.textContent = provider === "groq"
-        ? "Configurações salvas. Informe a chave do Groq para usar; o artigo completo será enviado ao provedor."
+        ? "Configurações salvas. Informe a chave do Groq para usar."
         : "Configurações salvas.";
       this.renderRuntime();
       return true;
@@ -199,6 +214,13 @@ var ReaderLocalAIPreferences = {
       this.renderRuntime();
     } catch (error) { if (!this.lifetime.closed) document.getElementById("reader-local-ai-settings-status").textContent = error.message; }
   },
+  runEmbedding(action) {
+    if (action !== "stop" && !this.save()) return;
+    try {
+      Zotero.ReaderLocalAI.runEmbeddingAction(action);
+      this.renderEmbedding();
+    } catch (error) { if (!this.lifetime.closed) document.getElementById("reader-local-ai-settings-status").textContent = error.message; }
+  },
   renderRuntime() {
     if (this.lifetime.closed || this.provider() !== "local") return;
     const state = Zotero.ReaderLocalAI.getRuntimeState();
@@ -210,12 +232,26 @@ var ReaderLocalAIPreferences = {
     document.getElementById("reader-local-ai-runtime-details").hidden = !state.details;
     document.getElementById("reader-local-ai-runtime-log").textContent = state.details || "";
   },
+  renderEmbedding() {
+    if (this.lifetime.closed) return;
+    const state = Zotero.ReaderLocalAI.getEmbeddingState();
+    const start = document.getElementById("reader-local-ai-start-embeddings");
+    const stop = document.getElementById("reader-local-ai-stop-embeddings");
+    const status = document.getElementById("reader-local-ai-embedding-status");
+    if (!start || !stop || !status) return;
+    const busy = state.phase === "starting";
+    start.disabled = busy || state.owned || state.phase === "external";
+    stop.disabled = !state.owned && state.phase !== "starting";
+    status.textContent = state.message + (state.details ? "\n" + state.details : "");
+  },
   poll() {
     this.lifetime.timer = this.timer = document.defaultView.setTimeout(() => {
       if (this.lifetime.closed || !document.getElementById("reader-local-ai-runtime-status")?.isConnected || !Zotero.ReaderLocalAI) return;
       try {
         if (this.provider() === "local") Zotero.ReaderLocalAI.requestRuntimeRefresh();
+        Zotero.ReaderLocalAI.requestEmbeddingRefresh();
         this.renderRuntime();
+        this.renderEmbedding();
         this.renderGroqModels();
       } catch { /* The pane or plugin may have closed while a status request was pending. */ }
       finally { if (!this.lifetime.closed && Zotero.ReaderLocalAI) this.poll(); }

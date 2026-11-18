@@ -2,15 +2,8 @@ import type { ChatClient } from "./client.ts";
 import { validateSettings } from "./config.ts";
 import { ReaderError, abortIfNeeded } from "./errors.ts";
 import { FinalTextFilter, readSSE } from "./sse.ts";
+import { estimatePromptTokens } from "./tokens.ts";
 import type { FetchLike, Generation, Message, Settings } from "./types.ts";
-
-/** The Groq API is OpenAI-compatible but does not expose llama.cpp's template tokenizer. */
-export function estimateGroqPromptTokens(messages: readonly Message[]): number {
-  let characters = 0;
-  for (const message of messages) characters += message.role.length + message.content.length + 8;
-  // 3.5 characters per token is conservative for English and Portuguese papers.
-  return Math.ceil(characters / 3.5) + 64;
-}
 
 export interface GroqModel {
   id: string;
@@ -73,7 +66,10 @@ function providerError(status: number, body: string): ReaderError {
     return new ReaderError("auth", "A chave da API do Groq foi recusada. Confira a chave nas configurações do plugin.");
   }
   if (status === 429) {
-    return new ReaderError("rate-limit", "O Groq limitou os pedidos. Aguarde um pouco e tente novamente.");
+    const limit = body.match(/Limit\s+(\d+)/i)?.[1];
+    const requested = body.match(/Requested\s+(\d+)/i)?.[1];
+    const detail = limit ? ` Limite da conta: ${limit} tokens por minuto; pedido: ${requested ?? "?"}.` : "";
+    return new ReaderError("rate-limit", `O Groq limitou os pedidos.${detail} Aguarde cerca de um minuto, use o servidor local ou aumente o limite da conta.`);
   }
   if (status === 404) {
     return new ReaderError("model", `O modelo não foi encontrado no Groq. Confira o nome nas configurações.${detail ? ` ${detail}` : ""}`);
@@ -97,7 +93,7 @@ export class GroqClient implements ChatClient {
     if (!this.settings.apiKey) {
       throw new ReaderError("auth", "Informe a chave da API do Groq nas configurações do plugin.");
     }
-    const promptTokens = estimateGroqPromptTokens(messages);
+    const promptTokens = estimatePromptTokens(messages);
     if (promptTokens + this.settings.generationTokens > this.settings.contextTokens) {
       throw new ReaderError("context", `O artigo e a conversa usam cerca de ${promptTokens.toLocaleString("pt-BR")} tokens. Com a reserva de geração, excedem o contexto de ${this.settings.contextTokens.toLocaleString("pt-BR")}. Aumente o contexto ou inicie uma nova pergunta; o artigo não será cortado.`);
     }

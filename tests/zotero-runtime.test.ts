@@ -47,7 +47,7 @@ function makeHost(options: {
   return { platform: createRuntimePlatform(host), searches, calls };
 }
 
-const rootFiles = (root: string) => [normalize(root), normalize(`${root}/scripts/serve.py`), normalize(`${root}/runtime.lock.json`)];
+const rootFiles = (root: string) => [normalize(root), normalize(`${root}/scripts/serve.py`), normalize(`${root}/scripts/serve_embedding.py`), normalize(`${root}/runtime.lock.json`)];
 
 test("native root validation accepts Linux and Windows x64 absolute folders", async () => {
   const linux = makeHost({ os: "Linux", abi: "x86_64-gcc", files: rootFiles("/project") });

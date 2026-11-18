@@ -5,15 +5,17 @@ export interface Message {
 export interface Turn { question: string; answer: string }
 export interface AnswerSaveState { phase: "idle" | "saving" | "saved" | "error"; error?: string; annotationId?: number }
 export type SaveAnswer = (turn: Turn) => Promise<number>;
-export interface Paper { text: string; extractedPages: number; totalPages: number; title: string }
+export interface Paper { text: string; extractedPages: number; totalPages: number; title: string; signature?: string }
 export type ResponseLanguage = "pt-BR" | "en";
 export type Provider = "local" | "groq";
+export type RetrievalMode = "embeddings" | "full";
 export interface Settings {
   provider: Provider;
   baseUrl: string;
   model: string;
   apiKey: string;
   responseLanguage: ResponseLanguage;
+  retrievalMode: RetrievalMode;
   contextTokens: number;
   generationTokens: number;
   timeoutMs: number;

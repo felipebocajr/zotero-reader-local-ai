@@ -63,7 +63,7 @@
   const originalSettings = Zotero.ReaderLocalAI.getSettings();
   try {
     // The mock serves the 8B only; persisted optional-model preferences are unrelated.
-    Zotero.ReaderLocalAI.saveSettings({...originalSettings,baseUrl:"http://127.0.0.1:18080",model:"lfm2.5-8b-a1b",responseLanguage:"en",contextTokens:32768,generationTokens:4096});
+    Zotero.ReaderLocalAI.saveSettings({...originalSettings,baseUrl:"http://127.0.0.1:18080",model:"lfm2.5-8b-a1b",responseLanguage:"en",retrievalMode:"full",contextTokens:32768,generationTokens:4096});
     const settingsBefore = Zotero.ReaderLocalAI.getSettings();
     const pref = Zotero.Utilities.Internal.openPreferences("reader-local-ai@local.invalid-preferences");
     await wait(() => pref.document.getElementById("reader-local-ai-baseUrl")?.value, "preferences loaded");
@@ -231,6 +231,18 @@
     check("closing reader removes popup", !popup(other));
     win.Zotero_Tabs.select(reader.tabID); await sleep(200);
     check("no mandatory annotation created", before === attachment.getAnnotations().length);
+    Zotero.ReaderLocalAI.saveSettings({...Zotero.ReaderLocalAI.getSettings(),retrievalMode:"embeddings"});
+    Zotero.ReaderLocalAI.runEmbeddingAction("start");
+    await wait(() => ["ready","external"].includes(Zotero.ReaderLocalAI.getEmbeddingState().phase), "embedding server", 120000);
+    await open(reader); submit(reader, "Como o cache KV funciona?");
+    await complete(reader);
+    check("retrieval mode shows the excerpt note", popup(reader).querySelector(".reader-local-ai-status").textContent.includes("Trechos relevantes"));
+    requests = await (await win.fetch("http://127.0.0.1:18080/requests")).json();
+    check("RAG request contains excerpts and not the full article",
+      requests.at(-1).messages[1].content.includes("TRECHOS RECUPERADOS DO ARTIGO") &&
+      !requests.at(-1).messages[1].content.includes(text));
+    Zotero.ReaderLocalAI.saveSettings({...Zotero.ReaderLocalAI.getSettings(),retrievalMode:"full"});
+    Zotero.ReaderLocalAI.runEmbeddingAction("stop");
     await open(reader); submit(reader, "UI_SLOW: desativar plugin");
     await wait(() => !button(reader,"Cancelar").hidden,"pending on disable");
     const manager = ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs").AddonManager;

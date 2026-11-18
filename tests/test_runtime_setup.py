@@ -18,7 +18,7 @@ class SetupTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             selected = setup.MODELS["lfm2.5-8b-a1b"]
-            with patch.object(setup, "ROOT", root), patch("sys.argv", ["setup_runtime.py", "--model", "lfm2.5-8b-a1b", "--precision", "Q4_K_M"]), \
+            with patch.object(setup, "ROOT", root), patch("sys.argv", ["setup_runtime.py", "--model", "lfm2.5-8b-a1b", "--precision", "Q4_K_M", "--no-embedding"]), \
                  patch.object(setup, "runtime_platform", return_value="linux-x64"), \
                  patch.object(setup, "download") as download, patch.object(setup, "install_archive"):
                 setup.main()
@@ -28,6 +28,21 @@ class SetupTests(unittest.TestCase):
             self.assertIn(selected["repository"] + "/resolve/" + selected["revision"] + "/", url)
             self.assertEqual(destination.name, "LFM2.5-8B-A1B-Q4_K_M.gguf")
             self.assertEqual(digest, selected["variants"]["Q4_K_M"]["sha256"])
+
+    def test_setup_downloads_the_pinned_embedding_model_by_default(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with patch.object(setup, "ROOT", root), patch("sys.argv", ["setup_runtime.py", "--model", "lfm3-1.7b", "--precision", "Q4_K_M"]), \
+                 patch.object(setup, "runtime_platform", return_value="linux-x64"), \
+                 patch.object(setup, "download") as download, patch.object(setup, "install_archive"):
+                setup.main()
+            weight_calls = [call for call in download.call_args_list if call.args[1].suffix == ".gguf"]
+            self.assertEqual(len(weight_calls), 2)
+            embedding = setup.EMBEDDING_MODELS["qwen3-embedding-0.6b"]
+            url, destination, digest = weight_calls[1].args
+            self.assertIn(embedding["repository"] + "/resolve/" + embedding["revision"] + "/", url)
+            self.assertEqual(destination.name, "Qwen3-Embedding-0.6B-Q8_0.gguf")
+            self.assertEqual(digest, embedding["variants"]["Q8_0"]["sha256"])
 
     def archive(self, path, entries):
         with tarfile.open(path, "w") as bundle:

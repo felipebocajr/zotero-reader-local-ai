@@ -47,6 +47,7 @@
     pref.document.getElementById("reader-local-ai-baseUrl").value = "http://127.0.0.1:18091";
     const select = pref.document.getElementById("reader-local-ai-model");
     select.value = results.model; select.dispatchEvent(new pref.Event("change", {bubbles:true}));
+    pref.document.getElementById("reader-local-ai-retrievalMode").value = "full";
     pref.document.getElementById("reader-local-ai-preferences").requestSubmit();
     check("native preferences activate the larger model", Zotero.ReaderLocalAI.getSettings().model === results.model);
     await snapshot(pref, "native-model-preferences"); pref.close(); pref = null;

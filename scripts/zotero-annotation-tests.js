@@ -53,7 +53,7 @@
   let restoreEditable, restoreSave;
   try {
     // The fixture serves 2.6B only; another native test may have left 8B selected.
-    Zotero.ReaderLocalAI.saveSettings({ ...initialSettings, baseUrl: "http://127.0.0.1:18080", model: "lfm2.5-8b-a1b", contextTokens: 32768, generationTokens: 4096 });
+    Zotero.ReaderLocalAI.saveSettings({ ...initialSettings, baseUrl: "http://127.0.0.1:18080", model: "lfm2.5-8b-a1b", retrievalMode: "full", contextTokens: 32768, generationTokens: 4096 });
     await win.fetch("http://127.0.0.1:18080/control", { method: "POST", body: JSON.stringify({ tokens: 10000, math: false }) });
     const attachmentId = Zotero.Prefs.get("extensions.reader-local-ai.devAttachmentID", true);
     let reader = Zotero.Reader.getByTabID(win.Zotero_Tabs.selectedID);

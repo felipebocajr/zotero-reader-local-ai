@@ -4,6 +4,7 @@ pref("extensions.reader-local-ai.model", "lfm2.5-8b-a1b");
 pref("extensions.reader-local-ai.groqModel", "");
 pref("extensions.reader-local-ai.apiKey", "");
 pref("extensions.reader-local-ai.responseLanguage", "en");
+pref("extensions.reader-local-ai.retrievalMode", "embeddings");
 pref("extensions.reader-local-ai.contextTokens", 64000);
 pref("extensions.reader-local-ai.generationTokens", 4096);
 pref("extensions.reader-local-ai.timeoutMs", 600000);

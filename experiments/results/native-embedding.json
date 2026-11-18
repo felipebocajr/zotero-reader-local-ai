@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "retrieval mode saved",
+      "passed": true
+    },
+    {
+      "name": "embedding server ready",
+      "passed": true,
+      "details": {
+        "phase": "ready",
+        "owned": true,
+        "model": "qwen3-embedding-0.6b",
+        "pid": 240954,
+        "message": "Embeddings prontos: qwen3-embedding-0.6b."
+      }
+    },
+    {
+      "name": "embedding model matches",
+      "passed": true,
+      "details": {
+        "phase": "ready",
+        "owned": true,
+        "model": "qwen3-embedding-0.6b",
+        "pid": 240954,
+        "message": "Embeddings prontos: qwen3-embedding-0.6b."
+      }
+    },
+    {
+      "name": "managed process is owned",
+      "passed": true,
+      "details": {
+        "phase": "ready",
+        "owned": true,
+        "model": "qwen3-embedding-0.6b",
+        "pid": 240954,
+        "message": "Embeddings prontos: qwen3-embedding-0.6b."
+      }
+    },
+    {
+      "name": "embedding request returned two 1024-dimensional vectors",
+      "passed": true,
+      "details": {
+        "length": 2,
+        "dims": 1024
+      }
+    },
+    {
+      "name": "Portuguese query matches the English passage",
+      "passed": true,
+      "details": {
+        "cosine": 0.8247620156816843
+      }
+    },
+    {
+      "name": "embedding server stopped",
+      "passed": true,
+      "details": {
+        "phase": "stopped",
+        "owned": false,
+        "message": "Modelo de embeddings parado."
+      }
+    }
+  ],
+  "errors": []
+}

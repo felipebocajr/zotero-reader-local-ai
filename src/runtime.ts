@@ -4,14 +4,18 @@ import type { Settings } from "./types.ts";
 export interface RuntimePreferences { projectRoot: string; autoStart: boolean }
 export const RUNTIME_DEFAULTS: RuntimePreferences = { projectRoot: "", autoStart: false };
 export interface LaunchConfig { projectRoot: string; baseUrl: string; model: string; contextTokens: number; port: number }
+export interface EmbeddingLaunchConfig { projectRoot: string; baseUrl: string; model: string; port: number }
 export interface OwnedProcess { pid: number; exited: Promise<number>; stop(): Promise<void>; tail(): string }
 export interface ServerProbe { ready: boolean; model?: string; contextTokens?: number; slots?: number }
+export interface EmbeddingProbe { ready: boolean; model?: string }
 export interface SupervisorStatus { supervisorPid: number; phase: string; backend?: string; gpuLayers?: number | string; childPid?: number }
 export interface RuntimePlatform {
   pickFolder(window: unknown, initial: string): Promise<string | undefined>;
   validateRoot(root: string): Promise<string>;
   spawn(config: LaunchConfig): Promise<OwnedProcess>;
+  spawnEmbedding?(config: EmbeddingLaunchConfig): Promise<OwnedProcess>;
   probe(baseUrl: string): Promise<ServerProbe | undefined>;
+  probeEmbedding?(baseUrl: string): Promise<EmbeddingProbe | undefined>;
   readStatus(config: LaunchConfig): Promise<SupervisorStatus | undefined>;
   later(callback: () => void, ms: number): () => void;
 }

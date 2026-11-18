@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LOCK = json.loads((ROOT / "runtime.lock.json").read_text(encoding="utf-8"))
 DEFAULT_MODEL = "lfm2.5-8b-a1b"
 MODELS = {"lfm2.5-2.6b": LOCK["model"], **LOCK["additionalModels"]}
+EMBEDDING_MODELS = LOCK.get("embeddingModels", {})
 MIN_PYTHON = (3, 12)
 
 
@@ -205,6 +206,9 @@ def main():
     parser.add_argument("--model", choices=MODELS, default=DEFAULT_MODEL)
     parser.add_argument("--precision", choices=[*LOCK["model"]["variants"], "all"], default="Q4_K_M")
     parser.add_argument("--backend", choices=["auto", "cpu", "cuda"], default="auto")
+    parser.add_argument("--embedding-model", choices=list(EMBEDDING_MODELS), default="qwen3-embedding-0.6b")
+    parser.add_argument("--embedding-precision", choices=["Q8_0", "F16"], default="Q8_0")
+    parser.add_argument("--no-embedding", action="store_true", help="Não baixar o modelo de embeddings")
     args = parser.parse_args()
     if sys.version_info < MIN_PYTHON:
         parser.error("Use Python 3.12 ou superior para preparar o runtime.")
@@ -222,6 +226,11 @@ def main():
     for precision in variants if args.precision == "all" else [args.precision]:
         variant = variants[precision]
         url = f'https://huggingface.co/{model["repository"]}/resolve/{model["revision"]}/{variant["filename"]}'
+        download(url, ROOT / ".runtime" / "models" / variant["filename"], variant["sha256"])
+    if not args.no_embedding:
+        embedding = EMBEDDING_MODELS[args.embedding_model]
+        variant = embedding["variants"][args.embedding_precision]
+        url = f'https://huggingface.co/{embedding["repository"]}/resolve/{embedding["revision"]}/{variant["filename"]}'
         download(url, ROOT / ".runtime" / "models" / variant["filename"], variant["sha256"])
     mode = "" if args.backend == "auto" else " --backend " + args.backend
     precision = "Q4_K_M" if args.precision == "all" else args.precision

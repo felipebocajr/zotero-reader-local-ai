@@ -1,0 +1,2408 @@
+{
+  "generatedAt": "2026-11-18T18:29:54.247Z",
+  "model": "qwen3-embedding-0.6b",
+  "baseUrl": "http://127.0.0.1:18081",
+  "dimensions": 1024,
+  "chunkSize": 1200,
+  "chunkOverlap": 160,
+  "queryInstruction": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery:",
+  "papersDir": "/home/samurai/Projects/zotero-reader-local-ai/.runtime/zotero-splitter-corpus",
+  "papers": [
+    {
+      "paper": "attention",
+      "title": "Attention Is All You Need",
+      "chunks": 45,
+      "seconds": 22.97
+    },
+    {
+      "paper": "rmsnorm",
+      "title": "Root Mean Square Layer Normalization",
+      "chunks": 51,
+      "seconds": 28.88
+    },
+    {
+      "paper": "rope",
+      "title": "RoFormer: Enhanced Transformer with Rotary Position Embedding",
+      "chunks": 35,
+      "seconds": 22.45
+    },
+    {
+      "paper": "lora",
+      "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+      "chunks": 64,
+      "seconds": 44.56
+    },
+    {
+      "paper": "llada",
+      "title": "Large Language Diffusion Models",
+      "chunks": 89,
+      "seconds": 56.9
+    }
+  ],
+  "summary": {
+    "instruction": {
+      "cases": 10,
+      "skippedFullArticle": 5,
+      "hits": {
+        "5": 9,
+        "8": 9,
+        "12": 10,
+        "20": 10
+      },
+      "allHits": {
+        "5": 9,
+        "8": 9,
+        "12": 10,
+        "20": 10
+      },
+      "mrr": 0.727
+    },
+    "plain": {
+      "cases": 10,
+      "skippedFullArticle": 5,
+      "hits": {
+        "5": 9,
+        "8": 10,
+        "12": 10,
+        "20": 10
+      },
+      "allHits": {
+        "5": 9,
+        "8": 9,
+        "12": 10,
+        "20": 10
+      },
+      "mrr": 0.712
+    }
+  },
+  "cases": [
+    {
+      "id": "attention-definition",
+      "paper": "attention",
+      "question": "Explique a atenção por produto escalar escalonado descrita neste trecho.",
+      "evidenceSections": [
+        "3.2.1"
+      ],
+      "anchorChunk": 10,
+      "anchorHeading": "3.2.1 Scaled Dot-Product Attention",
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 11,
+              "heading": "3.2.1 Scaled Dot-Product Attention",
+              "score": 0.4581
+            },
+            {
+              "index": 10,
+              "heading": "3.2.1 Scaled Dot-Product Attention",
+              "score": 0.4413
+            },
+            {
+              "index": 43,
+              "heading": "References",
+              "score": 0.3653
+            },
+            {
+              "index": 9,
+              "heading": "3.2 Attention",
+              "score": 0.361
+            },
+            {
+              "index": 44,
+              "heading": "References",
+              "score": 0.355
+            },
+            {
+              "index": 0,
+              "score": 0.3392
+            },
+            {
+              "index": 14,
+              "heading": "3.2.3 Applications of Attention in our Model",
+              "score": 0.3121
+            },
+            {
+              "index": 42,
+              "heading": "References",
+              "score": 0.3066
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 11,
+              "heading": "3.2.1 Scaled Dot-Product Attention",
+              "score": 0.4107
+            },
+            {
+              "index": 10,
+              "heading": "3.2.1 Scaled Dot-Product Attention",
+              "score": 0.4073
+            },
+            {
+              "index": 43,
+              "heading": "References",
+              "score": 0.3348
+            },
+            {
+              "index": 0,
+              "score": 0.3275
+            },
+            {
+              "index": 9,
+              "heading": "3.2 Attention",
+              "score": 0.3254
+            },
+            {
+              "index": 44,
+              "heading": "References",
+              "score": 0.3251
+            },
+            {
+              "index": 27,
+              "heading": "6 Results",
+              "score": 0.3217
+            },
+            {
+              "index": 22,
+              "heading": "5 Training",
+              "score": 0.275
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "attention-cross-section",
+      "paper": "attention",
+      "question": "Como o artigo usa atenção para impedir que o decoder consulte tokens futuros e por que isso é necessário durante o treinamento?",
+      "evidenceSections": [
+        "3.1",
+        "3.2.3"
+      ],
+      "anchorChunk": 10,
+      "anchorHeading": "3.2.1 Scaled Dot-Product Attention",
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 14,
+              "heading": "3.2.3 Applications of Attention in our Model",
+              "score": 0.5886
+            },
+            {
+              "index": 8,
+              "heading": "3.1 Encoder and Decoder Stacks",
+              "score": 0.5866
+            },
+            {
+              "index": 44,
+              "heading": "References",
+              "score": 0.566
+            },
+            {
+              "index": 13,
+              "heading": "3.2.3 Applications of Attention in our Model",
+              "score": 0.5279
+            },
+            {
+              "index": 26,
+              "heading": "5.4 Regularization",
+              "score": 0.5075
+            },
+            {
+              "index": 6,
+              "heading": "3 Model Architecture",
+              "score": 0.4885
+            },
+            {
+              "index": 2,
+              "heading": "1 Introduction",
+              "score": 0.484
+            },
+            {
+              "index": 34,
+              "heading": "6.3 English Constituency Parsing",
+              "score": 0.482
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 14,
+              "heading": "3.2.3 Applications of Attention in our Model",
+              "score": 0.5479
+            },
+            {
+              "index": 8,
+              "heading": "3.1 Encoder and Decoder Stacks",
+              "score": 0.5468
+            },
+            {
+              "index": 44,
+              "heading": "References",
+              "score": 0.5146
+            },
+            {
+              "index": 13,
+              "heading": "3.2.3 Applications of Attention in our Model",
+              "score": 0.479
+            },
+            {
+              "index": 2,
+              "heading": "1 Introduction",
+              "score": 0.4705
+            },
+            {
+              "index": 26,
+              "heading": "5.4 Regularization",
+              "score": 0.4698
+            },
+            {
+              "index": 22,
+              "heading": "5 Training",
+              "score": 0.4643
+            },
+            {
+              "index": 6,
+              "heading": "3 Model Architecture",
+              "score": 0.4382
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "attention-absent",
+      "paper": "attention",
+      "question": "Segundo este artigo, qual foi a pontuação do Transformer no MMLU?",
+      "evidenceSections": [
+        "6",
+        "artigo completo"
+      ],
+      "anchorChunk": 10,
+      "anchorHeading": "3.2.1 Scaled Dot-Product Attention",
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 28,
+              "heading": "6.1 Machine Translation",
+              "score": 0.5025
+            },
+            {
+              "index": 29,
+              "heading": "6.1 Machine Translation",
+              "score": 0.4817
+            },
+            {
+              "index": 32,
+              "heading": "6.3 English Constituency Parsing",
+              "score": 0.4403
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.433
+            },
+            {
+              "index": 31,
+              "heading": "6.2 Model Variations",
+              "score": 0.4083
+            },
+            {
+              "index": 33,
+              "heading": "6.3 English Constituency Parsing",
+              "score": 0.3987
+            },
+            {
+              "index": 35,
+              "heading": "7 Conclusion",
+              "score": 0.3948
+            },
+            {
+              "index": 34,
+              "heading": "6.3 English Constituency Parsing",
+              "score": 0.3904
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 28,
+              "heading": "6.1 Machine Translation",
+              "score": 0.5375
+            },
+            {
+              "index": 29,
+              "heading": "6.1 Machine Translation",
+              "score": 0.5363
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.4709
+            },
+            {
+              "index": 32,
+              "heading": "6.3 English Constituency Parsing",
+              "score": 0.4697
+            },
+            {
+              "index": 33,
+              "heading": "6.3 English Constituency Parsing",
+              "score": 0.4407
+            },
+            {
+              "index": 31,
+              "heading": "6.2 Model Variations",
+              "score": 0.4402
+            },
+            {
+              "index": 35,
+              "heading": "7 Conclusion",
+              "score": 0.4363
+            },
+            {
+              "index": 34,
+              "heading": "6.3 English Constituency Parsing",
+              "score": 0.4271
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "rmsnorm-definition",
+      "paper": "rmsnorm",
+      "question": "Explique a invariância a reescalonamento discutida neste trecho.",
+      "evidenceSections": [
+        "4.1"
+      ],
+      "anchorChunk": 1,
+      "anchorHeading": "Abstract",
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 17,
+              "heading": "4.1 Invariance Analysis",
+              "score": 0.5383
+            },
+            {
+              "index": 16,
+              "heading": "4.1 Invariance Analysis",
+              "score": 0.5043
+            },
+            {
+              "index": 13,
+              "heading": "4 RMSNorm",
+              "score": 0.4462
+            },
+            {
+              "index": 9,
+              "heading": "2 Related Work",
+              "score": 0.4448
+            },
+            {
+              "index": 21,
+              "heading": "5 pRMSNorm",
+              "score": 0.4092
+            },
+            {
+              "index": 10,
+              "heading": "2 Related Work",
+              "score": 0.3796
+            },
+            {
+              "index": 14,
+              "heading": "4 RMSNorm",
+              "score": 0.3654
+            },
+            {
+              "index": 30,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3575
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 17,
+              "heading": "4.1 Invariance Analysis",
+              "score": 0.4944
+            },
+            {
+              "index": 16,
+              "heading": "4.1 Invariance Analysis",
+              "score": 0.4414
+            },
+            {
+              "index": 9,
+              "heading": "2 Related Work",
+              "score": 0.4077
+            },
+            {
+              "index": 13,
+              "heading": "4 RMSNorm",
+              "score": 0.3923
+            },
+            {
+              "index": 21,
+              "heading": "5 pRMSNorm",
+              "score": 0.3633
+            },
+            {
+              "index": 15,
+              "heading": "4 RMSNorm",
+              "score": 0.3466
+            },
+            {
+              "index": 10,
+              "heading": "2 Related Work",
+              "score": 0.3451
+            },
+            {
+              "index": 30,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3293
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "rmsnorm-cross-section",
+      "paper": "rmsnorm",
+      "question": "O que é pRMSNorm e qual hipótese permite estimar a RMS usando apenas parte das unidades?",
+      "evidenceSections": [
+        "5 pRMSNorm"
+      ],
+      "anchorChunk": 1,
+      "anchorHeading": "Abstract",
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 21,
+              "heading": "5 pRMSNorm",
+              "score": 0.7321
+            },
+            {
+              "index": 15,
+              "heading": "4 RMSNorm",
+              "score": 0.6758
+            },
+            {
+              "index": 6,
+              "heading": "1 Introduction",
+              "score": 0.6284
+            },
+            {
+              "index": 5,
+              "heading": "1 Introduction",
+              "score": 0.6273
+            },
+            {
+              "index": 2,
+              "heading": "Abstract",
+              "score": 0.607
+            },
+            {
+              "index": 39,
+              "heading": "7 Conclusion and Future Work",
+              "score": 0.5928
+            },
+            {
+              "index": 10,
+              "heading": "2 Related Work",
+              "score": 0.579
+            },
+            {
+              "index": 14,
+              "heading": "4 RMSNorm",
+              "score": 0.5755
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 21,
+              "heading": "5 pRMSNorm",
+              "score": 0.7437
+            },
+            {
+              "index": 15,
+              "heading": "4 RMSNorm",
+              "score": 0.697
+            },
+            {
+              "index": 5,
+              "heading": "1 Introduction",
+              "score": 0.635
+            },
+            {
+              "index": 6,
+              "heading": "1 Introduction",
+              "score": 0.6245
+            },
+            {
+              "index": 2,
+              "heading": "Abstract",
+              "score": 0.6155
+            },
+            {
+              "index": 39,
+              "heading": "7 Conclusion and Future Work",
+              "score": 0.598
+            },
+            {
+              "index": 10,
+              "heading": "2 Related Work",
+              "score": 0.5966
+            },
+            {
+              "index": 13,
+              "heading": "4 RMSNorm",
+              "score": 0.5666
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "rmsnorm-absent",
+      "paper": "rmsnorm",
+      "question": "Qual ganho de velocidade este artigo mediu especificamente numa RTX 3070?",
+      "evidenceSections": [
+        "4",
+        "artigo completo"
+      ],
+      "anchorChunk": 1,
+      "anchorHeading": "Abstract",
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 37,
+              "heading": "6.4 CIFAR-10 Classification",
+              "score": 0.4661
+            },
+            {
+              "index": 39,
+              "heading": "7 Conclusion and Future Work",
+              "score": 0.4374
+            },
+            {
+              "index": 6,
+              "heading": "1 Introduction",
+              "score": 0.434
+            },
+            {
+              "index": 38,
+              "heading": "7 Conclusion and Future Work",
+              "score": 0.4237
+            },
+            {
+              "index": 22,
+              "heading": "6 Experiments",
+              "score": 0.4213
+            },
+            {
+              "index": 23,
+              "heading": "6 Experiments",
+              "score": 0.4037
+            },
+            {
+              "index": 34,
+              "heading": "6.3 Image-Caption Retrieval",
+              "score": 0.4017
+            },
+            {
+              "index": 25,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3951
+            }
+          ],
+          "firstEvidenceRank": 18,
+          "mrr": 0.05555555555555555,
+          "metrics": {
+            "5": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 1
+            },
+            "8": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 1
+            },
+            "12": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 39,
+              "heading": "7 Conclusion and Future Work",
+              "score": 0.4181
+            },
+            {
+              "index": 6,
+              "heading": "1 Introduction",
+              "score": 0.4147
+            },
+            {
+              "index": 38,
+              "heading": "7 Conclusion and Future Work",
+              "score": 0.4002
+            },
+            {
+              "index": 37,
+              "heading": "6.4 CIFAR-10 Classification",
+              "score": 0.3978
+            },
+            {
+              "index": 22,
+              "heading": "6 Experiments",
+              "score": 0.3862
+            },
+            {
+              "index": 34,
+              "heading": "6.3 Image-Caption Retrieval",
+              "score": 0.3706
+            },
+            {
+              "index": 23,
+              "heading": "6 Experiments",
+              "score": 0.3677
+            },
+            {
+              "index": 2,
+              "heading": "Abstract",
+              "score": 0.3561
+            }
+          ],
+          "firstEvidenceRank": 11,
+          "mrr": 0.09090909090909091,
+          "metrics": {
+            "5": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 1
+            },
+            "8": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "rope-definition",
+      "paper": "rope",
+      "question": "Explique o mecanismo de posição por rotação descrito neste trecho.",
+      "evidenceSections": [
+        "3.2"
+      ],
+      "anchorChunk": 0,
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 12,
+              "heading": "3 Proposed Approach",
+              "score": 0.5073
+            },
+            {
+              "index": 14,
+              "heading": "3.2 Rotary Position Embedding",
+              "score": 0.5048
+            },
+            {
+              "index": 16,
+              "heading": "3.2.2 General form",
+              "score": 0.4899
+            },
+            {
+              "index": 11,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.4879
+            },
+            {
+              "index": 15,
+              "heading": "3.2.2 General form",
+              "score": 0.4319
+            },
+            {
+              "index": 3,
+              "heading": "1 Introduction",
+              "score": 0.4162
+            },
+            {
+              "index": 0,
+              "score": 0.4142
+            },
+            {
+              "index": 1,
+              "heading": "ABSTRACT",
+              "score": 0.4079
+            }
+          ],
+          "firstEvidenceRank": 2,
+          "mrr": 0.5,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 12,
+              "heading": "3 Proposed Approach",
+              "score": 0.4969
+            },
+            {
+              "index": 11,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.4763
+            },
+            {
+              "index": 14,
+              "heading": "3.2 Rotary Position Embedding",
+              "score": 0.4637
+            },
+            {
+              "index": 16,
+              "heading": "3.2.2 General form",
+              "score": 0.443
+            },
+            {
+              "index": 0,
+              "score": 0.4044
+            },
+            {
+              "index": 15,
+              "heading": "3.2.2 General form",
+              "score": 0.4011
+            },
+            {
+              "index": 3,
+              "heading": "1 Introduction",
+              "score": 0.3853
+            },
+            {
+              "index": 1,
+              "heading": "ABSTRACT",
+              "score": 0.3713
+            }
+          ],
+          "firstEvidenceRank": 3,
+          "mrr": 0.3333333333333333,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "rope-cross-section",
+      "paper": "rope",
+      "question": "Como a propriedade de dependência relativa aparece no produto entre query e key de posições distintas?",
+      "evidenceSections": [
+        "3.2",
+        "3.3"
+      ],
+      "anchorChunk": 0,
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 9,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.5238
+            },
+            {
+              "index": 10,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.4562
+            },
+            {
+              "index": 8,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.4545
+            },
+            {
+              "index": 11,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.4531
+            },
+            {
+              "index": 12,
+              "heading": "3 Proposed Approach",
+              "score": 0.4429
+            },
+            {
+              "index": 3,
+              "heading": "1 Introduction",
+              "score": 0.4267
+            },
+            {
+              "index": 24,
+              "heading": "5 Conclusions",
+              "score": 0.4199
+            },
+            {
+              "index": 13,
+              "heading": "3.1 Formulation",
+              "score": 0.4195
+            }
+          ],
+          "firstEvidenceRank": 10,
+          "mrr": 0.1,
+          "metrics": {
+            "5": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 2
+            },
+            "8": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 2
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 9,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.5249
+            },
+            {
+              "index": 8,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.473
+            },
+            {
+              "index": 11,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.4584
+            },
+            {
+              "index": 10,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.4577
+            },
+            {
+              "index": 13,
+              "heading": "3.1 Formulation",
+              "score": 0.4543
+            },
+            {
+              "index": 30,
+              "heading": "References",
+              "score": 0.4505
+            },
+            {
+              "index": 12,
+              "heading": "3 Proposed Approach",
+              "score": 0.4489
+            },
+            {
+              "index": 16,
+              "heading": "3.2.2 General form",
+              "score": 0.4342
+            }
+          ],
+          "firstEvidenceRank": 8,
+          "mrr": 0.125,
+          "metrics": {
+            "5": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 2
+            },
+            "8": {
+              "hit": true,
+              "allHit": false,
+              "covered": 1,
+              "sections": 2
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "rope-absent",
+      "paper": "rope",
+      "question": "Qual pontuação de LLaMA 3.1 no MMLU o artigo apresenta?",
+      "evidenceSections": [
+        "artigo completo"
+      ],
+      "anchorChunk": 0,
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 19,
+              "heading": "4 Experiment",
+              "score": 0.3697
+            },
+            {
+              "index": 22,
+              "heading": "4.3 Downstream Tasks & Dataset",
+              "score": 0.3689
+            },
+            {
+              "index": 29,
+              "heading": "References",
+              "score": 0.3465
+            },
+            {
+              "index": 26,
+              "heading": "References",
+              "score": 0.3104
+            },
+            {
+              "index": 21,
+              "heading": "4.2 Pre-training",
+              "score": 0.3017
+            },
+            {
+              "index": 23,
+              "heading": "4.4 Results",
+              "score": 0.2986
+            },
+            {
+              "index": 4,
+              "heading": "1 Introduction",
+              "score": 0.2972
+            },
+            {
+              "index": 28,
+              "heading": "References",
+              "score": 0.2885
+            }
+          ],
+          "mrr": 0,
+          "metrics": {
+            "5": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "8": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "12": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "20": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 19,
+              "heading": "4 Experiment",
+              "score": 0.4013
+            },
+            {
+              "index": 29,
+              "heading": "References",
+              "score": 0.3841
+            },
+            {
+              "index": 22,
+              "heading": "4.3 Downstream Tasks & Dataset",
+              "score": 0.3796
+            },
+            {
+              "index": 26,
+              "heading": "References",
+              "score": 0.351
+            },
+            {
+              "index": 28,
+              "heading": "References",
+              "score": 0.3446
+            },
+            {
+              "index": 4,
+              "heading": "1 Introduction",
+              "score": 0.3391
+            },
+            {
+              "index": 24,
+              "heading": "5 Conclusions",
+              "score": 0.3343
+            },
+            {
+              "index": 11,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.332
+            }
+          ],
+          "mrr": 0,
+          "metrics": {
+            "5": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "8": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "12": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "20": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "lora-definition",
+      "paper": "lora",
+      "question": "Explique como o método LoRA modifica os pesos durante a adaptação.",
+      "evidenceSections": [
+        "3"
+      ],
+      "anchorChunk": 0,
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 38,
+              "heading": "7Conclusion and Future Work",
+              "score": 0.7047
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.6955
+            },
+            {
+              "index": 11,
+              "heading": "3Our Method",
+              "score": 0.6772
+            },
+            {
+              "index": 29,
+              "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
+              "score": 0.6689
+            },
+            {
+              "index": 30,
+              "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
+              "score": 0.6521
+            },
+            {
+              "index": 50,
+              "heading": "References",
+              "score": 0.6494
+            },
+            {
+              "index": 0,
+              "score": 0.6492
+            },
+            {
+              "index": 13,
+              "heading": "3.1Applying LoRA to Transformer",
+              "score": 0.6475
+            }
+          ],
+          "firstEvidenceRank": 3,
+          "mrr": 0.3333333333333333,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 38,
+              "heading": "7Conclusion and Future Work",
+              "score": 0.6526
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.6322
+            },
+            {
+              "index": 11,
+              "heading": "3Our Method",
+              "score": 0.6319
+            },
+            {
+              "index": 29,
+              "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
+              "score": 0.6149
+            },
+            {
+              "index": 0,
+              "score": 0.6072
+            },
+            {
+              "index": 30,
+              "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
+              "score": 0.6046
+            },
+            {
+              "index": 13,
+              "heading": "3.1Applying LoRA to Transformer",
+              "score": 0.5944
+            },
+            {
+              "index": 50,
+              "heading": "References",
+              "score": 0.5866
+            }
+          ],
+          "firstEvidenceRank": 3,
+          "mrr": 0.3333333333333333,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "lora-cross-section",
+      "paper": "lora",
+      "question": "Por que o artigo diz que LoRA pode evitar latência adicional na inferência, apesar de introduzir novas matrizes no treinamento?",
+      "evidenceSections": [
+        "3"
+      ],
+      "anchorChunk": 0,
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 38,
+              "heading": "7Conclusion and Future Work",
+              "score": 0.6628
+            },
+            {
+              "index": 5,
+              "heading": "1Introduction",
+              "score": 0.6596
+            },
+            {
+              "index": 12,
+              "heading": "3Our Method",
+              "score": 0.614
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.6072
+            },
+            {
+              "index": 14,
+              "heading": "3.1Applying LoRA to Transformer",
+              "score": 0.6042
+            },
+            {
+              "index": 33,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.5743
+            },
+            {
+              "index": 51,
+              "heading": "References",
+              "score": 0.5594
+            },
+            {
+              "index": 31,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.5544
+            }
+          ],
+          "firstEvidenceRank": 3,
+          "mrr": 0.3333333333333333,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 5,
+              "heading": "1Introduction",
+              "score": 0.6084
+            },
+            {
+              "index": 38,
+              "heading": "7Conclusion and Future Work",
+              "score": 0.6042
+            },
+            {
+              "index": 12,
+              "heading": "3Our Method",
+              "score": 0.577
+            },
+            {
+              "index": 14,
+              "heading": "3.1Applying LoRA to Transformer",
+              "score": 0.5441
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.5333
+            },
+            {
+              "index": 33,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.5122
+            },
+            {
+              "index": 51,
+              "heading": "References",
+              "score": 0.5067
+            },
+            {
+              "index": 11,
+              "heading": "3Our Method",
+              "score": 0.5014
+            }
+          ],
+          "firstEvidenceRank": 3,
+          "mrr": 0.3333333333333333,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "lora-absent",
+      "paper": "lora",
+      "question": "Que resultados de QLoRA com pesos de 4 bits este artigo relata?",
+      "evidenceSections": [
+        "artigo completo"
+      ],
+      "anchorChunk": 0,
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 29,
+              "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
+              "score": 0.5917
+            },
+            {
+              "index": 13,
+              "heading": "3.1Applying LoRA to Transformer",
+              "score": 0.5693
+            },
+            {
+              "index": 31,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.5671
+            },
+            {
+              "index": 61,
+              "heading": "References",
+              "score": 0.5525
+            },
+            {
+              "index": 14,
+              "heading": "3.1Applying LoRA to Transformer",
+              "score": 0.5516
+            },
+            {
+              "index": 33,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.5482
+            },
+            {
+              "index": 30,
+              "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
+              "score": 0.5422
+            },
+            {
+              "index": 34,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.5409
+            }
+          ],
+          "mrr": 0,
+          "metrics": {
+            "5": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "8": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "12": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "20": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 29,
+              "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
+              "score": 0.5984
+            },
+            {
+              "index": 61,
+              "heading": "References",
+              "score": 0.5833
+            },
+            {
+              "index": 31,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.5773
+            },
+            {
+              "index": 13,
+              "heading": "3.1Applying LoRA to Transformer",
+              "score": 0.5725
+            },
+            {
+              "index": 2,
+              "heading": "Abstract",
+              "score": 0.5724
+            },
+            {
+              "index": 14,
+              "heading": "3.1Applying LoRA to Transformer",
+              "score": 0.5695
+            },
+            {
+              "index": 33,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.5673
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.5563
+            }
+          ],
+          "mrr": 0,
+          "metrics": {
+            "5": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "8": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "12": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "20": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "llada-definition",
+      "paper": "llada",
+      "question": "Explique o papel do modelo de linguagem mascarada na abordagem LLaDA.",
+      "evidenceSections": [
+        "2.1",
+        "2.2"
+      ],
+      "anchorChunk": 11,
+      "anchorHeading": "2.1. Probabilistic Formulation",
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 11,
+              "heading": "2.1. Probabilistic Formulation",
+              "score": 0.6838
+            },
+            {
+              "index": 10,
+              "heading": "2.1. Probabilistic Formulation",
+              "score": 0.6489
+            },
+            {
+              "index": 12,
+              "heading": "2.2. Pre-training",
+              "score": 0.6489
+            },
+            {
+              "index": 37,
+              "heading": "5. Conclusion and Discussion",
+              "score": 0.6347
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.629
+            },
+            {
+              "index": 77,
+              "heading": "References",
+              "score": 0.6229
+            },
+            {
+              "index": 5,
+              "heading": "1. Introduction",
+              "score": 0.6216
+            },
+            {
+              "index": 8,
+              "heading": "2. Approach",
+              "score": 0.6159
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 11,
+              "heading": "2.1. Probabilistic Formulation",
+              "score": 0.6219
+            },
+            {
+              "index": 10,
+              "heading": "2.1. Probabilistic Formulation",
+              "score": 0.6006
+            },
+            {
+              "index": 5,
+              "heading": "1. Introduction",
+              "score": 0.5984
+            },
+            {
+              "index": 69,
+              "heading": "References",
+              "score": 0.5858
+            },
+            {
+              "index": 12,
+              "heading": "2.2. Pre-training",
+              "score": 0.5858
+            },
+            {
+              "index": 37,
+              "heading": "5. Conclusion and Discussion",
+              "score": 0.5823
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.5811
+            },
+            {
+              "index": 9,
+              "heading": "2.1. Probabilistic Formulation",
+              "score": 0.5765
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 2,
+              "sections": 2
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "llada-cross-section",
+      "paper": "llada",
+      "question": "Como a amostragem com remascaramento por confiança funciona e por que ela é usada?",
+      "evidenceSections": [
+        "2.4"
+      ],
+      "anchorChunk": 11,
+      "anchorHeading": "2.1. Probabilistic Formulation",
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 19,
+              "heading": "2.4. Inference",
+              "score": 0.5393
+            },
+            {
+              "index": 69,
+              "heading": "References",
+              "score": 0.4402
+            },
+            {
+              "index": 74,
+              "heading": "References",
+              "score": 0.4151
+            },
+            {
+              "index": 33,
+              "heading": "3.3. Reversal Reasoning and Analyses",
+              "score": 0.4078
+            },
+            {
+              "index": 75,
+              "heading": "References",
+              "score": 0.4063
+            },
+            {
+              "index": 73,
+              "heading": "References",
+              "score": 0.3872
+            },
+            {
+              "index": 79,
+              "heading": "References",
+              "score": 0.386
+            },
+            {
+              "index": 20,
+              "heading": "2.4. Inference",
+              "score": 0.3782
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 19,
+              "heading": "2.4. Inference",
+              "score": 0.4458
+            },
+            {
+              "index": 69,
+              "heading": "References",
+              "score": 0.368
+            },
+            {
+              "index": 74,
+              "heading": "References",
+              "score": 0.3551
+            },
+            {
+              "index": 33,
+              "heading": "3.3. Reversal Reasoning and Analyses",
+              "score": 0.337
+            },
+            {
+              "index": 75,
+              "heading": "References",
+              "score": 0.3314
+            },
+            {
+              "index": 73,
+              "heading": "References",
+              "score": 0.3122
+            },
+            {
+              "index": 79,
+              "heading": "References",
+              "score": 0.3053
+            },
+            {
+              "index": 20,
+              "heading": "2.4. Inference",
+              "score": 0.292
+            }
+          ],
+          "firstEvidenceRank": 1,
+          "mrr": 1,
+          "metrics": {
+            "5": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "8": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "12": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            },
+            "20": {
+              "hit": true,
+              "allHit": true,
+              "covered": 1,
+              "sections": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "llada-absent",
+      "paper": "llada",
+      "question": "Quais resultados o artigo apresenta para quantização Q4 dos pesos e Q8 do KV cache?",
+      "evidenceSections": [
+        "artigo completo"
+      ],
+      "anchorChunk": 11,
+      "anchorHeading": "2.1. Probabilistic Formulation",
+      "modes": {
+        "instruction": {
+          "top": [
+            {
+              "index": 27,
+              "heading": "3.2. Benchmark Results",
+              "score": 0.3766
+            },
+            {
+              "index": 28,
+              "heading": "3.2. Benchmark Results",
+              "score": 0.3379
+            },
+            {
+              "index": 81,
+              "heading": "References",
+              "score": 0.337
+            },
+            {
+              "index": 30,
+              "heading": "3.2. Benchmark Results",
+              "score": 0.3269
+            },
+            {
+              "index": 63,
+              "heading": "References",
+              "score": 0.3159
+            },
+            {
+              "index": 74,
+              "heading": "References",
+              "score": 0.3153
+            },
+            {
+              "index": 77,
+              "heading": "References",
+              "score": 0.2945
+            },
+            {
+              "index": 46,
+              "heading": "References",
+              "score": 0.2874
+            }
+          ],
+          "mrr": 0,
+          "metrics": {
+            "5": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "8": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "12": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "20": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            }
+          }
+        },
+        "plain": {
+          "top": [
+            {
+              "index": 27,
+              "heading": "3.2. Benchmark Results",
+              "score": 0.4015
+            },
+            {
+              "index": 28,
+              "heading": "3.2. Benchmark Results",
+              "score": 0.364
+            },
+            {
+              "index": 74,
+              "heading": "References",
+              "score": 0.3598
+            },
+            {
+              "index": 30,
+              "heading": "3.2. Benchmark Results",
+              "score": 0.3578
+            },
+            {
+              "index": 81,
+              "heading": "References",
+              "score": 0.3365
+            },
+            {
+              "index": 72,
+              "heading": "References",
+              "score": 0.3237
+            },
+            {
+              "index": 77,
+              "heading": "References",
+              "score": 0.3193
+            },
+            {
+              "index": 51,
+              "heading": "References",
+              "score": 0.3192
+            }
+          ],
+          "mrr": 0,
+          "metrics": {
+            "5": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "8": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "12": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            },
+            "20": {
+              "hit": false,
+              "allHit": false,
+              "covered": 0,
+              "sections": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "seconds": 177.8
+}

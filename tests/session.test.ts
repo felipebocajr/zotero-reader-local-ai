@@ -3,14 +3,17 @@ import assert from "node:assert/strict";
 import { ReadingSession, RequestGate } from "../src/session.ts";
 import { PaperCache } from "../src/paper.ts";
 import { DEFAULTS } from "../src/config.ts";
+import { splitRecursive } from "../src/chunking.ts";
 import { EXPLAIN_BRIEF_QUESTION, EXPLAIN_QUESTION } from "../src/prompt.ts";
 import type { LlamaClient } from "../src/client.ts";
+import type { RetrievalService } from "../src/retrieval.ts";
 import type { Message, SaveAnswer, Settings } from "../src/types.ts";
 
 const paper = { text: "artigo", title: "Paper", extractedPages: 1, totalPages: 1 };
-function sessionWith(gate: RequestGate, generate: LlamaClient["generate"], changed = () => {}, save?: SaveAnswer, settings: () => Settings = () => DEFAULTS) {
+function sessionWith(gate: RequestGate, generate: LlamaClient["generate"], changed = () => {}, save?: SaveAnswer,
+  settings: () => Settings = () => DEFAULTS, retrieval?: RetrievalService) {
   const cache = new PaperCache({ describe: async () => ({ path: "/a", title: "A", size: 1, modified: 1 }), extract: async () => paper });
-  return new ReadingSession(1, "trecho", cache, gate, () => ({ generate }) as LlamaClient, settings, changed, save);
+  return new ReadingSession(1, "trecho", cache, gate, () => ({ generate }) as LlamaClient, settings, changed, save, retrieval);
 }
 test("session reads the language for each request, including an existing conversation", async () => {
   let settings = { ...DEFAULTS };
@@ -95,6 +98,22 @@ test("failed or streaming answers cannot be saved; save errors leave completed a
   assert.equal(session.state.answerSaves[0].phase, "error"); assert.match(session.state.answerSaves[0].error!, /salvar/);
   await session.saveAnswer(0); assert.equal(session.state.answerSaves[0].phase, "saved"); assert.equal(attempts, 2);
 });
+test("embeddings mode sends retrieved excerpts and records the retrieval note", async () => {
+  const requests: Message[][] = [];
+  const chunk = splitRecursive("1 Introduction\n\nExcerpt only text. ")[0]!;
+  const retrieval = {
+    getContext: async () => ({ chunks: [chunk], totalChunks: 4, estimatedPromptTokens: 123 }),
+  } as unknown as RetrievalService;
+  const session = sessionWith(new RequestGate(), async messages => {
+    requests.push(messages); return { answer: "A", promptTokens: 1 };
+  }, () => {}, undefined, () => ({ ...DEFAULTS, retrievalMode: "embeddings" }), retrieval);
+  await session.ask("Pergunta?");
+  assert.match(requests[0][1].content, /TRECHOS RECUPERADOS DO ARTIGO/);
+  assert.doesNotMatch(requests[0][1].content, /Excerpt only text\.[\s\S]*Excerpt only text\./);
+  assert.deepEqual(session.state.retrieval, { chunks: 1, totalChunks: 4, estimatedPromptTokens: 123 });
+  assert.equal(session.state.phase, "complete");
+});
+
 test("late annotation saves after reset or close cannot update a different conversation", async () => {
   let finish!: (id: number) => void, changes = 0;
   const session = sessionWith(new RequestGate(), async () => ({ answer: "final", promptTokens: 1 }), () => { changes++; },

@@ -65,9 +65,41 @@ Depois:
 python3 scripts/rdp.py --file scripts/zotero-ui-tests.js
 ```
 
-Os testes usam o leitor real e suas seleções temporárias, sem salvar anotações. Verificam as ações, foco, streaming sem raciocínio, conversa, independência das perguntas, texto completo, cancelamento, erros, posição, o botão Expandir/Restaurar, o redimensionamento por arrasto e a movimentação pelo cabeçalho do popup. Evidências ficam em `experiments/results/native-acceptance.json`; capturas de tela ficam em `.runtime/native-popup-*.png`.
+Os testes usam o leitor real e suas seleções temporárias, sem salvar anotações. Verificam as ações, foco, streaming sem raciocínio, conversa, independência das perguntas, modo de artigo completo, cancelamento, erros, posição, o botão Expandir/Restaurar, o redimensionamento por arrasto e a movimentação pelo cabeçalho do popup. A parte final alterna para trechos e confere o aviso de recuperação. Evidências ficam em `experiments/results/native-acceptance.json`; capturas de tela ficam em `.runtime/native-popup-*.png`.
+
+Para validar somente o RAG, com o mock em `18080` e o perfil isolado:
+
+```bash
+python3 scripts/rdp.py --file scripts/zotero-embedding-tests.js
+python3 scripts/rdp.py --file scripts/zotero-rag-tests.js
+```
+
+O primeiro verifica o servidor gerenciado, 1.024 dimensões e a similaridade cross-language; grava `experiments/results/native-embedding.json`. O segundo verifica o prompt com trechos, a ausência do artigo completo e o aviso no popup; grava `experiments/results/native-rag.json`.
 
 Os testes simulados verificam integração e protocolo. A qualidade e a velocidade da LFM são avaliadas com o runtime real, separadamente.
+
+## RAG e embeddings
+
+O contexto padrão é recuperado, não o artigo completo. `src/chunking.ts` divide o texto com `chunkSize=1200`, overlap de 160 caracteres e a hierarquia `["\n\n", ". ", ".\n", "\n", " ", ""]`; headings detectados viram fronteiras de seção. `src/embeddings.ts` fala com o servidor local OpenAI-compatible; `src/retrieval.ts` embeda os chunks com heading, embeda a pergunta com a instrução fixa em inglês, mantém o chunk do trecho selecionado e vizinhos da mesma seção, remove referências e corta pelo orçamento.
+
+`src/embedding-runtime.ts` inicia sob demanda o `scripts/serve_embedding.py` em `127.0.0.1:18081`, com Qwen3-Embedding-0.6B Q8_0, `--embedding --pooling last` e fallback GPU → CPU. O processo é propriedade do plugin; um servidor externo é detectado e nunca é parado. Vetores ficam em memória, indexados pela assinatura do PDF, modelo e dimensões; não há banco vetorial.
+
+O modelo é baixado por `scripts/setup_runtime.py --backend auto` (Q8_0, 639 MB). Use `--no-embedding` para pular ou `--embedding-precision F16` para o controle de qualidade. O setup baixa chat e embeddings por padrão.
+
+Testes:
+
+- `tests/chunking.test.ts`: parágrafo, frase, linha, palavra, caractere, overlap, headings, form feeds e cobertura dos 7 artigos.
+- `tests/embeddings.test.ts`: lote, normalização, cosseno, loopback e erros HTTP.
+- `tests/retrieval.test.ts`: âncora, orçamento, cache de documentos e prompt de trechos.
+- `tests/embedding-runtime.test.ts`: início único, servidor externo, projeto ausente e modelo divergente.
+- `scripts/embedding_benchmark.ts`: hit@k/MRR com `experiments/cases.json`; grava `experiments/results/embedding-retrieval-qwen3-0.6b-zotero.json`. Não substitui o benchmark de precisão.
+- `scripts/retrieval_smoke.ts`: recuperação real com o Attention e o servidor local.
+- `scripts/zotero-embedding-tests.js`: servidor gerenciado, 1.024 dimensões e cosseno cross-language no perfil isolado.
+- `scripts/zotero-rag-tests.js`: popup com trechos, aviso de contagem e ausência do artigo completo.
+
+No texto real do Zotero, o splitter gerou 284 chunks em 5 artigos, 100% em fronteiras naturais. O benchmark de recuperação com 10 casos não-ausentes ficou em 9/10 no top 5, 10/10 no top 12 e MRR 0,727 com instrução. O único caso fora do top 5 ficou em 10º; não há evidência para adicionar reranker.
+
+O modo **Artigo completo** continua explícito nas preferências e envia todas as páginas. O benchmark de precisão entregue usa esse caminho; não o sobrescreva com resultados de RAG.
 
 ## Provedor Groq
 
@@ -75,7 +107,7 @@ Os testes simulados verificam integração e protocolo. A qualidade e a velocida
 
 `scripts/zotero-groq-pane-tests.js`, executado no perfil isolado com o RDP, verifica os controles nativos: provedor local por padrão, campos do Groq ocultos, troca de provedor, persistência da chave/modelo, endpoint fixo `https://api.groq.com/openai/v1`, estado externo e restauração do modelo local. O teste também não acessa a rede; ele grava `experiments/results/native-groq-pane.json`.
 
-No Groq, o contexto é estimado de forma conservadora (aproximadamente 3,5 caracteres por token) porque a API não expõe `/apply-template` nem `/tokenize`. O artigo completo continua sendo enviado; se a estimativa com a reserva de geração exceder o contexto configurado, o plugin recusa antes do envio e não corta o artigo. O modelo padrão é `openai/gpt-oss-120b`; modelos de raciocínio recebem `reasoning_effort: "low"` para preservar a reserva da resposta. A chave fica nas preferências do Zotero em texto puro neste protótipo e nunca deve ser gravada em logs, status ou artefatos de experimento.
+No Groq, o contexto é estimado de forma conservadora (aproximadamente 3,5 caracteres por token) porque a API não expõe `/apply-template` nem `/tokenize`. No modo padrão, somente os trechos recuperados são enviados; o orçamento é de 5.500 tokens de entrada, dentro do ITPM de 7.000 da conta free. O modo **Artigo completo** envia todas as páginas e exige um limite maior; se a estimativa com a reserva de geração exceder o contexto configurado, o plugin recusa antes do envio e não corta o artigo. O modelo padrão é `openai/gpt-oss-120b`; modelos de raciocínio recebem `reasoning_effort: "low"` para preservar a reserva da resposta. A chave fica nas preferências do Zotero em texto puro neste protótipo e nunca deve ser gravada em logs, status ou artefatos de experimento.
 
 Para o teste real, instale o XPI, abra **Configurações → Assistente local**, escolha **Groq (API)**, informe a chave e o modelo e salve. Depois abra um PDF e faça uma pergunta; a primeira chamada também valida a chave e o modelo.
 
@@ -226,7 +258,8 @@ O Zotero destrói o sandbox da página antes de enviar `unload` à janela. Opera
 - A requisição HTTP sai do bootstrap privilegiado. Nenhum script web de conteúdo recebe acesso ao servidor.
 - `/apply-template` e `/tokenize` com `add_special:true, parse_special:true` contam o prompt, incluindo BOS. `/props` confirma contexto e slot único. `/v1/chat/completions` transmite SSE, separando `reasoning_content` de `content`. `scripts/smoke_runtime.ts` confere a contagem contra `timings.prompt_n` com inferência real.
 - Desativar o plugin cancela sessões, remove ações, popups, estilos, página de configurações e listeners e encerra seu servidor gerenciado. Servidores externos continuam sob controle do usuário.
-- `src/runtime.ts` controla propriedade e ciclo de vida; `src/zotero-runtime.ts` isola `Subprocess`, o seletor nativo de pasta e IO. `scripts/serve.py --managed --parent-pid` termina com EOF do controle ou saída do Zotero. Nenhum PID de arquivo de estado é adotado como processo próprio.
+- `src/runtime.ts` controla propriedade e ciclo de vida do chat; `src/embedding-runtime.ts` controla o servidor de embeddings. `src/zotero-runtime.ts` isola `Subprocess`, o seletor nativo de pasta e IO. `scripts/serve.py --managed --parent-pid` e `scripts/serve_embedding.py --managed --parent-pid` terminam com EOF do controle ou saída do Zotero. Nenhum PID de arquivo de estado é adotado como processo próprio.
+- `src/embeddings.ts` usa `/v1/embeddings` no loopback, normaliza os vetores e valida 1.024 dimensões. `src/retrieval.ts` mantém o índice em memória e corta o prompt pelo orçamento. O status transitório do chat fica em `.runtime/server-<porta>.json`; o dos embeddings, em `.runtime/embedding-<porta>.json`, sem prompts ou histórico.
 - `Zotero.Annotations.saveFromJSON` cria um destaque com o trecho e a resposta escolhida como comentário. A API cuida de sua transação e envia notificações aos leitores abertos. O plugin captura os metadados originais da seleção e gera sua própria chave de anotação. Uma gravação solicitada pelo usuário pode terminar após fechar o popup; isso não mantém nem restaura a conversa.
 - O runtime de uso prefere GPU inteira e ajusta a distribuição para GPU/CPU em falta de VRAM. Testes de distribuição fixa e benchmarks usam `--backend` e `--gpu-layers` explícitos, sem fallback. [runtime.md](runtime.md) descreve os comandos e a validação separada.
 

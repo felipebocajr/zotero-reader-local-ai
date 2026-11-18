@@ -58,6 +58,13 @@
       <html:p id="reader-local-ai-model-description" style="margin:0;font-size:12px" />
       <html:label>Idioma das respostas <html:select id="reader-local-ai-responseLanguage" style="width:100%" /></html:label>
       <html:p style="margin:0;font-size:12px">Preferência para novas respostas, inclusive nas continuações. Você pode pedir outro idioma na pergunta. Não é necessário reiniciar o servidor.</html:p>
+      <html:label>Contexto enviado
+        <html:select id="reader-local-ai-retrievalMode" style="width:100%" onchange="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.updateRetrieval()">
+          <html:option value="embeddings">Trechos relevantes (padrão)</html:option>
+          <html:option value="full">Artigo completo</html:option>
+        </html:select>
+      </html:label>
+      <html:p id="reader-local-ai-retrieval-description" style="margin:0;font-size:12px"></html:p>
       <html:fieldset id="reader-local-ai-local-settings" style="display:grid;gap:10px;border:1px solid var(--color-border,#999);border-radius:6px">
         <html:legend>Servidor local</html:legend>
         <html:label>Pasta do projeto <html:input id="reader-local-ai-projectRoot" type="text" style="width:100%" placeholder="Pasta que contém scripts/serve.py e .runtime" /></html:label>
@@ -71,6 +78,15 @@
         </html:div>
         <html:p id="reader-local-ai-runtime-status" role="status" aria-live="polite" style="margin:0" />
         <html:details id="reader-local-ai-runtime-details" hidden="hidden"><html:summary>Detalhes do erro</html:summary><html:pre id="reader-local-ai-runtime-log" style="white-space:pre-wrap;overflow-wrap:anywhere;max-height:180px;overflow:auto;font-size:11px" /></html:details>
+      </html:fieldset>
+      <html:fieldset id="reader-local-ai-embedding-settings" style="display:grid;gap:8px;border:1px solid var(--color-border,#999);border-radius:6px">
+        <html:legend>Embeddings locais</html:legend>
+        <html:p style="margin:0;font-size:12px">Qwen3-Embedding-0.6B, Q8_0, 1.024 dimensões. Usado no modo “Trechos relevantes”; o modelo roda localmente, inclusive quando o provedor é o Groq.</html:p>
+        <html:div style="display:flex;gap:8px;flex-wrap:wrap">
+          <html:button type="button" id="reader-local-ai-start-embeddings" onclick="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.runEmbedding('start')">Preparar embeddings</html:button>
+          <html:button type="button" id="reader-local-ai-stop-embeddings" onclick="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.runEmbedding('stop')">Parar</html:button>
+        </html:div>
+        <html:p id="reader-local-ai-embedding-status" role="status" aria-live="polite" style="margin:0"></html:p>
       </html:fieldset>
       <html:details>
         <html:summary>Contexto e conexão</html:summary>

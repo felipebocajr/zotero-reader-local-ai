@@ -47,6 +47,12 @@ test("only supported language preferences are accepted and explicit requests rem
   assert.ok(messages[1].content.includes("Responda em inglês, por favor."));
   assert.match(messages[0].content, /Change language only if the user explicitly requests it/);
 });
+test("retrieval mode defaults to embeddings and rejects unknown modes", () => {
+  assert.equal(DEFAULTS.retrievalMode, "embeddings");
+  assert.equal(validateSettings({ ...DEFAULTS, retrievalMode: "full" }).retrievalMode, "full");
+  assert.throws(() => validateSettings({ ...DEFAULTS, retrievalMode: "bm25" as any }), /trechos relevantes ou o artigo completo/);
+});
+
 test("blank questions and selections are rejected", () => {
   assert.throws(() => buildMessages(paper, "trecho", " "));
   assert.throws(() => buildMessages(paper, " ", "pergunta"));

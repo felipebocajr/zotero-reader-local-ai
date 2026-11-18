@@ -23,10 +23,15 @@ export const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
 export const GROQ_DEFAULT_MODEL = "openai/gpt-oss-120b";
 export const GROQ_MAX_CONTEXT = 131072;
 
+export const EMBEDDING_BASE_URL = "http://127.0.0.1:18081";
+export const EMBEDDING_MODEL = "qwen3-embedding-0.6b";
+export const EMBEDDING_DIMENSIONS = 1024;
+export const RETRIEVAL_INPUT_TOKENS = { local: 16000, groq: 5500 } as const;
+
 export const DEFAULTS: Settings = {
   provider: "local",
   baseUrl: "http://127.0.0.1:8080", model: "lfm2.5-8b-a1b", apiKey: "",
-  responseLanguage: "en",
+  responseLanguage: "en", retrievalMode: "embeddings",
   contextTokens: 64000, generationTokens: 4096, timeoutMs: 600000,
 };
 export const PREF_PREFIX = "extensions.reader-local-ai.";
@@ -40,6 +45,9 @@ export function validateSettings(input: Settings): Settings {
   const apiKey = typeof input.apiKey === "string" ? input.apiKey : "";
   if (!RESPONSE_LANGUAGE_OPTIONS.some(option => option.id === input.responseLanguage)) {
     throw new ReaderError("config", "Escolha Português (Brasil) ou Inglês para o idioma das respostas.");
+  }
+  if (input.retrievalMode !== "embeddings" && input.retrievalMode !== "full") {
+    throw new ReaderError("config", "Escolha trechos relevantes ou o artigo completo como contexto.");
   }
   if (
       !Number.isInteger(input.generationTokens) || input.generationTokens < 256 || input.generationTokens >= input.contextTokens ||

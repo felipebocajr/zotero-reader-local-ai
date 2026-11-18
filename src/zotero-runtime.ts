@@ -35,8 +35,9 @@ export function createRuntimePlatform(host: NativeHost): RuntimePlatform {
         if (!/^(x86_64|amd64)/i.test(host.abi ?? "")) throw new Error("Windows ARM64 não é suportado. Use Windows x64.");
         if (!/^(?:[a-zA-Z]:[\\/]|\\\\)/.test(root)) throw new Error("Escolha uma pasta com caminho absoluto.");
       } else if (!root.startsWith("/")) throw new Error("Escolha uma pasta com caminho absoluto.");
-      if (!await io.exists(root) || !await io.exists(paths.join(root, "scripts", "serve.py")) || !await io.exists(paths.join(root, "runtime.lock.json"))) {
-        throw new Error("A pasta escolhida não contém scripts/serve.py e runtime.lock.json. Selecione a pasta deste projeto.");
+      if (!await io.exists(root) || !await io.exists(paths.join(root, "scripts", "serve.py")) ||
+          !await io.exists(paths.join(root, "scripts", "serve_embedding.py")) || !await io.exists(paths.join(root, "runtime.lock.json"))) {
+        throw new Error("A pasta escolhida não contém scripts/serve.py, scripts/serve_embedding.py e runtime.lock.json. Selecione a pasta deste projeto.");
       }
       return root;
     },
@@ -72,9 +73,53 @@ export function createRuntimePlatform(host: NativeHost): RuntimePlatform {
         },
       };
     },
+    async spawnEmbedding(config): Promise<OwnedProcess> {
+      const lock = await io.readJSON(paths.join(config.projectRoot, "runtime.lock.json"));
+      const model = lock.embeddingModels?.[config.model];
+      const filename = model?.variants?.Q8_0?.filename;
+      if (!filename || !await io.exists(paths.join(config.projectRoot, ".runtime", "models", filename))) {
+        const python = windows ? "py -3" : "python3";
+        throw new Error(`O modelo de embeddings ${config.model} ainda não foi preparado. Execute uma vez: ${python} scripts/setup_runtime.py`);
+      }
+      const python = await findPython();
+      const process = await subprocess.call({ command: python.command, workdir: config.projectRoot, stderr: "stdout",
+        arguments: [...python.prefix, "-u", paths.join(config.projectRoot, "scripts", "serve_embedding.py"),
+          "--model", config.model, "--port", String(config.port), "--managed", "--parent-pid", String(host.processID)] });
+      let tail = "";
+      const pump = (async () => {
+        try { for (;;) { const chunk = await process.stdout.readString(); if (!chunk) break; tail = (tail + chunk).slice(-8000); } }
+        catch { /* Pipe closes when Zotero shuts down. */ }
+      })();
+      const exited = process.wait().then(async ({ exitCode }: { exitCode: number }) => { await pump; return exitCode; });
+      let stopping: Promise<void> | undefined;
+      return { pid: process.pid, exited, tail: () => tail,
+        stop() {
+          if (!stopping) stopping = (async () => {
+            try { if (typeof process.stdin.write === "function") await process.stdin.write("stop\n"); } catch { /* Pipe already closed. */ }
+            await process.stdin.close().catch(() => {});
+            const cancel = later(() => { void process.kill(15000).catch(() => {}); }, 15000);
+            try { await exited; } finally { cancel(); }
+          })();
+          return stopping;
+        },
+      };
+    },
     async readStatus(config): Promise<SupervisorStatus | undefined> {
       try { return await io.readJSON(paths.join(config.projectRoot, ".runtime", `server-${config.port}.json`)); }
       catch { return undefined; }
+    },
+    async probeEmbedding(baseUrl): Promise<{ ready: boolean; model?: string } | undefined> {
+      const abort = new AbortController();
+      const cancel = later(() => abort.abort(), 1500);
+      let reachable = false;
+      try {
+        const health = await host.fetch(baseUrl + "/health", { signal: abort.signal, redirect: "error" });
+        reachable = true;
+        if (!health.ok) return { ready: false };
+        const models = await host.fetch(baseUrl + "/v1/models", { signal: abort.signal, redirect: "error" }).then(r => r.json());
+        return { ready: true, model: models.data?.[0]?.id };
+      } catch { return reachable ? { ready: false } : undefined; }
+      finally { cancel(); }
     },
     async probe(baseUrl): Promise<ServerProbe | undefined> {
       const abort = new AbortController();

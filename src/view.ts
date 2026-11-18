@@ -242,13 +242,15 @@ export function createPopup(doc: Document, anchor: DOMRect, selection: string, h
     element: root, close, question,
     render(state) {
       if (closed) return;
-      const busy = ["extracting", "preparing", "generating"].includes(state.phase);
+      const busy = ["extracting", "preparing", "indexing", "generating"].includes(state.phase);
       send.disabled = busy; field.disabled = busy; cancel.hidden = !busy;
       fresh.hidden = busy || !state.history.length;
       more.hidden = busy || !state.history.length || (!form.hidden && followup);
       if (busy || state.phase === "complete") form.hidden = true;
       if (state.phase === "error") { form.hidden = false; field.value = state.question || field.value; }
-      status.textContent = { idle: "", extracting: "Lendo o artigo completo…", preparing: "Conferindo o contexto…", generating: state.draft ? "Respondendo…" : "Preparando a explicação…", complete: "", error: "" }[state.phase];
+      status.textContent = { idle: "", extracting: "Lendo o artigo completo…", preparing: "Conferindo o contexto…", indexing: "Preparando os trechos relevantes…", generating: state.draft ? "Respondendo…" : "Preparando a explicação…", complete: state.retrieval
+        ? `Trechos relevantes: ${state.retrieval.chunks} de ${state.retrieval.totalChunks} · ~${Math.round(state.retrieval.estimatedPromptTokens).toLocaleString("pt-BR")} tokens`
+        : "", error: "" }[state.phase];
       status.hidden = !status.textContent; error.textContent = state.error; error.hidden = !state.error;
       history.replaceChildren();
       const turns = [...state.history];

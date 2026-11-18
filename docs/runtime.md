@@ -47,6 +47,25 @@ Selecione **LFM2.5-8B-A1B — padrão** ou **LFM3-1.7B — contexto de 256K** na
 
 Os modelos de produto (8B-A1B e LFM3-1.7B) usam contexto padrão de **64.000 tokens** e a mesma política GPU → GPU/CPU → CPU. O 8B-A1B aceita até 128.000 tokens e o LFM3-1.7B até 262.144; o 2.6B legado aceita 131.072. O 8B-A1B mantém todos os especialistas em memória, embora ative apenas parte deles por token; seus arquivos oficiais Q4_K_M, Q8_0 e F16 ocupam aproximadamente 5,16, 9,01 e 16,95 GB. O LFM3-1.7B ocupa aproximadamente 1,10, 1,85 e 3,47 GB nas mesmas precisões. Os hashes e a revisão estão fixados em `runtime.lock.json`; `--precision all` baixa apenas as precisões do modelo selecionado. O fallback conserva o modelo escolhido. O LFM3 usa o template `<think>` e exige llama.cpp b11960+; o raciocínio oculto fica em `reasoning_content` e não é exibido. O LFM3 foi validado em Linux/CUDA com inferência real e contagem de tokens; a aceitação nativa no Zotero e a validação em Windows ainda precisam ser registradas antes de tratá-lo como equivalente aos modelos anteriores.
 
+## Embeddings locais
+
+O modo padrão de contexto usa RAG: o artigo é dividido em chunks e apenas os trechos mais relevantes são enviados ao modelo. Os embeddings são gerados localmente por **Qwen3-Embedding-0.6B Q8_0** (639 MB, 1.024 dimensões, contexto de 32k, 100+ idiomas). A revisão e o SHA-256 estão em `runtime.lock.json`.
+
+O `scripts/setup_runtime.py --backend auto` baixa o modelo de chat e o de embeddings. Para preparar apenas o chat, use `--no-embedding`; para escolher a precisão do embedding, `--embedding-precision Q8_0` ou `F16`.
+
+O servidor é separado do chat e usa `--embedding --pooling last`:
+
+```bash
+python3 scripts/serve_embedding.py
+# porta 18081; GPU primeiro, CPU em caso de falta de VRAM
+```
+
+O plugin inicia esse servidor sob demanda na primeira pergunta em modo de trechos, mantém o processo sob seu controle e o encerra ao desativar o plugin. Se já houver um servidor externo em `127.0.0.1:18081`, ele é detectado e nunca é parado ou adotado; o alias precisa ser `qwen3-embedding-0.6b`.
+
+A instrução fixa `Given a web search query, retrieve relevant passages that answer the query` é aplicada somente à pergunta; os documentos são vetorizados com o heading e o texto do chunk, sem instrução. Os vetores ficam em memória, indexados pela assinatura do PDF, modelo e dimensões. Um artigo com 80 chunks ocupa cerca de 320 KB; não há banco vetorial. O texto do artigo não é gravado em preferências, status ou logs.
+
+Em modo de trechos, o orçamento de entrada é de 16.000 tokens no servidor local (até 24 chunks) e 5.500 no Groq (até 16 chunks). O trecho selecionado e seus vizinhos da mesma seção entram sempre. O modo **Artigo completo** ignora os embeddings e envia todas as páginas.
+
 ## Preparação e modos fixos
 
 ```bash
