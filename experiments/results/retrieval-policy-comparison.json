@@ -1,0 +1,293 @@
+{
+  "generatedAt": "2026-11-18T19:21:24.063Z",
+  "papersDir": "/home/samurai/Projects/zotero-reader-local-ai/.runtime/zotero-splitter-corpus",
+  "model": "qwen3-embedding-0.6b",
+  "dimensions": 1024,
+  "policy": {
+    "our75": "score >= 75% of top, min 4, max 12, anchor+neighbors, references removed",
+    "megagon": "largest score gap in top 90%, cut + 5 buffer, anchor+neighbors, references removed"
+  },
+  "maxGroqInputTokens": 5500,
+  "summary": {
+    "cases": 10,
+    "our75": {
+      "avgChunks": 9.4,
+      "avgTokens": 3286,
+      "hit": 10,
+      "allHit": 10,
+      "overBudget": 0
+    },
+    "megagon": {
+      "avgChunks": 14.7,
+      "avgTokens": 4605,
+      "hit": 10,
+      "allHit": 10,
+      "overBudget": 3
+    }
+  },
+  "results": [
+    {
+      "id": "attention-definition",
+      "paper": "attention",
+      "evidenceSections": [
+        "3.2.1"
+      ],
+      "anchor": 11,
+      "anchorHeading": "3.2.1 Scaled Dot-Product Attention",
+      "our75": {
+        "chunks": 4,
+        "tokens": 1651,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false
+      },
+      "megagon": {
+        "chunks": 7,
+        "tokens": 2306,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false,
+        "gap": 0.0806,
+        "cut": 2,
+        "selectedTarget": 7
+      }
+    },
+    {
+      "id": "attention-cross-section",
+      "paper": "attention",
+      "evidenceSections": [
+        "3.1",
+        "3.2.3"
+      ],
+      "anchor": 14,
+      "anchorHeading": "3.2.3 Applications of Attention in our Model",
+      "our75": {
+        "chunks": 12,
+        "tokens": 3857,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false
+      },
+      "megagon": {
+        "chunks": 7,
+        "tokens": 2688,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false,
+        "gap": 0.0621,
+        "cut": 2,
+        "selectedTarget": 7
+      }
+    },
+    {
+      "id": "rmsnorm-definition",
+      "paper": "rmsnorm",
+      "evidenceSections": [
+        "4.1"
+      ],
+      "anchor": 13,
+      "anchorHeading": "4 RMSNorm",
+      "our75": {
+        "chunks": 5,
+        "tokens": 2142,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false
+      },
+      "megagon": {
+        "chunks": 7,
+        "tokens": 2741,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false,
+        "gap": 0.0542,
+        "cut": 2,
+        "selectedTarget": 7
+      }
+    },
+    {
+      "id": "rmsnorm-cross-section",
+      "paper": "rmsnorm",
+      "evidenceSections": [
+        "5 pRMSNorm"
+      ],
+      "anchor": 21,
+      "anchorHeading": "5 pRMSNorm",
+      "our75": {
+        "chunks": 11,
+        "tokens": 3656,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false
+      },
+      "megagon": {
+        "chunks": 6,
+        "tokens": 2026,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false,
+        "gap": 0.0551,
+        "cut": 1,
+        "selectedTarget": 6
+      }
+    },
+    {
+      "id": "rope-definition",
+      "paper": "rope",
+      "evidenceSections": [
+        "3.2"
+      ],
+      "anchor": 12,
+      "anchorHeading": "3 Proposed Approach",
+      "our75": {
+        "chunks": 11,
+        "tokens": 3564,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false
+      },
+      "megagon": {
+        "chunks": 9,
+        "tokens": 2975,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false,
+        "gap": 0.0597,
+        "cut": 4,
+        "selectedTarget": 9
+      }
+    },
+    {
+      "id": "rope-cross-section",
+      "paper": "rope",
+      "evidenceSections": [
+        "3.2",
+        "3.3"
+      ],
+      "anchor": 12,
+      "anchorHeading": "3 Proposed Approach",
+      "our75": {
+        "chunks": 11,
+        "tokens": 3530,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false
+      },
+      "megagon": {
+        "chunks": 25,
+        "tokens": 7016,
+        "hit": true,
+        "allHit": true,
+        "overBudget": true,
+        "gap": 0.0986,
+        "cut": 22,
+        "selectedTarget": 25
+      }
+    },
+    {
+      "id": "lora-definition",
+      "paper": "lora",
+      "evidenceSections": [
+        "3"
+      ],
+      "anchor": 1,
+      "anchorHeading": "Abstract",
+      "our75": {
+        "chunks": 12,
+        "tokens": 4116,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false
+      },
+      "megagon": {
+        "chunks": 37,
+        "tokens": 10730,
+        "hit": true,
+        "allHit": true,
+        "overBudget": true,
+        "gap": 0.0293,
+        "cut": 32,
+        "selectedTarget": 37
+      }
+    },
+    {
+      "id": "lora-cross-section",
+      "paper": "lora",
+      "evidenceSections": [
+        "3"
+      ],
+      "anchor": 1,
+      "anchorHeading": "Abstract",
+      "our75": {
+        "chunks": 12,
+        "tokens": 4155,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false
+      },
+      "megagon": {
+        "chunks": 7,
+        "tokens": 2746,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false,
+        "gap": 0.048,
+        "cut": 2,
+        "selectedTarget": 7
+      }
+    },
+    {
+      "id": "llada-definition",
+      "paper": "llada",
+      "evidenceSections": [
+        "2.1",
+        "2.2"
+      ],
+      "anchor": 11,
+      "anchorHeading": "2.1. Probabilistic Formulation",
+      "our75": {
+        "chunks": 12,
+        "tokens": 4359,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false
+      },
+      "megagon": {
+        "chunks": 36,
+        "tokens": 10513,
+        "hit": true,
+        "allHit": true,
+        "overBudget": true,
+        "gap": 0.0497,
+        "cut": 31,
+        "selectedTarget": 36
+      }
+    },
+    {
+      "id": "llada-cross-section",
+      "paper": "llada",
+      "evidenceSections": [
+        "2.4"
+      ],
+      "anchor": 11,
+      "anchorHeading": "2.1. Probabilistic Formulation",
+      "our75": {
+        "chunks": 4,
+        "tokens": 1830,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false
+      },
+      "megagon": {
+        "chunks": 6,
+        "tokens": 2305,
+        "hit": true,
+        "allHit": true,
+        "overBudget": false,
+        "gap": 0.1288,
+        "cut": 1,
+        "selectedTarget": 6
+      }
+    }
+  ]
+}

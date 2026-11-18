@@ -51,6 +51,30 @@ Simulação nos 10 casos:
 
 O corte absoluto não é usado: similaridade de cosseno não é probabilidade calibrada e varia com consulta, idioma e backend. O limite relativo preserva o caso `rope-cross-section`, que fica em 10º e seria perdido com um piso de 80%.
 
+### Comparação com Adaptive-k da Megagon Labs
+
+As duas políticas foram executadas nos mesmos 10 casos, com o mesmo modelo, chunking, trecho selecionado, instrução e remoção de referências. O Adaptive-k usa o maior gap entre scores ordenados, busca restrita aos 90% melhores e buffer de 5 chunks, como no paper. A seleção foi medida sem truncamento; os tokens são o prompt completo estimado, e a coluna de orçamento indica quem passaria de 5.500.
+
+| Caso | 75% chunks | 75% tokens | Megagon chunks | Megagon tokens |
+|---|---:|---:|---:|---:|
+| attention-definition | 4 | 1.651 | 7 | 2.306 |
+| attention-cross-section | 12 | 3.857 | 7 | 2.688 |
+| rmsnorm-definition | 5 | 2.142 | 7 | 2.741 |
+| rmsnorm-cross-section | 11 | 3.656 | 6 | 2.026 |
+| rope-definition | 11 | 3.564 | 9 | 2.975 |
+| rope-cross-section | 11 | 3.530 | 25 | **7.016** |
+| lora-definition | 12 | 4.116 | 37 | **10.730** |
+| lora-cross-section | 12 | 4.155 | 7 | 2.746 |
+| llada-definition | 12 | 4.359 | 36 | **10.513** |
+| llada-cross-section | 4 | 1.830 | 6 | 2.305 |
+| **Média** | **9,4** | **3.286** | **14,7** | **4.605** |
+
+As duas atingiram **10/10** de cobertura de evidência. O Adaptive-k usou menos chunks em 4 casos, mas estourou o orçamento de 5.500 tokens em **3 de 10** (rope-cross-section, lora-definition e llada-definition), chegando a 10.730 tokens. O 75% não estourou em nenhum caso.
+
+Motivo: o maior gap pode ocorrer perto da cauda quando os scores são comprimidos, e o buffer de 5 amplia o corte. Em um corpus com 45–89 chunks, isso seleciona 25–37 chunks. Para usar Adaptive-k no plugin, seria necessário um teto rígido e provavelmente ajustar o buffer; o 75% é mais estável para o orçamento do Groq.
+
+Artefato: `experiments/results/retrieval-policy-comparison.json`.
+
 Artefato: `experiments/results/embedding-retrieval-qwen3-0.6b-zotero.json`.
 
 Reprodução:
