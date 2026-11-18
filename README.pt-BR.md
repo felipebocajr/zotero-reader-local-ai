@@ -9,10 +9,10 @@ Extensão do Zotero que ajuda a compreender trechos de PDFs e responder a pergun
 ## Funcionalidades
 
 - Explica trechos selecionados e responde a perguntas sobre o PDF.
-- Exibe a assistência junto ao texto e permite salvar respostas úteis como anotações do Zotero.
+- Exibe a assistência junto ao texto e permite salvar a conversa atual como anotação do Zotero.
 - Formata Markdown e expressões matemáticas.
 - As respostas seguem automaticamente o idioma de cada pergunta, sem uma configuração separada de idioma.
-- Por padrão, usa RAG local: envia ao modelo apenas os trechos mais relevantes do artigo, com Qwen3-Embedding-0.6B. O modo **Artigo completo** continua disponível.
+- Usa RAG local: envia ao modelo apenas os trechos mais relevantes do artigo, com Qwen3-Embedding-0.6B.
 - A inferência é local por padrão; um provedor Groq opcional pode ser configurado com sua própria chave de API.
 - A inferência é local, e as conversas não são salvas automaticamente.
 
@@ -53,13 +53,13 @@ O modelo padrão é o LFM2.5-8B-A1B. Para usar o LFM3-1.7B ou configurar o runti
 ### Provedores
 
 - **Servidor local (padrão):** usa o `llama-server` deste projeto, com contagem exata do template e inferência offline depois da preparação.
-- **Groq (API):** usa sua própria chave `gsk_...`, o modelo escolhido e o contexto configurado. No modo padrão, somente os trechos recuperados, o trecho selecionado e a pergunta são enviados ao Groq pela internet; os embeddings continuam locais. O artigo completo só é enviado se você escolher **Artigo completo** em **Contexto enviado**. Neste protótipo, a chave fica salva nas preferências do Zotero em texto puro; use uma chave com limite de uso.
+- **Groq (API):** usa sua própria chave `gsk_...`, o modelo escolhido e o contexto configurado. Somente os trechos recuperados, o trecho selecionado e a pergunta são enviados ao Groq pela internet; os embeddings continuam locais. Neste protótipo, a chave fica salva nas preferências do Zotero em texto puro; use uma chave com limite de uso.
 
 Para trocar de provedor, abra **Configurações → Assistente local**, escolha **Groq (API)**, cole a chave e pressione **Enter** para buscar os modelos. Escolha um modelo na lista e clique em **Salvar configurações**. Não há servidor local para iniciar nesse modo.
 
 ## Privacidade e limitações
 
-Por padrão, a inferência e os embeddings acontecem no dispositivo. Se você selecionar **Groq (API)**, somente os trechos recuperados, o trecho selecionado e a pergunta serão enviados ao Groq; isso só acontece depois dessa escolha explícita. O artigo completo só vai para o Groq no modo **Artigo completo**, também escolhido explicitamente. A chave fica nas preferências do Zotero em texto puro neste protótipo. A preparação inicial baixa o runtime e os arquivos dos modelos. PDFs escaneados sem texto selecionável precisam de OCR, que não está incluído. As respostas podem conter erros; consulte a [avaliação e seus limites](experiments/report.md).
+Por padrão, a inferência e os embeddings acontecem no dispositivo. Se você selecionar **Groq (API)**, somente os trechos recuperados, o trecho selecionado e a pergunta serão enviados ao Groq; isso só acontece depois dessa escolha explícita. A chave fica nas preferências do Zotero em texto puro neste protótipo. A preparação inicial baixa o runtime e os arquivos dos modelos. PDFs escaneados sem texto selecionável precisam de OCR, que não está incluído. As respostas podem conter erros; consulte a [avaliação e seus limites](experiments/report.md).
 
 ## Desenvolvimento
 

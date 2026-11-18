@@ -32,7 +32,7 @@
     if (!internal._state.sidebarOpen) reader._iframe.contentDocument.querySelector(".sidebar-toggle").click();
     internal.setSidebarView("annotations");
     await wait(() => results.saved.every(record => reader._iframe.contentDocument.querySelector(`[data-sidebar-annotation-id="${record.key}"]`)), "native annotation tab after restart");
-    check("native annotations tab displays responses after restart", results.saved.every(record => reader._iframe.contentDocument.querySelector(`[data-sidebar-annotation-id="${record.key}"]`).textContent.includes("Resposta da IA")));
+    check("native annotations tab displays conversations after restart", results.saved.every(record => reader._iframe.contentDocument.querySelector(`[data-sidebar-annotation-id="${record.key}"]`).textContent.includes("Conversa da IA")));
     const { AddonManager } = ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs");
     const addon = await AddonManager.getAddonByID("reader-local-ai@local.invalid");
     check("distribution XPI active after restart", addon?.isActive && !!Zotero.ReaderLocalAI);

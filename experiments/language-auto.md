@@ -38,7 +38,7 @@ Resposta em inglês:
 
 ## Limitações
 
-- O teste usou o modo **Artigo completo**. O caminho RAG compartilha o mesmo
+- O teste usou o modo interno de artigo completo, não exposto na interface. O caminho RAG compartilha o mesmo
   system prompt e o mesmo lembrete por pergunta, mas não foi medido com geração
   real neste experimento.
 - O teste usou o LFM3-1.7B, não o 8B-A1B padrão.

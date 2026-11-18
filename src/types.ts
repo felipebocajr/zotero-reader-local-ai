@@ -4,7 +4,7 @@ export interface Message {
 }
 export interface Turn { question: string; answer: string }
 export interface AnswerSaveState { phase: "idle" | "saving" | "saved" | "error"; error?: string; annotationId?: number }
-export type SaveAnswer = (turn: Turn) => Promise<number>;
+export type SaveConversation = (turns: readonly Turn[]) => Promise<number>;
 export interface Paper { text: string; extractedPages: number; totalPages: number; title: string; signature?: string }
 export type Provider = "local" | "groq";
 export type RetrievalMode = "embeddings" | "full";

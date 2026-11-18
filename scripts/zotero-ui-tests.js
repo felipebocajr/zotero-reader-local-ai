@@ -69,6 +69,7 @@
     await wait(() => pref.document.getElementById("reader-local-ai-baseUrl")?.value, "preferences loaded");
     check("native preference pane initializes", pref.document.getElementById("reader-local-ai-baseUrl").value === settingsBefore.baseUrl);
     check("response language preference was removed", !pref.document.getElementById("reader-local-ai-responseLanguage"));
+    check("context selector was removed", !pref.document.getElementById("reader-local-ai-retrievalMode"));
     const modelSelect = pref.document.getElementById("reader-local-ai-model");
     check("native model selector offers every model", modelSelect.localName === "select" &&
       [...modelSelect.options].map(option=>option.value).join(",") === "lfm2.5-8b-a1b,lfm3-1.7b");

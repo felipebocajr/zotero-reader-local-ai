@@ -41,7 +41,9 @@
     await win.fetch("http://127.0.0.1:18080/control",{method:"POST",body:JSON.stringify({tokens:10000,math:true})});
     const id=Zotero.Prefs.get("extensions.reader-local-ai.devAttachmentID",true);
     reader=await Zotero.Reader.open(id);await reader._initPromise;
-    await wait(()=>reader._internalReader._primaryView._pdfPages[0],"PDF ready");
+    const view=reader._internalReader._primaryView;
+    await view.initializedPromise;
+    await wait(()=>view._pdfPages[0],"PDF ready");
     const attachment=Zotero.Items.get(id), before=attachment.getAnnotations();
     const prior=new Map(before.map(item=>[item.id,item.annotationComment]));
     await open(); submit("Explique a fórmula da distribuição condicional.");
@@ -59,20 +61,22 @@
     check("display equations scroll inside the popup",[...answer(0).querySelectorAll(".reader-local-ai-math-block")].every(node=>node.getBoundingClientRect().width<=popup().getBoundingClientRect().width));
     await screenshot("native-math-popup");
     button("Continuar perguntando").click();submit("Como os índices se relacionam com as posições?"); await complete();
+    const source2=answer(1).dataset.readerLocalAiSource;
     check("continuation preserves rendered formulas in both answers",popup().querySelectorAll(".reader-local-ai-answer math").length===8);
     popup().querySelector(".reader-local-ai-save-answer").click();
-    await wait(()=>popup().querySelector(".reader-local-ai-save-answer").textContent==="Salvo nas anotações","saved answer");
+    await wait(()=>popup().querySelector(".reader-local-ai-save-answer").textContent==="Salvo nas anotações","saved conversation");
     const added=attachment.getAnnotations().filter(item=>!prior.has(item.id));
-    check("only chosen answer creates one annotation",added.length===1);
+    check("one annotation contains the whole conversation",added.length===1);
     const item=added[0], originalComment=item.annotationComment;
-    check("saved comment preserves exact original TeX",originalComment==="Resposta da IA\n\nPergunta: Explique a fórmula da distribuição condicional.\n\n"+source);
+    const expectedComment=`Conversa da IA\n\n### Você\nExplique a fórmula da distribuição condicional.\n\n### Assistente\n${source}\n\n### Você\nComo os índices se relacionam com as posições?\n\n### Assistente\n${source2}`;
+    check("saved comment preserves exact original TeX",originalComment===expectedComment);
     check("generated markup is never stored",!/<math|<span/.test(originalComment));
     result.saved.push({key:item.key,id:item.id,comment:originalComment});
     const native=reader._internalReader;
     if(!native._state.sidebarOpen)doc().querySelector(".sidebar-toggle").click(); native.setSidebarView("annotations");
     const row=()=>doc().querySelector(`[data-sidebar-annotation-id="${item.key}"]`);
     await wait(()=>row()?.querySelector(".reader-local-ai-annotation-math math"),"annotation MathML preview");
-    check("saved annotation shows four formatted equations",row().querySelectorAll(".reader-local-ai-annotation-math math").length===4);
+    check("saved annotation shows eight formatted equations",row().querySelectorAll(".reader-local-ai-annotation-math math").length===8);
     let editor=row().querySelector(".comment .content");
     check("native editor contains original source and no MathML",editor.innerText===originalComment&&!editor.querySelector("math"));
     const comment=row().querySelector(".comment"); comment.click();
@@ -84,7 +88,7 @@
     editor.innerText=originalComment+String.raw` Edição: \(\alpha_0\).`;
     editor.dispatchEvent(new (doc().defaultView.InputEvent)("input",{bubbles:true,inputType:"insertText"})); editor.blur();
     await wait(()=>item.annotationComment.includes("Edição:"),"edited source persisted");
-    await wait(()=>row()?.querySelectorAll(".reader-local-ai-annotation-math math").length===5,"preview after native editing");
+    await wait(()=>row()?.querySelectorAll(".reader-local-ai-annotation-math math").length===9,"preview after native editing");
     check("native edits refresh math without inserting markup",!/<math|<span/.test(item.annotationComment));
     check("pre-existing annotations remain unchanged",[...prior].every(([id,text])=>Zotero.Items.get(id).annotationComment===text));
     await screenshot("native-math-annotation");
@@ -99,7 +103,7 @@
     check("disable removes projections and restores native comments",!doc().querySelector(".reader-local-ai-annotation-math,.reader-local-ai-math-comment"));
     await addon.enable();await wait(()=>!!Zotero.ReaderLocalAI,"plugin enabled");
     await wait(()=>row()?.querySelector(".reader-local-ai-annotation-math math"),"existing annotation restored without a new selection");
-    check("re-enable formats existing saved math",row().querySelectorAll(".reader-local-ai-annotation-math math").length===5);
+    check("re-enable formats existing saved math",row().querySelectorAll(".reader-local-ai-annotation-math math").length===9);
   } catch(error) {result.errors.push({message:String(error),stack:error.stack});}
   finally {
     if(reader)popup()?.querySelector(".reader-local-ai-close").click();

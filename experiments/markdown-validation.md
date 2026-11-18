@@ -15,6 +15,8 @@ Validação no Zotero 10.0.3 com perfil e biblioteca isolados:
 | [Regressão nativa do popup](results/native-acceptance.json) | 39 passaram |
 | [Regressão nativa das anotações](results/native-annotations.json) | 21 passaram |
 
+As contagens acima são da rodada original desta validação; os artefatos linkados são atualizados a cada regressão nativa.
+
 O [XPI final](results/markdown-build-validation.json) foi instalado pelo AddonManager no perfil isolado, ativou sem erro, passou na verificação ZIP e corresponde byte a byte ao pacote instalado. O teste de persistência repetiu a inspeção depois de encerrar e reabrir o Zotero com o XPI sem harness. O baseline de precisão não foi alterado; esta mudança afeta apenas a apresentação e mantém o prompt e as respostas originais.
 
 Use [os comandos de desenvolvimento](../docs/development.md#renderização-de-markdown-e-latex) para repetir. As capturas foram verificadas visualmente em `.runtime/native-markdown-popup.png` e `.runtime/native-markdown-annotation.png` no perfil de teste.

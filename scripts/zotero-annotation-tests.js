@@ -75,12 +75,15 @@
       answer: popup(reader).querySelector(".reader-local-ai-answer").dataset.readerLocalAiSource,
       selection: popup(reader).querySelector("blockquote").textContent };
     button(reader, "Continuar perguntando").click(); submit(reader, "Segunda pergunta da conversa."); await complete(reader);
+    const second = { question: popup(reader).querySelectorAll(".reader-local-ai-question")[1].textContent,
+      answer: popup(reader).querySelectorAll(".reader-local-ai-answer")[1].dataset.readerLocalAiSource };
     check("each completed answer has its own save action", popup(reader).querySelectorAll(".reader-local-ai-save-answer").length === 2);
     const click = saveButton(reader, 0); click.click(); click.click(); await saved(reader, 0); await sleep(200);
-    check("duplicate click saves exactly one annotation", added().length === 1 && saveButton(reader, 0).disabled);
+    check("duplicate click saves exactly one conversation annotation", added().length === 1 &&
+      saveButton(reader, 0).disabled && saveButton(reader, 1).disabled);
     const firstItem = added()[0];
-    check("only chosen answer and its question are saved", firstItem.annotationComment === `Resposta da IA\n\nPergunta: ${first.question}\n\n${first.answer}`
-      && !firstItem.annotationComment.includes("Segunda pergunta"));
+    const expectedComment = `Conversa da IA\n\n### Você\n${first.question}\n\n### Assistente\n${first.answer}\n\n### Você\n${second.question}\n\n### Assistente\n${second.answer}`;
+    check("the whole conversation is saved in order", firstItem.annotationComment === expectedComment);
     check("annotation belongs to selected PDF and preserves quote", firstItem.parentID === reader.itemID && firstItem.annotationType === "highlight" && firstItem.annotationText === first.selection);
     check("annotation contains no hidden reasoning", !firstItem.annotationComment.includes("SECRET_REASONING"));
     const native = reader._internalReader;
@@ -89,20 +92,22 @@
     check("native PDF coordinates preserved", position.pageIndex === 0 && position.rects.length > 0);
     restoreEditable = attachment.isEditable;
     attachment.isEditable = () => false;
-    saveButton(reader, 1).click();
+    button(reader, "Nova pergunta").click(); submit(reader, "Terceira pergunta em uma conversa nova."); await complete(reader);
+    saveButton(reader, 0).click();
     await wait(() => popup(reader).querySelector(".reader-local-ai-save-error"), "readonly save error");
     check("readonly error is legible and does not create annotation", popup(reader).querySelector(".reader-local-ai-save-error").textContent.includes("sem permissão") && added().length === 1);
     attachment.isEditable = restoreEditable; restoreEditable = null;
-    saveButton(reader, 1).focus();
+    saveButton(reader, 0).focus();
     const keyboardWindow = reader._iframeWindow;
     const keyboard = Components.classes["@mozilla.org/text-input-processor;1"].createInstance(Components.interfaces.nsITextInputProcessor);
     if (!keyboard.beginInputTransactionForTests(keyboardWindow)) throw new Error("Keyboard transaction unavailable");
     keyboard.keydown(new keyboardWindow.KeyboardEvent("keydown", { key: "Enter", code: "Enter", keyCode: 13 }));
     keyboard.keyup(new keyboardWindow.KeyboardEvent("keyup", { key: "Enter", code: "Enter", keyCode: 13 }));
-    await saved(reader, 1);
-    check("save action works with trusted keyboard Enter", saveButton(reader, 1).disabled);
-    check("retry saves a different chosen answer", added().length === 2 && added().some(item => item.annotationComment.includes("Segunda pergunta")));
-    button(reader, "Nova pergunta").click(); submit(reader, "Terceira pergunta após reiniciar a conversa."); await complete(reader);
+    await saved(reader, 0);
+    check("save action works with trusted keyboard Enter", saveButton(reader, 0).disabled);
+    check("second conversation saves its own snapshot", added().length === 2 &&
+      added().some(item => item.annotationComment.includes("Terceira pergunta") && !item.annotationComment.includes("Primeira pergunta")));
+    button(reader, "Nova pergunta").click(); submit(reader, "Quarta pergunta após reiniciar a conversa."); await complete(reader);
     check("new question has independent unsaved answer", popup(reader).querySelectorAll(".reader-local-ai-turn").length === 1 && saveButton(reader, 0).textContent === "Salvar nas anotações");
     restoreSave = Zotero.Annotations.saveFromJSON;
     Zotero.Annotations.saveFromJSON = async () => { throw new Error("Controlled annotation write failure"); };
@@ -115,8 +120,11 @@
     popup(reader).querySelector(".reader-local-ai-close").click();
     if (!native._state.sidebarOpen) documentOf(reader).querySelector(".sidebar-toggle").click();
     native.setSidebarView("annotations");
-    await wait(() => documentOf(reader).querySelector(`[data-sidebar-annotation-id="${firstItem.key}"]`), "annotation tab displays saved answer");
-    check("saved response appears in native annotations tab", documentOf(reader).querySelector(`[data-sidebar-annotation-id="${firstItem.key}"]`).textContent.includes(first.answer));
+    await wait(() => documentOf(reader).querySelector(`[data-sidebar-annotation-id="${firstItem.key}"]`), "annotation tab displays saved conversation");
+    const sidebarItem = documentOf(reader).querySelector(`[data-sidebar-annotation-id="${firstItem.key}"]`);
+    check("saved conversation appears in native annotations tab", sidebarItem.textContent.includes(first.answer) &&
+      sidebarItem.textContent.includes(second.answer) && sidebarItem.textContent.includes("Você") &&
+      sidebarItem.textContent.includes("Assistente") && !sidebarItem.textContent.includes("Continuar perguntando"));
     await open(reader); submit(reader, "Pergunta ainda não salva."); await complete(reader);
     check("new popup does not inherit saved conversation", saveButton(reader, 0).textContent === "Salvar nas anotações" && popup(reader).querySelectorAll(".reader-local-ai-turn").length === 1);
     await screenshot(reader);

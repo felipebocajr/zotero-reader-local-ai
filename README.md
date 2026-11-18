@@ -9,10 +9,10 @@ A Zotero add-on that helps readers understand PDF passages and ask questions abo
 ## Features
 
 - Explain selected passages and ask questions about a PDF.
-- View assistance alongside the text and optionally save useful answers as Zotero annotations.
+- View assistance alongside the text and save the current conversation as a Zotero annotation.
 - Read formatted Markdown and mathematical expressions.
 - Answers follow the language of each question automatically, with no separate language setting.
-- Uses local RAG by default: only the most relevant article excerpts are sent to the model, using Qwen3-Embedding-0.6B. The **Full article** mode remains available.
+- Uses local RAG: only the most relevant article excerpts are sent to the model, using Qwen3-Embedding-0.6B.
 - Inference runs locally by default; an optional Groq provider can be configured with your own API key.
 - Conversations are not saved automatically.
 
@@ -53,13 +53,13 @@ The default model is LFM2.5-8B-A1B. To use LFM3-1.7B or configure the runtime, s
 ### Providers
 
 - **Local server (default):** uses this project's `llama-server`, with exact template token counting and offline inference after setup.
-- **Groq (API):** uses your own `gsk_...` key, the selected model and the configured context. In the default mode, only the retrieved excerpts, selected passage and question are sent to Groq over the internet; embeddings stay local. The full article is sent only if you choose **Full article** under **Context sent**. In this prototype the key is stored in Zotero preferences as plain text; use a key with a usage limit.
+- **Groq (API):** uses your own `gsk_...` key, the selected model and the configured context. Only the retrieved excerpts, selected passage and question are sent to Groq over the internet; embeddings stay local. In this prototype the key is stored in Zotero preferences as plain text; use a key with a usage limit.
 
 To switch providers, open **Settings → Assistente local**, choose **Groq (API)**, paste the key and press **Enter** to load the models. Choose a model from the list and click **Salvar configurações** (Save Settings). There is no local server to start in this mode.
 
 ## Privacy and limitations
 
-By default, inference and embeddings run on your device. If you select **Groq (API)**, only the retrieved excerpts, selected passage and question are sent to Groq; this happens only after that explicit choice. The full article goes to Groq only in the explicitly selected **Full article** mode. In this prototype the key is stored in Zotero preferences as plain text. Initial setup downloads the runtime and model files. Scanned PDFs without selectable text need OCR, which is not included. Answers may contain errors; see the [evaluation and its limitations](experiments/report.md).
+By default, inference and embeddings run on your device. If you select **Groq (API)**, only the retrieved excerpts, selected passage and question are sent to Groq; this happens only after that explicit choice. In this prototype the key is stored in Zotero preferences as plain text. Initial setup downloads the runtime and model files. Scanned PDFs without selectable text need OCR, which is not included. Answers may contain errors; see the [evaluation and its limitations](experiments/report.md).
 
 ## Development
 

@@ -1,5 +1,5 @@
 {
-  "zoteroVersion": "10.0.3",
+  "zoteroVersion": "10.0.8",
   "profile": "isolated",
   "checks": [
     {
@@ -31,7 +31,7 @@
       "passed": true
     },
     {
-      "name": "only chosen follow-up is saved",
+      "name": "one annotation contains the whole conversation",
       "passed": true
     },
     {
@@ -53,30 +53,14 @@
     {
       "name": "prior annotations unchanged",
       "passed": true
-    },
-    {
-      "name": "restart: saved comment keeps exact Markdown and LaTeX source",
-      "passed": true
-    },
-    {
-      "name": "restart: saved Markdown and MathML render in release XPI",
-      "passed": true
-    },
-    {
-      "name": "restart: native editor still contains only source",
-      "passed": true
-    },
-    {
-      "name": "restart: distribution XPI active after restart",
-      "passed": true
     }
   ],
   "errors": [],
   "saved": [
     {
-      "key": "9YDRRD5E",
-      "id": 16,
-      "comment": "Resposta da IA\n\nPergunta: UI_MARKDOWN: continue explicando.\n\n## Explicação contextual\n\nO artigo usa **atenção** para conectar posições; *cada token* recebe contexto.\n\n- Relação com o método\n- Resultado descrito\n\nA escala é \\(\\frac{QK^{\\mathsf T}}{\\sqrt{d_k}}\\). `**literal**` permanece como código.\n\n<img src=\"https://example.com/remote.png\" onerror=\"alert(1)\">\n![Figura](https://example.com/remote.png)"
+      "key": "VV7HSGJN",
+      "id": 35,
+      "comment": "Conversa da IA\n\n### Você\nUI_MARKDOWN: explique o trecho com formatação.\n\n### Assistente\n## Explicação contextual\n\nO artigo usa **atenção** para conectar posições; *cada token* recebe contexto.\n\n- Relação com o método\n- Resultado descrito\n\nA escala é \\(\\frac{QK^{\\mathsf T}}{\\sqrt{d_k}}\\). `**literal**` permanece como código.\n\n<img src=\"https://example.com/remote.png\" onerror=\"alert(1)\">\n![Figura](https://example.com/remote.png)\n\n### Você\nUI_MARKDOWN: continue explicando.\n\n### Assistente\n## Explicação contextual\n\nO artigo usa **atenção** para conectar posições; *cada token* recebe contexto.\n\n- Relação com o método\n- Resultado descrito\n\nA escala é \\(\\frac{QK^{\\mathsf T}}{\\sqrt{d_k}}\\). `**literal**` permanece como código.\n\n<img src=\"https://example.com/remote.png\" onerror=\"alert(1)\">\n![Figura](https://example.com/remote.png)"
     }
   ]
 }

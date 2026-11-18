@@ -273,6 +273,7 @@ export function createPopup(doc: Document, anchor: DOMRect, selection: string, h
           const saved = state.answerSaves[index];
           const actions = doc.createElement("div"); actions.className = "reader-local-ai-answer-actions";
           const save = button(saved?.phase === "saved" ? "Salvo nas anotações" : saved?.phase === "saving" ? "Salvando…" : "Salvar nas anotações", "reader-local-ai-save-answer");
+          save.title = "Salva toda a conversa deste popup";
           save.disabled = saved?.phase === "saving" || saved?.phase === "saved";
           save.addEventListener("click", () => handlers.saveAnswer(index));
           // Reader shortcuts can suppress a button's default keyboard activation.

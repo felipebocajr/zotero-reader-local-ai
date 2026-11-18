@@ -11,6 +11,10 @@
       "passed": true
     },
     {
+      "name": "context selector was removed",
+      "passed": true
+    },
+    {
       "name": "native model selector offers every model",
       "passed": true
     },
@@ -162,18 +166,18 @@
       "name": "popup clamped to viewport edges",
       "passed": true,
       "bounds": {
-        "x": 479,
-        "y": 555.25,
+        "x": 229,
+        "y": 915.25,
         "width": 440,
         "height": 274.75,
-        "top": 555.25,
-        "right": 919,
-        "bottom": 830,
-        "left": 479
+        "top": 915.25,
+        "right": 669,
+        "bottom": 1190,
+        "left": 229
       },
       "viewport": [
-        931,
-        917
+        681,
+        1277
       ]
     },
     {

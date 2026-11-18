@@ -10,6 +10,8 @@
   const output = base + "/experiments/results/native-lfm8b.json";
   const results = { zoteroVersion: Zotero.version, profile: "isolated", model: "lfm2.5-8b-a1b", checks: [], answers: [], errors: [] };
   const original = Zotero.ReaderLocalAI.getSettings();
+  // Internal test override: the product UI no longer exposes the context mode.
+  Zotero.ReaderLocalAI.saveSettings({ ...original, retrievalMode: "full" });
   let pref, reader;
   const check = (name, passed) => { results.checks.push({name, passed:!!passed}); if (!passed) throw new Error(name); };
   const wait = async (predicate, label, timeout = 120000) => {
@@ -47,7 +49,6 @@
     pref.document.getElementById("reader-local-ai-baseUrl").value = "http://127.0.0.1:18091";
     const select = pref.document.getElementById("reader-local-ai-model");
     select.value = results.model; select.dispatchEvent(new pref.Event("change", {bubbles:true}));
-    pref.document.getElementById("reader-local-ai-retrievalMode").value = "full";
     pref.document.getElementById("reader-local-ai-preferences").requestSubmit();
     check("native preferences activate the larger model", Zotero.ReaderLocalAI.getSettings().model === results.model);
     await snapshot(pref, "native-model-preferences"); pref.close(); pref = null;

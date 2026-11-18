@@ -1,5 +1,5 @@
 {
-  "zoteroVersion": "10.0.3",
+  "zoteroVersion": "10.0.8",
   "profile": "isolated",
   "checks": [
     {
@@ -15,11 +15,11 @@
       "passed": true
     },
     {
-      "name": "duplicate click saves exactly one annotation",
+      "name": "duplicate click saves exactly one conversation annotation",
       "passed": true
     },
     {
-      "name": "only chosen answer and its question are saved",
+      "name": "the whole conversation is saved in order",
       "passed": true
     },
     {
@@ -43,7 +43,7 @@
       "passed": true
     },
     {
-      "name": "retry saves a different chosen answer",
+      "name": "second conversation saves its own snapshot",
       "passed": true
     },
     {
@@ -59,7 +59,7 @@
       "passed": true
     },
     {
-      "name": "saved response appears in native annotations tab",
+      "name": "saved conversation appears in native annotations tab",
       "passed": true
     },
     {
@@ -73,42 +73,30 @@
     {
       "name": "pre-existing annotations preserved",
       "passed": true
-    },
-    {
-      "name": "restart: saved annotations retain exact selected content",
-      "passed": true
-    },
-    {
-      "name": "restart: native annotations tab displays responses after restart",
-      "passed": true
-    },
-    {
-      "name": "restart: distribution XPI active after restart",
-      "passed": true
     }
   ],
   "errors": [],
   "saved": [
     {
-      "key": "BNIA96UF",
-      "id": 19,
+      "key": "U9U68XHK",
+      "id": 36,
       "parentID": 3,
       "text": "AttentionIsAllYouNeedAshis",
-      "comment": "Resposta da IA\n\nPergunta: UI_SLOW: Primeira pergunta para salvar.\n\nA atenção calcula a relevância de cada chave para uma consulta e usa os pesos resultantes para combinar os valores. No artigo, a divisão pela raiz quadrada da dimensão das chaves mantém os produtos escalares numa escala adequada, evitando que o softmax fique saturado. Esta resposta simulada verifica apenas a interface; a qualidade do modelo é avaliada separadamente."
+      "comment": "Conversa da IA\n\n### Você\nUI_SLOW: Primeira pergunta para salvar.\n\n### Assistente\nA atenção calcula a relevância de cada chave para uma consulta e usa os pesos resultantes para combinar os valores. No artigo, a divisão pela raiz quadrada da dimensão das chaves mantém os produtos escalares numa escala adequada, evitando que o softmax fique saturado. Esta resposta simulada verifica apenas a interface; a qualidade do modelo é avaliada separadamente.\n\n### Você\nSegunda pergunta da conversa.\n\n### Assistente\nA atenção calcula a relevância de cada chave para uma consulta e usa os pesos resultantes para combinar os valores. No artigo, a divisão pela raiz quadrada da dimensão das chaves mantém os produtos escalares numa escala adequada, evitando que o softmax fique saturado. Esta resposta simulada verifica apenas a interface; a qualidade do modelo é avaliada separadamente."
     },
     {
-      "key": "8A3LW8Z4",
-      "id": 20,
+      "key": "Y9VRBBLE",
+      "id": 37,
       "parentID": 3,
       "text": "AttentionIsAllYouNeedAshis",
-      "comment": "Resposta da IA\n\nPergunta: Segunda pergunta da conversa.\n\nA atenção calcula a relevância de cada chave para uma consulta e usa os pesos resultantes para combinar os valores. No artigo, a divisão pela raiz quadrada da dimensão das chaves mantém os produtos escalares numa escala adequada, evitando que o softmax fique saturado. Esta resposta simulada verifica apenas a interface; a qualidade do modelo é avaliada separadamente."
+      "comment": "Conversa da IA\n\n### Você\nTerceira pergunta em uma conversa nova.\n\n### Assistente\nA atenção calcula a relevância de cada chave para uma consulta e usa os pesos resultantes para combinar os valores. No artigo, a divisão pela raiz quadrada da dimensão das chaves mantém os produtos escalares numa escala adequada, evitando que o softmax fique saturado. Esta resposta simulada verifica apenas a interface; a qualidade do modelo é avaliada separadamente."
     },
     {
-      "key": "TE7QIT39",
-      "id": 21,
+      "key": "ZYQAWV3L",
+      "id": 38,
       "parentID": 3,
       "text": "AttentionIsAllYouNeedAshis",
-      "comment": "Resposta da IA\n\nPergunta: Terceira pergunta após reiniciar a conversa.\n\nA atenção calcula a relevância de cada chave para uma consulta e usa os pesos resultantes para combinar os valores. No artigo, a divisão pela raiz quadrada da dimensão das chaves mantém os produtos escalares numa escala adequada, evitando que o softmax fique saturado. Esta resposta simulada verifica apenas a interface; a qualidade do modelo é avaliada separadamente."
+      "comment": "Conversa da IA\n\n### Você\nQuarta pergunta após reiniciar a conversa.\n\n### Assistente\nA atenção calcula a relevância de cada chave para uma consulta e usa os pesos resultantes para combinar os valores. No artigo, a divisão pela raiz quadrada da dimensão das chaves mantém os produtos escalares numa escala adequada, evitando que o softmax fique saturado. Esta resposta simulada verifica apenas a interface; a qualidade do modelo é avaliada separadamente."
     }
   ]
 }

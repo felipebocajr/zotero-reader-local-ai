@@ -16,7 +16,6 @@ var ReaderLocalAIPreferences = {
     for (const key of ["contextTokens", "generationTokens"]) {
       document.getElementById("reader-local-ai-" + key).value = settings[key];
     }
-    document.getElementById("reader-local-ai-retrievalMode").value = settings.retrievalMode === "full" ? "full" : "embeddings";
     document.getElementById("reader-local-ai-baseUrl").value = Zotero.ReaderLocalAI.getLocalBaseUrl();
     document.getElementById("reader-local-ai-timeoutSeconds").value = settings.timeoutMs / 1000;
     document.getElementById("reader-local-ai-apiKey").value = String(settings.apiKey ?? "");
@@ -49,7 +48,6 @@ var ReaderLocalAIPreferences = {
     document.getElementById("reader-local-ai-model-label").hidden = groq;
     document.getElementById("reader-local-ai-model-description").hidden = groq;
     document.getElementById("reader-local-ai-baseUrl-label").hidden = groq;
-    this.updateRetrieval();
     if (groq) {
       const context = document.getElementById("reader-local-ai-contextTokens");
       context.max = 131072;
@@ -58,19 +56,6 @@ var ReaderLocalAIPreferences = {
     this.renderGroqModels();
     this.renderRuntime();
     this.renderEmbedding();
-  },
-  updateRetrieval() {
-    const embeddings = document.getElementById("reader-local-ai-retrievalMode").value !== "full";
-    const groq = this.provider() === "groq";
-    document.getElementById("reader-local-ai-embedding-settings").hidden = !embeddings;
-    document.getElementById("reader-local-ai-retrieval-description").textContent = embeddings
-      ? "Somente os trechos recuperados do artigo são enviados ao provedor. Os embeddings são gerados localmente; no Groq, apenas esses trechos vão pela internet."
-      : "O artigo completo é enviado ao provedor. No Groq, isso exige um limite de tokens maior que o plano free.";
-    document.getElementById("reader-local-ai-provider-description").textContent = groq
-      ? (embeddings ? "Trechos recuperados serão enviados ao Groq pela internet. A chave fica salva nas preferências do Zotero."
-        : "O artigo completo será enviado ao Groq pela internet. A chave fica salva nas preferências do Zotero.")
-      : (embeddings ? "Trechos recuperados serão enviados somente ao servidor local."
-        : "O artigo completo é enviado somente ao servidor local.");
   },
   updateModel() {
     const id = document.getElementById("reader-local-ai-model").value;
@@ -184,7 +169,7 @@ var ReaderLocalAIPreferences = {
         baseUrl: provider === "groq" ? Zotero.ReaderLocalAI.getGroqDefaults().baseUrl : read("baseUrl"),
         model: provider === "groq" ? (this.groqModel || Zotero.ReaderLocalAI.getGroqModel()) : read("model"),
         apiKey: read("apiKey"),
-        retrievalMode: read("retrievalMode"),
+        retrievalMode: Zotero.ReaderLocalAI.getSettings().retrievalMode,
         contextTokens: Number(read("contextTokens")),
         generationTokens: Number(read("generationTokens")),
         timeoutMs: Number(read("timeoutSeconds")) * 1000,

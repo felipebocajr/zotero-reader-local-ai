@@ -1,7 +1,7 @@
 import { ReaderError, abortIfNeeded, userMessage } from "./errors.ts";
 import { buildMessages } from "./prompt.ts";
 import type { PromptMode, RetrievalContext } from "./prompt.ts";
-import type { Turn, Settings, AnswerSaveState, SaveAnswer } from "./types.ts";
+import type { Turn, Settings, AnswerSaveState, SaveConversation } from "./types.ts";
 import type { ChatClient } from "./client.ts";
 import type { PaperCache } from "./paper.ts";
 import type { RetrievalService, RetrievedContext } from "./retrieval.ts";
@@ -24,7 +24,7 @@ export class RequestGate {
 export class ReadingSession {
   state: SessionState = { phase: "idle", history: [], question: "", draft: "", error: "", answerSaves: [], showDetail: false };
   private savedAnswers = new WeakMap<Turn, AnswerSaveState>();
-  private saveTurn?: SaveAnswer;
+  private saveTurn?: SaveConversation;
   private retrieval?: RetrievalService;
   private active: AbortController | null = null;
   private disposed = false;
@@ -39,7 +39,7 @@ export class ReadingSession {
   private changed: (state: SessionState) => void;
   constructor(attachmentId: number, selection: string, papers: PaperCache,
     gate: RequestGate, makeClient: () => ChatClient, settings: () => Settings,
-    changed: (state: SessionState) => void, saveTurn?: SaveAnswer, retrieval?: RetrievalService) {
+    changed: (state: SessionState) => void, saveTurn?: SaveConversation, retrieval?: RetrievalService) {
     this.attachmentId = attachmentId; this.selection = selection; this.papers = papers;
     this.gate = gate; this.makeClient = makeClient; this.settings = settings; this.changed = changed;
     this.saveTurn = saveTurn; this.retrieval = retrieval;
@@ -63,18 +63,25 @@ export class ReadingSession {
   }
   async saveAnswer(index: number): Promise<void> {
     if (this.disposed || !Number.isInteger(index)) return;
-    const turn = this.state.history[index];
-    if (!turn || !this.saveTurn || ["saving", "saved"].includes(this.savedAnswers.get(turn)?.phase ?? "")) return;
-    this.savedAnswers.set(turn, { phase: "saving" }); this.publish({});
+    const clicked = this.state.history[index];
+    if (!clicked || !this.saveTurn) return;
+    // Saving any answer persists the whole conversation in the popup. One
+    // snapshot per click; later turns get their own save action when added.
+    const snapshot = [...this.state.history];
+    if (snapshot.some(turn => this.savedAnswers.get(turn)?.phase === "saving")) return;
+    if (this.savedAnswers.get(clicked)?.phase === "saved") return;
+    for (const turn of snapshot) this.savedAnswers.set(turn, { phase: "saving" });
+    this.publish({});
     try {
-      const annotationId = await this.saveTurn(turn);
-      this.savedAnswers.set(turn, { phase: "saved", annotationId });
+      const annotationId = await this.saveTurn(snapshot);
+      for (const turn of snapshot) this.savedAnswers.set(turn, { phase: "saved", annotationId });
     } catch (error) {
-      this.savedAnswers.set(turn, { phase: "error", error: error instanceof ReaderError ? error.message
-        : "Não foi possível salvar a resposta nas anotações. Tente novamente; consulte o log do Zotero se o problema persistir." });
+      const message = error instanceof ReaderError ? error.message
+        : "Não foi possível salvar a conversa nas anotações. Tente novamente; consulte o log do Zotero se o problema persistir.";
+      for (const turn of snapshot) this.savedAnswers.set(turn, { phase: "error", error: message });
     }
     // A reset/new question must not associate a late save with another answer.
-    if (this.state.history.includes(turn)) this.publish({});
+    if (this.state.history.includes(clicked)) this.publish({});
   }
   async ask(question: string, followup = false, mode: PromptMode = "default"): Promise<void> {
     if (this.disposed || this.active) return;

@@ -6,7 +6,7 @@ Data: 2026-11-18
 
 O contexto padrão do plugin passou a ser RAG com **apenas embeddings locais**. Não há BM25, busca híbrida nem reranker nesta versão. Os chunks e vetores ficam em memória; não há banco vetorial.
 
-O modo **Artigo completo** continua explícito nas preferências e é o caminho usado pelo benchmark de precisão entregue.
+A interface usa apenas trechos. O caminho interno de artigo completo permanece no benchmark de precisão entregue e não é exposto nas preferências.
 
 ## Modelo e runtime
 

@@ -17,23 +17,11 @@
       "passed": true
     },
     {
-      "name": "retrieval mode offers excerpts and full article",
+      "name": "context selector was removed",
       "passed": true
     },
     {
-      "name": "retrieval mode uses a valid saved value",
-      "passed": true
-    },
-    {
-      "name": "embedding controls are present",
-      "passed": true
-    },
-    {
-      "name": "full article hides embedding controls",
-      "passed": true
-    },
-    {
-      "name": "excerpt mode shows embedding controls",
+      "name": "embedding controls are present and always visible",
       "passed": true
     },
     {

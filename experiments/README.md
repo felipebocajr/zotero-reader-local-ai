@@ -28,7 +28,7 @@ Os downloads PDF vêm do arXiv, com versões e SHA-256 registrados. A extração
 - `results/quality-review.csv`: campos para revisão de correção, apoio no artigo e clareza.
 - `results/model-validation.json`: três casos de validação inicial com Q4 antes da interface; esse ensaio antecede o prompt final.
 - `results/native-acceptance.json`: aceitação com Zotero real e resposta simulada.
-- `results/native-annotations.json`: gravação opcional de respostas escolhidas e leitura na aba de anotações, com Zotero real e geração simulada.
+- `results/native-annotations.json`: gravação opcional da conversa completa e leitura na aba de anotações, com Zotero real e geração simulada.
 - `results/native-model.json`: quatro perguntas pelo popup em três PDFs, com a LFM real e extração do Zotero.
 - `results/cpu-smoke.json` e `cuda-smoke.json`: inferências reais com artigo inteiro e conferência da contagem prévia contra o servidor.
 - `results/build-validation.json`: testes, integridade e SHA-256 do XPI original da comparação.

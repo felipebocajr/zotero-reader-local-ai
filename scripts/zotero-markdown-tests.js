@@ -34,6 +34,7 @@
     const id = Zotero.Prefs.get("extensions.reader-local-ai.devAttachmentID", true);
     reader = await Zotero.Reader.open(id); await reader._initPromise;
     const view = reader._internalReader._primaryView;
+    await view.initializedPromise;
     await wait(() => view._pdfPages[0], "test PDF ready");
     const attachment = Zotero.Items.get(id), before = attachment.getAnnotations();
     const previous = new Map(before.map(item => [item.id, item.annotationComment]));
@@ -57,13 +58,15 @@
     check("original Markdown and LaTeX stay available", source.includes("## Explicação contextual") && source.includes("**atenção**") && source.includes(String.raw`\frac{QK`));
     await screenshot("native-markdown-popup");
     button("Continuar perguntando").click(); submit("UI_MARKDOWN: continue explicando."); await complete();
+    const source2 = answer(1).dataset.readerLocalAiSource;
     check("follow-up renders both answers", popup().querySelectorAll(".reader-local-ai-answer h2").length === 2);
     popup().querySelectorAll(".reader-local-ai-save-answer")[1].click();
-    await wait(() => popup().querySelectorAll(".reader-local-ai-save-answer")[1].textContent === "Salvo nas anotações", "answer saved");
+    await wait(() => popup().querySelectorAll(".reader-local-ai-save-answer")[1].textContent === "Salvo nas anotações", "conversation saved");
     const added = attachment.getAnnotations().filter(item => !previous.has(item.id));
-    check("only chosen follow-up is saved", added.length === 1);
+    check("one annotation contains the whole conversation", added.length === 1);
     const item = added[0], comment = item.annotationComment;
-    check("saved comment retains Markdown source and no generated markup", comment === "Resposta da IA\n\nPergunta: UI_MARKDOWN: continue explicando.\n\n" + source && !/<h2|<math|<strong/.test(comment));
+    const expectedComment = `Conversa da IA\n\n### Você\n${question}\n\n### Assistente\n${source}\n\n### Você\nUI_MARKDOWN: continue explicando.\n\n### Assistente\n${source2}`;
+    check("saved comment retains Markdown source and no generated markup", comment === expectedComment && !/<h2|<math|<strong/.test(comment));
     result.saved.push({ key: item.key, id: item.id, comment });
     if (!reader._internalReader._state.sidebarOpen) doc().querySelector(".sidebar-toggle").click();
     reader._internalReader.setSidebarView("annotations");

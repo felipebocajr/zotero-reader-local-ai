@@ -32,7 +32,7 @@
   }
   async function preferences() {
     pref = Zotero.Utilities.Internal.openPreferences("reader-local-ai@local.invalid-preferences");
-    await wait(() => pref.document.getElementById("reader-local-ai-retrievalMode"), "preferences", 15000);
+    await wait(() => pref.document.getElementById("reader-local-ai-model"), "preferences", 15000);
   }
   async function snapshot(target, name) {
     const bitmap = await target.docShell.browsingContext.currentWindowGlobal.drawSnapshot(null, 1, "white");

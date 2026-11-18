@@ -7,10 +7,10 @@ import { splitRecursive } from "../src/chunking.ts";
 import { EXPLAIN_BRIEF_QUESTION, EXPLAIN_QUESTION } from "../src/prompt.ts";
 import type { LlamaClient } from "../src/client.ts";
 import type { RetrievalService } from "../src/retrieval.ts";
-import type { Message, SaveAnswer, Settings } from "../src/types.ts";
+import type { Message, SaveConversation, Settings } from "../src/types.ts";
 
 const paper = { text: "artigo", title: "Paper", extractedPages: 1, totalPages: 1 };
-function sessionWith(gate: RequestGate, generate: LlamaClient["generate"], changed = () => {}, save?: SaveAnswer,
+function sessionWith(gate: RequestGate, generate: LlamaClient["generate"], changed = () => {}, save?: SaveConversation,
   settings: () => Settings = () => DEFAULTS, retrieval?: RetrievalService) {
   const cache = new PaperCache({ describe: async () => ({ path: "/a", title: "A", size: 1, modified: 1 }), extract: async () => paper });
   return new ReadingSession(1, "trecho", cache, gate, () => ({ generate }) as LlamaClient, settings, changed, save, retrieval);
@@ -70,18 +70,31 @@ test("closing aborts work and prevents late history/UI updates", async () => {
   session.dispose(); const before = changed; assert.equal(signal.aborted, true); finish(); await pending;
   assert.equal(changed, before); assert.equal(session.state.history.length, 0);
 });
-test("saving selects one completed answer and deduplicates simultaneous or repeated clicks", async () => {
-  const saved: string[] = []; let finish!: (id: number) => void;
+test("saving persists the whole conversation and deduplicates simultaneous or repeated clicks", async () => {
+  const saved: string[][] = []; let finish!: (id: number) => void;
   const session = sessionWith(new RequestGate(), async messages => ({ answer: messages.at(-1)!.content, promptTokens: 1 }), () => {},
-    turn => { saved.push(turn.question); return new Promise(resolve => { finish = resolve; }); });
+    turns => { saved.push(turns.map(turn => turn.question)); return new Promise(resolve => { finish = resolve; }); });
   await session.ask("primeira"); await session.ask("segunda", true);
   assert.equal(saved.length, 0); // Asking never persists an annotation.
   const pending = session.saveAnswer(0);
-  await session.saveAnswer(0); assert.deepEqual(saved, ["primeira"]);
+  await session.saveAnswer(0); assert.deepEqual(saved, [["primeira", "segunda"]]);
   assert.equal(session.state.answerSaves[0].phase, "saving");
+  assert.equal(session.state.answerSaves[1].phase, "saving");
   finish(123); await pending; await session.saveAnswer(0);
   assert.equal(session.state.answerSaves[0].annotationId, 123);
-  assert.equal(session.state.answerSaves[1].phase, "idle"); assert.deepEqual(saved, ["primeira"]);
+  assert.equal(session.state.answerSaves[1].phase, "saved");
+  assert.deepEqual(saved, [["primeira", "segunda"]]);
+});
+test("a later turn saves a longer conversation snapshot", async () => {
+  const saved: string[][] = [];
+  const session = sessionWith(new RequestGate(), async messages => ({ answer: messages.at(-1)!.content, promptTokens: 1 }), () => {},
+    async turns => { saved.push(turns.map(turn => turn.question)); return saved.length; });
+  await session.ask("Q1"); await session.saveAnswer(0);
+  assert.deepEqual(saved, [["Q1"]]);
+  await session.ask("Q2", true);
+  assert.equal(session.state.answerSaves[1].phase, "idle");
+  await session.saveAnswer(1);
+  assert.deepEqual(saved, [["Q1"], ["Q1", "Q2"]]);
 });
 test("failed or streaming answers cannot be saved; save errors leave completed answers retryable", async () => {
   let calls = 0, attempts = 0;

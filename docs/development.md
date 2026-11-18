@@ -65,7 +65,7 @@ Depois:
 python3 scripts/rdp.py --file scripts/zotero-ui-tests.js
 ```
 
-Os testes usam o leitor real e suas seleções temporárias, sem salvar anotações. Verificam as ações, foco, streaming sem raciocínio, conversa, independência das perguntas, modo de artigo completo, cancelamento, erros, posição, o botão Expandir/Restaurar, o redimensionamento por arrasto e a movimentação pelo cabeçalho do popup. A parte final alterna para trechos e confere o aviso de recuperação. Evidências ficam em `experiments/results/native-acceptance.json`; capturas de tela ficam em `.runtime/native-popup-*.png`.
+Os testes usam o leitor real e suas seleções temporárias, sem salvar anotações. Verificam as ações, foco, streaming sem raciocínio, conversa, independência das perguntas, envio de trechos, cancelamento, erros, posição, o botão Expandir/Restaurar, o redimensionamento por arrasto e a movimentação pelo cabeçalho do popup. Evidências ficam em `experiments/results/native-acceptance.json`; capturas de tela ficam em `.runtime/native-popup-*.png`.
 
 Para validar somente o RAG, com o mock em `18080` e o perfil isolado:
 
@@ -99,7 +99,7 @@ Testes:
 
 No texto real do Zotero, o splitter gerou 284 chunks em 5 artigos, 100% em fronteiras naturais. O benchmark de recuperação com 10 casos não-ausentes ficou em 9/10 no top 5, 10/10 no top 12 e MRR 0,777 com instrução, no backend GPU. O único caso fora do top 5 ficou em 10º; não há evidência para adicionar reranker.
 
-O modo **Artigo completo** continua explícito nas preferências e envia todas as páginas. O benchmark de precisão entregue usa esse caminho; não o sobrescreva com resultados de RAG.
+A interface usa apenas trechos; não há seletor de contexto. O caminho interno de artigo completo permanece no benchmark de precisão entregue e não deve ser sobrescrito com resultados de RAG.
 
 ## Provedor Groq
 
@@ -107,7 +107,7 @@ O modo **Artigo completo** continua explícito nas preferências e envia todas a
 
 `scripts/zotero-groq-pane-tests.js`, executado no perfil isolado com o RDP, verifica os controles nativos: provedor local por padrão, campos do Groq ocultos, troca de provedor, persistência da chave/modelo, endpoint fixo `https://api.groq.com/openai/v1`, estado externo e restauração do modelo local. O teste também não acessa a rede; ele grava `experiments/results/native-groq-pane.json`.
 
-No Groq, o contexto é estimado de forma conservadora (aproximadamente 3,5 caracteres por token) porque a API não expõe `/apply-template` nem `/tokenize`. No modo padrão, somente os trechos recuperados são enviados; o orçamento é de 5.500 tokens de entrada, dentro do ITPM de 7.000 da conta free. O modo **Artigo completo** envia todas as páginas e exige um limite maior; se a estimativa com a reserva de geração exceder o contexto configurado, o plugin recusa antes do envio e não corta o artigo. O modelo padrão é `openai/gpt-oss-120b`; modelos de raciocínio recebem `reasoning_effort: "low"` para preservar a reserva da resposta. A chave fica nas preferências do Zotero em texto puro neste protótipo e nunca deve ser gravada em logs, status ou artefatos de experimento.
+No Groq, o contexto é estimado de forma conservadora (aproximadamente 3,5 caracteres por token) porque a API não expõe `/apply-template` nem `/tokenize`. Somente os trechos recuperados são enviados; o orçamento é de 5.500 tokens de entrada, dentro do ITPM de 7.000 da conta free. Se a estimativa com a reserva de geração exceder o contexto configurado, o plugin recusa antes do envio e não corta os trechos. O modelo padrão é `openai/gpt-oss-120b`; modelos de raciocínio recebem `reasoning_effort: "low"` para preservar a reserva da resposta. A chave fica nas preferências do Zotero em texto puro neste protótipo e nunca deve ser gravada em logs, status ou artefatos de experimento.
 
 Para o teste real, instale o XPI, abra **Configurações → Assistente local**, escolha **Groq (API)**, informe a chave e o modelo e salve. Depois abra um PDF e faça uma pergunta; a primeira chamada também valida a chave e o modelo.
 
@@ -127,7 +127,7 @@ O teste usa a porta 18095 e encerra somente o runtime que iniciou. Se já houver
 
 Os lembretes fazem parte da contagem real de tokens, e perguntas/respostas originais permanecem no histórico e no salvamento. A mudança altera o prompt: novas comparações exigem uma pasta separada `LFM_RESULTS_DIR` e não podem sobrescrever a baseline de precisão entregue.
 
-## Salvar respostas nas anotações
+## Salvar conversas nas anotações
 
 Com o mesmo servidor simulado e o perfil isolado, execute:
 
@@ -135,7 +135,7 @@ Com o mesmo servidor simulado e o perfil isolado, execute:
 python3 scripts/rdp.py --file scripts/zotero-annotation-tests.js
 ```
 
-O teste salva respostas específicas de uma continuação como anotações nativas, confirma o conteúdo e a posição no PDF, a atualização da aba de anotações, proteção contra duplicatas, falhas e tentativas seguintes, independência após nova pergunta e preservação após fechar o leitor. Somente a biblioteca isolada recebe as anotações de teste. A evidência fica em `experiments/results/native-annotations.json`, e a captura em `.runtime/native-annotations-popup.png`.
+O teste salva a conversa completa do popup como uma anotação nativa, confirma a ordem dos turnos, o conteúdo e a posição no PDF, a atualização da aba de anotações, proteção contra duplicatas, falhas e tentativas seguintes, independência após nova pergunta e preservação após fechar o leitor. A projeção é somente leitura e não oferece continuação da conversa. Somente a biblioteca isolada recebe as anotações de teste. A evidência fica em `experiments/results/native-annotations.json`, e a captura em `.runtime/native-annotations-popup.png`.
 
 Para conferir a persistência em disco, instale o XPI de distribuição com `scripts/install_release.js`, encerre apenas o perfil com `scripts/stop_dev.py`, abra novamente com o mesmo comando de desenvolvimento e execute:
 
@@ -262,7 +262,7 @@ O Zotero destrói o sandbox da página antes de enviar `unload` à janela. Opera
 - Desativar o plugin cancela sessões, remove ações, popups, estilos, página de configurações e listeners e encerra seu servidor gerenciado. Servidores externos continuam sob controle do usuário.
 - `src/runtime.ts` controla propriedade e ciclo de vida do chat; `src/embedding-runtime.ts` controla o servidor de embeddings. `src/zotero-runtime.ts` isola `Subprocess`, o seletor nativo de pasta e IO. `scripts/serve.py --managed --parent-pid` e `scripts/serve_embedding.py --managed --parent-pid` terminam com EOF do controle ou saída do Zotero. Nenhum PID de arquivo de estado é adotado como processo próprio.
 - `src/embeddings.ts` usa `/v1/embeddings` no loopback, normaliza os vetores e valida 1.024 dimensões. `src/retrieval.ts` mantém o índice em memória e corta o prompt pelo orçamento. O status transitório do chat fica em `.runtime/server-<porta>.json`; o dos embeddings, em `.runtime/embedding-<porta>.json`, sem prompts ou histórico.
-- `Zotero.Annotations.saveFromJSON` cria um destaque com o trecho e a resposta escolhida como comentário. A API cuida de sua transação e envia notificações aos leitores abertos. O plugin captura os metadados originais da seleção e gera sua própria chave de anotação. Uma gravação solicitada pelo usuário pode terminar após fechar o popup; isso não mantém nem restaura a conversa.
+- `Zotero.Annotations.saveFromJSON` cria um destaque com o trecho e a conversa completa do popup como comentário. A API cuida de sua transação e envia notificações aos leitores abertos. O plugin captura os metadados originais da seleção e gera sua própria chave de anotação. Uma gravação solicitada pelo usuário pode terminar após fechar o popup; isso não mantém nem restaura a conversa.
 - O runtime de uso prefere GPU inteira e ajusta a distribuição para GPU/CPU em falta de VRAM. Testes de distribuição fixa e benchmarks usam `--backend` e `--gpu-layers` explícitos, sem fallback. [runtime.md](runtime.md) descreve os comandos e a validação separada.
 
 APIs internas e seleções usadas no harness podem mudar entre versões do Zotero. A compatibilidade do protótipo permanece restrita a 10.0.x até nova validação.

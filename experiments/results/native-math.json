@@ -1,5 +1,5 @@
 {
-  "zoteroVersion": "10.0.3",
+  "zoteroVersion": "10.0.8",
   "profile": "isolated",
   "checks": [
     {
@@ -43,7 +43,7 @@
       "passed": true
     },
     {
-      "name": "only chosen answer creates one annotation",
+      "name": "one annotation contains the whole conversation",
       "passed": true
     },
     {
@@ -55,7 +55,7 @@
       "passed": true
     },
     {
-      "name": "saved annotation shows four formatted equations",
+      "name": "saved annotation shows eight formatted equations",
       "passed": true
     },
     {
@@ -102,9 +102,9 @@
   "errors": [],
   "saved": [
     {
-      "key": "BWDF4QG6",
-      "id": 17,
-      "comment": "Resposta da IA\n\nPergunta: Explique a fórmula da distribuição condicional.\n\nA distribuição condicional se decompõe no produto das distribuições por posição:\n\\[q_{t\\mid 0}(x_t\\mid x_0)=\\prod_{i=1}^{n}q_{t\\mid 0}(\\xi_t^{(i)}\\mid\\xi_0^{(i)})\\]\nOs termos \\(x_t\\) e $x_0$ mantêm seus índices. Frações e raízes também são preservadas: $$\\frac{QK^{\\mathsf T}}{\\sqrt{d_k}}$$."
+      "key": "HYKU34VK",
+      "id": 34,
+      "comment": "Conversa da IA\n\n### Você\nExplique a fórmula da distribuição condicional.\n\n### Assistente\nA distribuição condicional se decompõe no produto das distribuições por posição:\n\\[q_{t\\mid 0}(x_t\\mid x_0)=\\prod_{i=1}^{n}q_{t\\mid 0}(\\xi_t^{(i)}\\mid\\xi_0^{(i)})\\]\nOs termos \\(x_t\\) e $x_0$ mantêm seus índices. Frações e raízes também são preservadas: $$\\frac{QK^{\\mathsf T}}{\\sqrt{d_k}}$$.\n\n### Você\nComo os índices se relacionam com as posições?\n\n### Assistente\nA distribuição condicional se decompõe no produto das distribuições por posição:\n\\[q_{t\\mid 0}(x_t\\mid x_0)=\\prod_{i=1}^{n}q_{t\\mid 0}(\\xi_t^{(i)}\\mid\\xi_0^{(i)})\\]\nOs termos \\(x_t\\) e $x_0$ mantêm seus índices. Frações e raízes também são preservadas: $$\\frac{QK^{\\mathsf T}}{\\sqrt{d_k}}$$."
     }
   ]
 }

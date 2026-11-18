@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Assistente Local de Leitura",
-  "version": "0.2.14",
-  "description": "Explica trechos de PDFs com trechos relevantes ou o artigo completo, usando uma LLM local ou o Groq.",
+  "version": "0.2.15",
+  "description": "Explica trechos de PDFs com trechos relevantes, usando uma LLM local ou o Groq.",
   "author": "Zotero Reader Local AI contributors",
   "applications": {
     "zotero": {

@@ -58,22 +58,12 @@
     results.styles.groqLabel = style(groqLabel);
     check("local starts selected", local.checked && !groq.checked);
     check("local card starts highlighted", localLabel.classList.contains("selected") && style(localLabel).backgroundColor !== "rgba(0, 0, 0, 0)");
-    const retrieval = pref.document.getElementById("reader-local-ai-retrievalMode");
-    check("retrieval mode offers excerpts and full article",
-      [...retrieval.options].map(option => option.value).join(",") === "embeddings,full");
-    check("retrieval mode uses a valid saved value", ["embeddings", "full"].includes(retrieval.value));
-    check("embedding controls are present",
+    check("context selector was removed", !pref.document.getElementById("reader-local-ai-retrievalMode"));
+    check("embedding controls are present and always visible",
       !!pref.document.getElementById("reader-local-ai-embedding-settings") &&
       !!pref.document.getElementById("reader-local-ai-start-embeddings") &&
-      !!pref.document.getElementById("reader-local-ai-embedding-status"));
-    retrieval.value = "full";
-    retrieval.dispatchEvent(new pref.Event("change", { bubbles: true }));
-    await sleep(100);
-    check("full article hides embedding controls", display(pref.document.getElementById("reader-local-ai-embedding-settings")) === "none");
-    retrieval.value = "embeddings";
-    retrieval.dispatchEvent(new pref.Event("change", { bubbles: true }));
-    await sleep(100);
-    check("excerpt mode shows embedding controls", display(pref.document.getElementById("reader-local-ai-embedding-settings")) !== "none");
+      !!pref.document.getElementById("reader-local-ai-embedding-status") &&
+      display(pref.document.getElementById("reader-local-ai-embedding-settings")) !== "none");
     await snapshot("native-provider-ui-local");
     groq.click();
     await sleep(300);

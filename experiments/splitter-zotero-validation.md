@@ -151,4 +151,4 @@ a soma coube no orçamento.
 
 Com o splitter validado, o RAG pode ser integrado como padrão para **todos** os
 provedores. No local, o orçamento de recuperação será maior que no Groq; o modo
-"Artigo completo" continuará disponível como opção explícita.
+"Artigo completo" continuará disponível como opção explícita. (Removido da interface na 0.2.15; o caminho interno permanece apenas no benchmark de precisão.)
