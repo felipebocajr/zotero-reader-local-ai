@@ -27,6 +27,9 @@ export const EMBEDDING_BASE_URL = "http://127.0.0.1:18081";
 export const EMBEDDING_MODEL = "qwen3-embedding-0.6b";
 export const EMBEDDING_DIMENSIONS = 1024;
 export const RETRIEVAL_INPUT_TOKENS = { local: 16000, groq: 5500 } as const;
+export const RETRIEVAL_MIN_CHUNKS = 4;
+export const RETRIEVAL_MAX_CHUNKS = 12;
+export const RETRIEVAL_RELATIVE_FLOOR = 0.75;
 
 export const DEFAULTS: Settings = {
   provider: "local",

@@ -64,7 +64,7 @@ O plugin inicia esse servidor sob demanda na primeira pergunta em modo de trecho
 
 A instrução fixa `Given a web search query, retrieve relevant passages that answer the query` é aplicada somente à pergunta; os documentos são vetorizados com o heading e o texto do chunk, sem instrução. Os vetores ficam em memória, indexados pela assinatura do PDF, modelo e dimensões. Um artigo com 80 chunks ocupa cerca de 320 KB; não há banco vetorial. O texto do artigo não é gravado em preferências, status ou logs.
 
-Em modo de trechos, o orçamento de entrada é de 16.000 tokens no servidor local (até 24 chunks) e 5.500 no Groq (até 16 chunks). O trecho selecionado e seus vizinhos da mesma seção entram sempre. O modo **Artigo completo** ignora os embeddings e envia todas as páginas.
+Em modo de trechos, o orçamento de entrada é de 16.000 tokens no servidor local e 5.500 no Groq. O plugin mantém chunks com similaridade de pelo menos **75% do melhor chunk**, com mínimo de **4** e máximo de **12**; o orçamento de tokens ainda é o limite final. O trecho selecionado e seus vizinhos da mesma seção entram sempre. O modo **Artigo completo** ignora os embeddings e envia todas as páginas.
 
 ## Preparação e modos fixos
 

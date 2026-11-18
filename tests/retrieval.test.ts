@@ -47,13 +47,21 @@ test("retrieval keeps the selected passage chunk and fits the provider budget", 
   const context = await service.getContext(paper, "Results show a speedup.", "How does the KV cache work?",
     [], settings, "default", new AbortController().signal);
   assert.equal(ready, 1);
-  assert.ok(context.chunks.length > 1);
+  assert.ok(context.chunks.length >= 4);
+  assert.ok(context.chunks.length <= 12);
   assert.ok(context.estimatedPromptTokens <= RETRIEVAL_INPUT_TOKENS.groq);
   assert.ok(context.chunks.some(chunk => chunk.heading === "2 Cache"));
   assert.ok(context.chunks.some(chunk => chunk.heading === "3 Results"));
   assert.ok(context.chunks.some(chunk => chunk.coreText.includes("Results show a speedup.")));
   assert.equal(context.chunks.some(chunk => chunk.heading === "4 References"), false);
   assert.equal(context.chunks.length, context.chunks.slice().sort((left, right) => left.start - right.start).length);
+
+  const local = await service.getContext(paper, "Results show a speedup.", "How does the KV cache work?",
+    [], { ...DEFAULTS, retrievalMode: "embeddings" }, "default", new AbortController().signal);
+  assert.ok(local.chunks.length >= 4);
+  assert.ok(local.chunks.length <= 12);
+  assert.ok(local.estimatedPromptTokens <= RETRIEVAL_INPUT_TOKENS.local);
+  assert.ok(local.chunks.some(chunk => chunk.heading === "2 Cache"));
 });
 
 test("retrieval caches document embeddings and only embeds the query again", async () => {

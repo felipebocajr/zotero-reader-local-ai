@@ -80,7 +80,7 @@ Os testes simulados verificam integração e protocolo. A qualidade e a velocida
 
 ## RAG e embeddings
 
-O contexto padrão é recuperado, não o artigo completo. `src/chunking.ts` divide o texto com `chunkSize=1200`, overlap de 160 caracteres e a hierarquia `["\n\n", ". ", ".\n", "\n", " ", ""]`; headings detectados viram fronteiras de seção. `src/embeddings.ts` fala com o servidor local OpenAI-compatible; `src/retrieval.ts` embeda os chunks com heading, embeda a pergunta com a instrução fixa em inglês, mantém o chunk do trecho selecionado e vizinhos da mesma seção, remove referências e corta pelo orçamento.
+O contexto padrão é recuperado, não o artigo completo. `src/chunking.ts` divide o texto com `chunkSize=1200`, overlap de 160 caracteres e a hierarquia `["\n\n", ". ", ".\n", "\n", " ", ""]`; headings detectados viram fronteiras de seção. `src/embeddings.ts` fala com o servidor local OpenAI-compatible; `src/retrieval.ts` embeda os chunks com heading, embeda a pergunta com a instrução fixa em inglês, mantém o chunk do trecho selecionado e vizinhos da mesma seção, remove referências e seleciona chunks com score ≥75% do melhor, entre 4 e 12, limitados pelo orçamento de tokens.
 
 `src/embedding-runtime.ts` inicia sob demanda o `scripts/serve_embedding.py` em `127.0.0.1:18081`, com Qwen3-Embedding-0.6B Q8_0, `--embedding --pooling last` e fallback GPU → CPU. O processo é propriedade do plugin; um servidor externo é detectado e nunca é parado. Vetores ficam em memória, indexados pela assinatura do PDF, modelo e dimensões; não há banco vetorial.
 
@@ -97,7 +97,7 @@ Testes:
 - `scripts/zotero-embedding-tests.js`: servidor gerenciado, 1.024 dimensões e cosseno cross-language no perfil isolado.
 - `scripts/zotero-rag-tests.js`: popup com trechos, aviso de contagem e ausência do artigo completo.
 
-No texto real do Zotero, o splitter gerou 284 chunks em 5 artigos, 100% em fronteiras naturais. O benchmark de recuperação com 10 casos não-ausentes ficou em 9/10 no top 5, 10/10 no top 12 e MRR 0,727 com instrução. O único caso fora do top 5 ficou em 10º; não há evidência para adicionar reranker.
+No texto real do Zotero, o splitter gerou 284 chunks em 5 artigos, 100% em fronteiras naturais. O benchmark de recuperação com 10 casos não-ausentes ficou em 9/10 no top 5, 10/10 no top 12 e MRR 0,777 com instrução, no backend GPU. O único caso fora do top 5 ficou em 10º; não há evidência para adicionar reranker.
 
 O modo **Artigo completo** continua explícito nas preferências e envia todas as páginas. O benchmark de precisão entregue usa esse caminho; não o sobrescreva com resultados de RAG.
 

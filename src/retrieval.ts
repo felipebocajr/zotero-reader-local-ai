@@ -1,6 +1,6 @@
 import { DEFAULT_CHUNK_OVERLAP, DEFAULT_CHUNK_SIZE, splitRecursive } from "./chunking.ts";
 import type { TextChunk } from "./chunking.ts";
-import { EMBEDDING_DIMENSIONS, RETRIEVAL_INPUT_TOKENS } from "./config.ts";
+import { EMBEDDING_DIMENSIONS, RETRIEVAL_INPUT_TOKENS, RETRIEVAL_MAX_CHUNKS, RETRIEVAL_MIN_CHUNKS, RETRIEVAL_RELATIVE_FLOOR } from "./config.ts";
 import { EmbeddingClient, cosineSimilarity } from "./embeddings.ts";
 import { ReaderError } from "./errors.ts";
 import { buildMessages } from "./prompt.ts";
@@ -131,11 +131,14 @@ export class RetrievalService {
       const neighbor = anchor + offset;
       if (neighbor >= 0 && neighbor < index.chunks.length && index.chunks[neighbor].heading === anchorHeading) add(neighbor);
     }
-    // Local context is large, but sending most of a short paper would defeat
-    // retrieval. Keep enough chunks for cross-section questions without noise.
-    const maxChunks = settings.provider === "groq" ? 16 : 24;
+    // Keep chunks close to the best match instead of blindly filling to 12.
+    // The relative floor is safer than an absolute cosine threshold because
+    // scores are not calibrated probabilities and vary by query and language.
+    const topScore = scores[ranked[0]];
+    const closeEnough = ranked.filter(chunkIndex => scores[chunkIndex] >= topScore * RETRIEVAL_RELATIVE_FLOOR).length;
+    const target = Math.min(RETRIEVAL_MAX_CHUNKS, Math.max(RETRIEVAL_MIN_CHUNKS, closeEnough));
     for (const chunkIndex of ranked) {
-      if (selected.size >= maxChunks) break;
+      if (selected.size >= target) break;
       add(chunkIndex);
     }
 

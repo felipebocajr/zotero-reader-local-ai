@@ -130,7 +130,7 @@ for (const paper of papers) {
       const ranked = rank(queryVectors.get(mode.id)![caseIndex], documentVectors);
       const metrics = Object.fromEntries(topK.map(k => [k, evidenceMetrics(ranked, chunks, testCase.evidenceSections, k)]));
       const firstRank = firstEvidenceRank(ranked, chunks, testCase.evidenceSections);
-      const top = ranked.slice(0, 8).map(index => ({
+      const top = ranked.slice(0, 20).map(index => ({
         index,
         heading: chunks[index].heading,
         score: Number(cosineSimilarity(queryVectors.get(mode.id)![caseIndex], documentVectors[index]).toFixed(4)),

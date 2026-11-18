@@ -29,12 +29,27 @@ Corpus: texto real de `Zotero.PDFWorker.getFullText` para Attention, RMSNorm, Ro
 
 | Modo | Casos | hit@5 | hit@8 | hit@12 | hit@20 | MRR |
 |---|---:|---:|---:|---:|---:|---:|
-| Com instrução | 10 | 9 | 9 | 10 | 10 | 0,727 |
-| Sem instrução | 10 | 9 | 10 | 10 | 10 | 0,712 |
+| Com instrução | 10 | 9 | 9 | 10 | 10 | 0,777 |
+| Sem instrução | 10 | 9 | 10 | 10 | 10 | 0,729 |
+
+Medição com o servidor de embeddings em GPU, o caminho usado em produção. Em CPU, pequenas diferenças de ponto flutuante podem reordenar chunks com scores próximos; os números não devem ser misturados entre backends.
 
 O único caso fora do top 5 foi `rope-cross-section`, em 10º com instrução e 8º sem instrução. Como o chunk correto já aparece no top 12 nos dois modos, não há evidência de que um reranker seja necessário. O `Qwen3-Reranker-0.6B` não foi implementado.
 
 A diferença entre instrução e pergunta pura é pequena e dentro do ruído de 10 casos. A implementação mantém a instrução porque é a recomendação do model card e teve MRR ligeiramente maior; ela é uma constante, não um prompt de conversa. Se o benchmark ampliado mostrar o contrário, a constante pode ser removida sem mudar a arquitetura.
+
+### Seleção adaptativa por score
+
+O teto fixo de 12 foi substituído por um critério relativo: manter chunks com similaridade de cosseno de pelo menos **75% do melhor chunk**, com mínimo de **4** e máximo de **12**. O orçamento de tokens continua sendo o limite final.
+
+Simulação nos 10 casos:
+
+| Política | Média de chunks | Cobertura de todas as seções |
+|---|---:|---:|
+| Teto fixo de 12 | 11,5 | 10/10 |
+| Score ≥75% do melhor | ~9,2 | 10/10 |
+
+O corte absoluto não é usado: similaridade de cosseno não é probabilidade calibrada e varia com consulta, idioma e backend. O limite relativo preserva o caso `rope-cross-section`, que fica em 10º e seria perdido com um piso de 80%.
 
 Artefato: `experiments/results/embedding-retrieval-qwen3-0.6b-zotero.json`.
 
@@ -62,7 +77,7 @@ node --experimental-strip-types scripts/embedding_benchmark.ts \
 - prompt com `TRECHOS RECUPERADOS DO ARTIGO`;
 - artigo completo ausente do prompt;
 - regra de insuficiência específica para trechos;
-- aviso no popup: **24 de 45 trechos · ~7.168 tokens**;
+- aviso no popup: **11 de 45 trechos · ~3.516 tokens**;
 - resposta renderizada pelo mock, sem erro.
 
 Evidências:
@@ -78,5 +93,5 @@ Evidências:
 - O corpus real deste teste tem 5 PDFs; Fast-dLLM e FlashAttention-4 só existem no corpus `pdftotext`.
 - A detecção de headings é heurística e depende da extração do PDF.
 - A avaliação nativa foi feita em Linux; Windows e a instalação de produção ainda precisam de validação separada.
-- O modo local usa 16.000 tokens e até 24 chunks; essa escolha deve ser comparada com o artigo completo em qualidade de resposta, não apenas em hit@k.
+- A seleção usa similaridade relativa: chunks com score ≥75% do melhor, entre 4 e 12, limitados pelo orçamento. O corte absoluto não é usado porque o cosine não é uma probabilidade calibrada. A média caiu de 11,5 (teto fixo de 12) para ~9,2 chunks, mantendo 10/10 na cobertura de evidência. O modo local usa 16.000 tokens; essa escolha deve ser comparada com o artigo completo em qualidade de resposta, não apenas em hit@k.
 - A quantização Q8_0 do embedding foi fixada; não compare resultados entre precisões sem um novo fingerprint.

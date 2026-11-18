@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T18:29:54.247Z",
+  "generatedAt": "2026-11-18T19:04:50.546Z",
   "model": "qwen3-embedding-0.6b",
   "baseUrl": "http://127.0.0.1:18081",
   "dimensions": 1024,
@@ -12,31 +12,31 @@
       "paper": "attention",
       "title": "Attention Is All You Need",
       "chunks": 45,
-      "seconds": 22.97
+      "seconds": 0.59
     },
     {
       "paper": "rmsnorm",
       "title": "Root Mean Square Layer Normalization",
       "chunks": 51,
-      "seconds": 28.88
+      "seconds": 0.71
     },
     {
       "paper": "rope",
       "title": "RoFormer: Enhanced Transformer with Rotary Position Embedding",
       "chunks": 35,
-      "seconds": 22.45
+      "seconds": 0.54
     },
     {
       "paper": "lora",
       "title": "LoRA: Low-Rank Adaptation of Large Language Models",
       "chunks": 64,
-      "seconds": 44.56
+      "seconds": 1.05
     },
     {
       "paper": "llada",
       "title": "Large Language Diffusion Models",
       "chunks": 89,
-      "seconds": 56.9
+      "seconds": 1.43
     }
   ],
   "summary": {
@@ -55,7 +55,7 @@
         "12": 10,
         "20": 10
       },
-      "mrr": 0.727
+      "mrr": 0.777
     },
     "plain": {
       "cases": 10,
@@ -72,7 +72,7 @@
         "12": 10,
         "20": 10
       },
-      "mrr": 0.712
+      "mrr": 0.729
     }
   },
   "cases": [
@@ -91,41 +91,101 @@
             {
               "index": 11,
               "heading": "3.2.1 Scaled Dot-Product Attention",
-              "score": 0.4581
+              "score": 0.4571
             },
             {
               "index": 10,
               "heading": "3.2.1 Scaled Dot-Product Attention",
-              "score": 0.4413
+              "score": 0.4409
             },
             {
               "index": 43,
               "heading": "References",
-              "score": 0.3653
+              "score": 0.3619
             },
             {
               "index": 9,
               "heading": "3.2 Attention",
-              "score": 0.361
+              "score": 0.3603
             },
             {
               "index": 44,
               "heading": "References",
-              "score": 0.355
+              "score": 0.3532
             },
             {
               "index": 0,
-              "score": 0.3392
+              "score": 0.3358
             },
             {
               "index": 14,
               "heading": "3.2.3 Applications of Attention in our Model",
-              "score": 0.3121
+              "score": 0.313
             },
             {
               "index": 42,
               "heading": "References",
-              "score": 0.3066
+              "score": 0.3077
+            },
+            {
+              "index": 27,
+              "heading": "6 Results",
+              "score": 0.3016
+            },
+            {
+              "index": 12,
+              "heading": "3.2.2 Multi-Head Attention",
+              "score": 0.2917
+            },
+            {
+              "index": 31,
+              "heading": "6.2 Model Variations",
+              "score": 0.2895
+            },
+            {
+              "index": 4,
+              "heading": "2 Background",
+              "score": 0.2804
+            },
+            {
+              "index": 19,
+              "heading": "4 Why Self-Attention",
+              "score": 0.279
+            },
+            {
+              "index": 17,
+              "heading": "3.5 Positional Encoding",
+              "score": 0.2752
+            },
+            {
+              "index": 21,
+              "heading": "4 Why Self-Attention",
+              "score": 0.2732
+            },
+            {
+              "index": 18,
+              "heading": "4 Why Self-Attention",
+              "score": 0.2712
+            },
+            {
+              "index": 22,
+              "heading": "5 Training",
+              "score": 0.2704
+            },
+            {
+              "index": 13,
+              "heading": "3.2.3 Applications of Attention in our Model",
+              "score": 0.2644
+            },
+            {
+              "index": 15,
+              "heading": "3.3 Position-wise Feed-Forward Networks",
+              "score": 0.2555
+            },
+            {
+              "index": 8,
+              "heading": "3.1 Encoder and Decoder Stacks",
+              "score": 0.254
             }
           ],
           "firstEvidenceRank": 1,
@@ -162,41 +222,101 @@
             {
               "index": 11,
               "heading": "3.2.1 Scaled Dot-Product Attention",
-              "score": 0.4107
+              "score": 0.4116
             },
             {
               "index": 10,
               "heading": "3.2.1 Scaled Dot-Product Attention",
-              "score": 0.4073
+              "score": 0.4099
             },
             {
               "index": 43,
               "heading": "References",
-              "score": 0.3348
+              "score": 0.3362
             },
             {
               "index": 0,
-              "score": 0.3275
-            },
-            {
-              "index": 9,
-              "heading": "3.2 Attention",
-              "score": 0.3254
+              "score": 0.3285
             },
             {
               "index": 44,
               "heading": "References",
-              "score": 0.3251
+              "score": 0.3278
+            },
+            {
+              "index": 9,
+              "heading": "3.2 Attention",
+              "score": 0.3277
             },
             {
               "index": 27,
               "heading": "6 Results",
-              "score": 0.3217
+              "score": 0.3199
             },
             {
               "index": 22,
               "heading": "5 Training",
-              "score": 0.275
+              "score": 0.2784
+            },
+            {
+              "index": 42,
+              "heading": "References",
+              "score": 0.2686
+            },
+            {
+              "index": 14,
+              "heading": "3.2.3 Applications of Attention in our Model",
+              "score": 0.2644
+            },
+            {
+              "index": 17,
+              "heading": "3.5 Positional Encoding",
+              "score": 0.2636
+            },
+            {
+              "index": 12,
+              "heading": "3.2.2 Multi-Head Attention",
+              "score": 0.2613
+            },
+            {
+              "index": 4,
+              "heading": "2 Background",
+              "score": 0.2586
+            },
+            {
+              "index": 31,
+              "heading": "6.2 Model Variations",
+              "score": 0.2566
+            },
+            {
+              "index": 19,
+              "heading": "4 Why Self-Attention",
+              "score": 0.2547
+            },
+            {
+              "index": 21,
+              "heading": "4 Why Self-Attention",
+              "score": 0.2479
+            },
+            {
+              "index": 18,
+              "heading": "4 Why Self-Attention",
+              "score": 0.2461
+            },
+            {
+              "index": 40,
+              "heading": "References",
+              "score": 0.227
+            },
+            {
+              "index": 38,
+              "heading": "References",
+              "score": 0.2266
+            },
+            {
+              "index": 15,
+              "heading": "3.3 Position-wise Feed-Forward Networks",
+              "score": 0.2261
             }
           ],
           "firstEvidenceRank": 1,
@@ -246,42 +366,102 @@
             {
               "index": 14,
               "heading": "3.2.3 Applications of Attention in our Model",
-              "score": 0.5886
+              "score": 0.5853
             },
             {
               "index": 8,
               "heading": "3.1 Encoder and Decoder Stacks",
-              "score": 0.5866
+              "score": 0.5843
             },
             {
               "index": 44,
               "heading": "References",
-              "score": 0.566
+              "score": 0.561
             },
             {
               "index": 13,
               "heading": "3.2.3 Applications of Attention in our Model",
-              "score": 0.5279
+              "score": 0.5223
             },
             {
               "index": 26,
               "heading": "5.4 Regularization",
-              "score": 0.5075
+              "score": 0.5018
             },
             {
               "index": 6,
               "heading": "3 Model Architecture",
-              "score": 0.4885
+              "score": 0.4858
             },
             {
               "index": 2,
               "heading": "1 Introduction",
-              "score": 0.484
+              "score": 0.4814
             },
             {
               "index": 34,
               "heading": "6.3 English Constituency Parsing",
-              "score": 0.482
+              "score": 0.4813
+            },
+            {
+              "index": 7,
+              "heading": "3.1 Encoder and Decoder Stacks",
+              "score": 0.4793
+            },
+            {
+              "index": 16,
+              "heading": "3.4 Embeddings and Softmax",
+              "score": 0.4793
+            },
+            {
+              "index": 22,
+              "heading": "5 Training",
+              "score": 0.4786
+            },
+            {
+              "index": 33,
+              "heading": "6.3 English Constituency Parsing",
+              "score": 0.4644
+            },
+            {
+              "index": 17,
+              "heading": "3.5 Positional Encoding",
+              "score": 0.4569
+            },
+            {
+              "index": 42,
+              "heading": "References",
+              "score": 0.4544
+            },
+            {
+              "index": 40,
+              "heading": "References",
+              "score": 0.4533
+            },
+            {
+              "index": 43,
+              "heading": "References",
+              "score": 0.4471
+            },
+            {
+              "index": 35,
+              "heading": "7 Conclusion",
+              "score": 0.4445
+            },
+            {
+              "index": 21,
+              "heading": "4 Why Self-Attention",
+              "score": 0.4429
+            },
+            {
+              "index": 15,
+              "heading": "3.3 Position-wise Feed-Forward Networks",
+              "score": 0.4428
+            },
+            {
+              "index": 39,
+              "heading": "References",
+              "score": 0.4393
             }
           ],
           "firstEvidenceRank": 1,
@@ -323,37 +503,97 @@
             {
               "index": 8,
               "heading": "3.1 Encoder and Decoder Stacks",
-              "score": 0.5468
+              "score": 0.5473
             },
             {
               "index": 44,
               "heading": "References",
-              "score": 0.5146
+              "score": 0.5111
             },
             {
               "index": 13,
               "heading": "3.2.3 Applications of Attention in our Model",
-              "score": 0.479
+              "score": 0.4744
             },
             {
               "index": 2,
               "heading": "1 Introduction",
-              "score": 0.4705
+              "score": 0.4694
             },
             {
               "index": 26,
               "heading": "5.4 Regularization",
-              "score": 0.4698
+              "score": 0.4658
             },
             {
               "index": 22,
               "heading": "5 Training",
-              "score": 0.4643
+              "score": 0.4641
             },
             {
               "index": 6,
               "heading": "3 Model Architecture",
               "score": 0.4382
+            },
+            {
+              "index": 34,
+              "heading": "6.3 English Constituency Parsing",
+              "score": 0.4316
+            },
+            {
+              "index": 16,
+              "heading": "3.4 Embeddings and Softmax",
+              "score": 0.4255
+            },
+            {
+              "index": 17,
+              "heading": "3.5 Positional Encoding",
+              "score": 0.423
+            },
+            {
+              "index": 7,
+              "heading": "3.1 Encoder and Decoder Stacks",
+              "score": 0.4221
+            },
+            {
+              "index": 33,
+              "heading": "6.3 English Constituency Parsing",
+              "score": 0.4217
+            },
+            {
+              "index": 42,
+              "heading": "References",
+              "score": 0.4153
+            },
+            {
+              "index": 43,
+              "heading": "References",
+              "score": 0.4122
+            },
+            {
+              "index": 3,
+              "heading": "1 Introduction",
+              "score": 0.4084
+            },
+            {
+              "index": 4,
+              "heading": "2 Background",
+              "score": 0.405
+            },
+            {
+              "index": 40,
+              "heading": "References",
+              "score": 0.4029
+            },
+            {
+              "index": 21,
+              "heading": "4 Why Self-Attention",
+              "score": 0.4006
+            },
+            {
+              "index": 35,
+              "heading": "7 Conclusion",
+              "score": 0.4006
             }
           ],
           "firstEvidenceRank": 1,
@@ -403,42 +643,102 @@
             {
               "index": 28,
               "heading": "6.1 Machine Translation",
-              "score": 0.5025
+              "score": 0.5002
             },
             {
               "index": 29,
               "heading": "6.1 Machine Translation",
-              "score": 0.4817
+              "score": 0.4818
             },
             {
               "index": 32,
               "heading": "6.3 English Constituency Parsing",
-              "score": 0.4403
+              "score": 0.442
             },
             {
               "index": 1,
               "heading": "Abstract",
-              "score": 0.433
+              "score": 0.434
             },
             {
               "index": 31,
               "heading": "6.2 Model Variations",
-              "score": 0.4083
+              "score": 0.4093
             },
             {
               "index": 33,
               "heading": "6.3 English Constituency Parsing",
-              "score": 0.3987
+              "score": 0.4008
             },
             {
               "index": 35,
               "heading": "7 Conclusion",
-              "score": 0.3948
+              "score": 0.3958
             },
             {
               "index": 34,
               "heading": "6.3 English Constituency Parsing",
-              "score": 0.3904
+              "score": 0.3927
+            },
+            {
+              "index": 5,
+              "heading": "2 Background",
+              "score": 0.3773
+            },
+            {
+              "index": 3,
+              "heading": "1 Introduction",
+              "score": 0.3623
+            },
+            {
+              "index": 13,
+              "heading": "3.2.3 Applications of Attention in our Model",
+              "score": 0.3484
+            },
+            {
+              "index": 6,
+              "heading": "3 Model Architecture",
+              "score": 0.3453
+            },
+            {
+              "index": 16,
+              "heading": "3.4 Embeddings and Softmax",
+              "score": 0.3228
+            },
+            {
+              "index": 39,
+              "heading": "References",
+              "score": 0.3214
+            },
+            {
+              "index": 4,
+              "heading": "2 Background",
+              "score": 0.321
+            },
+            {
+              "index": 30,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3208
+            },
+            {
+              "index": 41,
+              "heading": "References",
+              "score": 0.3097
+            },
+            {
+              "index": 38,
+              "heading": "References",
+              "score": 0.3046
+            },
+            {
+              "index": 8,
+              "heading": "3.1 Encoder and Decoder Stacks",
+              "score": 0.3039
+            },
+            {
+              "index": 22,
+              "heading": "5 Training",
+              "score": 0.2926
             }
           ],
           "firstEvidenceRank": 1,
@@ -475,42 +775,102 @@
             {
               "index": 28,
               "heading": "6.1 Machine Translation",
-              "score": 0.5375
+              "score": 0.5378
             },
             {
               "index": 29,
               "heading": "6.1 Machine Translation",
-              "score": 0.5363
+              "score": 0.537
             },
             {
               "index": 1,
               "heading": "Abstract",
-              "score": 0.4709
+              "score": 0.4719
             },
             {
               "index": 32,
               "heading": "6.3 English Constituency Parsing",
-              "score": 0.4697
-            },
-            {
-              "index": 33,
-              "heading": "6.3 English Constituency Parsing",
-              "score": 0.4407
+              "score": 0.4709
             },
             {
               "index": 31,
               "heading": "6.2 Model Variations",
-              "score": 0.4402
+              "score": 0.4443
+            },
+            {
+              "index": 33,
+              "heading": "6.3 English Constituency Parsing",
+              "score": 0.4422
             },
             {
               "index": 35,
               "heading": "7 Conclusion",
-              "score": 0.4363
+              "score": 0.4364
             },
             {
               "index": 34,
               "heading": "6.3 English Constituency Parsing",
-              "score": 0.4271
+              "score": 0.43
+            },
+            {
+              "index": 5,
+              "heading": "2 Background",
+              "score": 0.4088
+            },
+            {
+              "index": 3,
+              "heading": "1 Introduction",
+              "score": 0.3984
+            },
+            {
+              "index": 13,
+              "heading": "3.2.3 Applications of Attention in our Model",
+              "score": 0.3865
+            },
+            {
+              "index": 6,
+              "heading": "3 Model Architecture",
+              "score": 0.3825
+            },
+            {
+              "index": 30,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3805
+            },
+            {
+              "index": 39,
+              "heading": "References",
+              "score": 0.3682
+            },
+            {
+              "index": 41,
+              "heading": "References",
+              "score": 0.3587
+            },
+            {
+              "index": 16,
+              "heading": "3.4 Embeddings and Softmax",
+              "score": 0.3558
+            },
+            {
+              "index": 38,
+              "heading": "References",
+              "score": 0.3453
+            },
+            {
+              "index": 4,
+              "heading": "2 Background",
+              "score": 0.3413
+            },
+            {
+              "index": 8,
+              "heading": "3.1 Encoder and Decoder Stacks",
+              "score": 0.3405
+            },
+            {
+              "index": 15,
+              "heading": "3.3 Position-wise Feed-Forward Networks",
+              "score": 0.3356
             }
           ],
           "firstEvidenceRank": 1,
@@ -559,42 +919,101 @@
             {
               "index": 17,
               "heading": "4.1 Invariance Analysis",
-              "score": 0.5383
+              "score": 0.5372
             },
             {
               "index": 16,
               "heading": "4.1 Invariance Analysis",
-              "score": 0.5043
-            },
-            {
-              "index": 13,
-              "heading": "4 RMSNorm",
-              "score": 0.4462
+              "score": 0.5039
             },
             {
               "index": 9,
               "heading": "2 Related Work",
-              "score": 0.4448
+              "score": 0.4493
+            },
+            {
+              "index": 13,
+              "heading": "4 RMSNorm",
+              "score": 0.4457
             },
             {
               "index": 21,
               "heading": "5 pRMSNorm",
-              "score": 0.4092
+              "score": 0.4089
             },
             {
               "index": 10,
               "heading": "2 Related Work",
-              "score": 0.3796
+              "score": 0.3791
             },
             {
               "index": 14,
               "heading": "4 RMSNorm",
-              "score": 0.3654
+              "score": 0.3653
             },
             {
               "index": 30,
               "heading": "6.1 Machine Translation",
-              "score": 0.3575
+              "score": 0.3579
+            },
+            {
+              "index": 25,
+              "heading": "6.1 Machine Translation",
+              "score": 0.341
+            },
+            {
+              "index": 38,
+              "heading": "7 Conclusion and Future Work",
+              "score": 0.3386
+            },
+            {
+              "index": 19,
+              "heading": "4.2 Gradient Analysis",
+              "score": 0.3342
+            },
+            {
+              "index": 4,
+              "heading": "1 Introduction",
+              "score": 0.3281
+            },
+            {
+              "index": 7,
+              "heading": "2 Related Work",
+              "score": 0.3255
+            },
+            {
+              "index": 15,
+              "heading": "4 RMSNorm",
+              "score": 0.3243
+            },
+            {
+              "index": 5,
+              "heading": "1 Introduction",
+              "score": 0.3157
+            },
+            {
+              "index": 12,
+              "heading": "3 Background",
+              "score": 0.3141
+            },
+            {
+              "index": 29,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3125
+            },
+            {
+              "index": 18,
+              "heading": "4.2 Gradient Analysis",
+              "score": 0.307
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.3049
+            },
+            {
+              "index": 0,
+              "score": 0.3007
             }
           ],
           "firstEvidenceRank": 1,
@@ -631,42 +1050,101 @@
             {
               "index": 17,
               "heading": "4.1 Invariance Analysis",
-              "score": 0.4944
+              "score": 0.4914
             },
             {
               "index": 16,
               "heading": "4.1 Invariance Analysis",
-              "score": 0.4414
+              "score": 0.4405
             },
             {
               "index": 9,
               "heading": "2 Related Work",
-              "score": 0.4077
+              "score": 0.4069
             },
             {
               "index": 13,
               "heading": "4 RMSNorm",
-              "score": 0.3923
+              "score": 0.3894
             },
             {
               "index": 21,
               "heading": "5 pRMSNorm",
-              "score": 0.3633
+              "score": 0.3592
             },
             {
               "index": 15,
               "heading": "4 RMSNorm",
-              "score": 0.3466
+              "score": 0.3441
             },
             {
               "index": 10,
               "heading": "2 Related Work",
-              "score": 0.3451
+              "score": 0.3411
             },
             {
               "index": 30,
               "heading": "6.1 Machine Translation",
-              "score": 0.3293
+              "score": 0.3248
+            },
+            {
+              "index": 38,
+              "heading": "7 Conclusion and Future Work",
+              "score": 0.3168
+            },
+            {
+              "index": 14,
+              "heading": "4 RMSNorm",
+              "score": 0.3076
+            },
+            {
+              "index": 25,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3066
+            },
+            {
+              "index": 0,
+              "score": 0.3058
+            },
+            {
+              "index": 4,
+              "heading": "1 Introduction",
+              "score": 0.2992
+            },
+            {
+              "index": 7,
+              "heading": "2 Related Work",
+              "score": 0.2977
+            },
+            {
+              "index": 19,
+              "heading": "4.2 Gradient Analysis",
+              "score": 0.2946
+            },
+            {
+              "index": 29,
+              "heading": "6.1 Machine Translation",
+              "score": 0.2939
+            },
+            {
+              "index": 41,
+              "heading": "References",
+              "score": 0.2792
+            },
+            {
+              "index": 5,
+              "heading": "1 Introduction",
+              "score": 0.2781
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.2707
+            },
+            {
+              "index": 11,
+              "heading": "3 Background",
+              "score": 0.2704
             }
           ],
           "firstEvidenceRank": 1,
@@ -715,42 +1193,101 @@
             {
               "index": 21,
               "heading": "5 pRMSNorm",
-              "score": 0.7321
+              "score": 0.7293
             },
             {
               "index": 15,
               "heading": "4 RMSNorm",
-              "score": 0.6758
+              "score": 0.6742
             },
             {
               "index": 6,
               "heading": "1 Introduction",
-              "score": 0.6284
+              "score": 0.6259
             },
             {
               "index": 5,
               "heading": "1 Introduction",
-              "score": 0.6273
+              "score": 0.6246
             },
             {
               "index": 2,
               "heading": "Abstract",
-              "score": 0.607
+              "score": 0.6045
             },
             {
               "index": 39,
               "heading": "7 Conclusion and Future Work",
-              "score": 0.5928
+              "score": 0.5943
             },
             {
               "index": 10,
               "heading": "2 Related Work",
-              "score": 0.579
+              "score": 0.5789
             },
             {
               "index": 14,
               "heading": "4 RMSNorm",
-              "score": 0.5755
+              "score": 0.5745
+            },
+            {
+              "index": 13,
+              "heading": "4 RMSNorm",
+              "score": 0.5661
+            },
+            {
+              "index": 38,
+              "heading": "7 Conclusion and Future Work",
+              "score": 0.5547
+            },
+            {
+              "index": 16,
+              "heading": "4.1 Invariance Analysis",
+              "score": 0.5507
+            },
+            {
+              "index": 26,
+              "heading": "6.1 Machine Translation",
+              "score": 0.5425
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.536
+            },
+            {
+              "index": 17,
+              "heading": "4.1 Invariance Analysis",
+              "score": 0.5329
+            },
+            {
+              "index": 34,
+              "heading": "6.3 Image-Caption Retrieval",
+              "score": 0.5328
+            },
+            {
+              "index": 30,
+              "heading": "6.1 Machine Translation",
+              "score": 0.5083
+            },
+            {
+              "index": 4,
+              "heading": "1 Introduction",
+              "score": 0.5017
+            },
+            {
+              "index": 25,
+              "heading": "6.1 Machine Translation",
+              "score": 0.5014
+            },
+            {
+              "index": 18,
+              "heading": "4.2 Gradient Analysis",
+              "score": 0.4866
+            },
+            {
+              "index": 0,
+              "score": 0.4851
             }
           ],
           "firstEvidenceRank": 1,
@@ -787,42 +1324,101 @@
             {
               "index": 21,
               "heading": "5 pRMSNorm",
-              "score": 0.7437
+              "score": 0.7462
             },
             {
               "index": 15,
               "heading": "4 RMSNorm",
-              "score": 0.697
+              "score": 0.701
             },
             {
               "index": 5,
               "heading": "1 Introduction",
-              "score": 0.635
+              "score": 0.6394
             },
             {
               "index": 6,
               "heading": "1 Introduction",
-              "score": 0.6245
+              "score": 0.6288
             },
             {
               "index": 2,
               "heading": "Abstract",
-              "score": 0.6155
+              "score": 0.6197
             },
             {
               "index": 39,
               "heading": "7 Conclusion and Future Work",
-              "score": 0.598
+              "score": 0.6051
             },
             {
               "index": 10,
               "heading": "2 Related Work",
-              "score": 0.5966
+              "score": 0.6027
             },
             {
               "index": 13,
               "heading": "4 RMSNorm",
-              "score": 0.5666
+              "score": 0.572
+            },
+            {
+              "index": 38,
+              "heading": "7 Conclusion and Future Work",
+              "score": 0.5719
+            },
+            {
+              "index": 14,
+              "heading": "4 RMSNorm",
+              "score": 0.5657
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.5498
+            },
+            {
+              "index": 26,
+              "heading": "6.1 Machine Translation",
+              "score": 0.5442
+            },
+            {
+              "index": 16,
+              "heading": "4.1 Invariance Analysis",
+              "score": 0.5389
+            },
+            {
+              "index": 17,
+              "heading": "4.1 Invariance Analysis",
+              "score": 0.5271
+            },
+            {
+              "index": 34,
+              "heading": "6.3 Image-Caption Retrieval",
+              "score": 0.525
+            },
+            {
+              "index": 4,
+              "heading": "1 Introduction",
+              "score": 0.5202
+            },
+            {
+              "index": 0,
+              "score": 0.5161
+            },
+            {
+              "index": 30,
+              "heading": "6.1 Machine Translation",
+              "score": 0.5054
+            },
+            {
+              "index": 25,
+              "heading": "6.1 Machine Translation",
+              "score": 0.5019
+            },
+            {
+              "index": 18,
+              "heading": "4.2 Gradient Analysis",
+              "score": 0.4871
             }
           ],
           "firstEvidenceRank": 1,
@@ -872,27 +1468,27 @@
             {
               "index": 37,
               "heading": "6.4 CIFAR-10 Classification",
-              "score": 0.4661
+              "score": 0.469
             },
             {
               "index": 39,
               "heading": "7 Conclusion and Future Work",
-              "score": 0.4374
+              "score": 0.438
             },
             {
               "index": 6,
               "heading": "1 Introduction",
-              "score": 0.434
+              "score": 0.4371
             },
             {
               "index": 38,
               "heading": "7 Conclusion and Future Work",
-              "score": 0.4237
+              "score": 0.4249
             },
             {
               "index": 22,
               "heading": "6 Experiments",
-              "score": 0.4213
+              "score": 0.4228
             },
             {
               "index": 23,
@@ -902,12 +1498,72 @@
             {
               "index": 34,
               "heading": "6.3 Image-Caption Retrieval",
-              "score": 0.4017
+              "score": 0.4028
             },
             {
               "index": 25,
               "heading": "6.1 Machine Translation",
-              "score": 0.3951
+              "score": 0.3964
+            },
+            {
+              "index": 28,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3919
+            },
+            {
+              "index": 2,
+              "heading": "Abstract",
+              "score": 0.3808
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.368
+            },
+            {
+              "index": 32,
+              "heading": "6.2 CNN/Daily Mail Reading Comprehension",
+              "score": 0.353
+            },
+            {
+              "index": 5,
+              "heading": "1 Introduction",
+              "score": 0.3465
+            },
+            {
+              "index": 26,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3444
+            },
+            {
+              "index": 27,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3442
+            },
+            {
+              "index": 36,
+              "heading": "6.4 CIFAR-10 Classification",
+              "score": 0.3429
+            },
+            {
+              "index": 31,
+              "heading": "6.2 CNN/Daily Mail Reading Comprehension",
+              "score": 0.3398
+            },
+            {
+              "index": 15,
+              "heading": "4 RMSNorm",
+              "score": 0.3376
+            },
+            {
+              "index": 48,
+              "heading": "References",
+              "score": 0.3259
+            },
+            {
+              "index": 4,
+              "heading": "1 Introduction",
+              "score": 0.3183
             }
           ],
           "firstEvidenceRank": 18,
@@ -944,42 +1600,101 @@
             {
               "index": 39,
               "heading": "7 Conclusion and Future Work",
-              "score": 0.4181
+              "score": 0.4165
             },
             {
               "index": 6,
               "heading": "1 Introduction",
-              "score": 0.4147
-            },
-            {
-              "index": 38,
-              "heading": "7 Conclusion and Future Work",
-              "score": 0.4002
+              "score": 0.4139
             },
             {
               "index": 37,
               "heading": "6.4 CIFAR-10 Classification",
-              "score": 0.3978
+              "score": 0.3982
+            },
+            {
+              "index": 38,
+              "heading": "7 Conclusion and Future Work",
+              "score": 0.3958
             },
             {
               "index": 22,
               "heading": "6 Experiments",
-              "score": 0.3862
+              "score": 0.3845
             },
             {
               "index": 34,
               "heading": "6.3 Image-Caption Retrieval",
-              "score": 0.3706
+              "score": 0.3674
             },
             {
               "index": 23,
               "heading": "6 Experiments",
-              "score": 0.3677
+              "score": 0.3649
             },
             {
               "index": 2,
               "heading": "Abstract",
-              "score": 0.3561
+              "score": 0.3501
+            },
+            {
+              "index": 25,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3442
+            },
+            {
+              "index": 28,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3394
+            },
+            {
+              "index": 15,
+              "heading": "4 RMSNorm",
+              "score": 0.3279
+            },
+            {
+              "index": 32,
+              "heading": "6.2 CNN/Daily Mail Reading Comprehension",
+              "score": 0.3173
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.313
+            },
+            {
+              "index": 31,
+              "heading": "6.2 CNN/Daily Mail Reading Comprehension",
+              "score": 0.3094
+            },
+            {
+              "index": 27,
+              "heading": "6.1 Machine Translation",
+              "score": 0.308
+            },
+            {
+              "index": 5,
+              "heading": "1 Introduction",
+              "score": 0.3061
+            },
+            {
+              "index": 26,
+              "heading": "6.1 Machine Translation",
+              "score": 0.3008
+            },
+            {
+              "index": 4,
+              "heading": "1 Introduction",
+              "score": 0.2977
+            },
+            {
+              "index": 0,
+              "score": 0.2938
+            },
+            {
+              "index": 36,
+              "heading": "6.4 CIFAR-10 Classification",
+              "score": 0.2929
             }
           ],
           "firstEvidenceRank": 11,
@@ -1025,47 +1740,107 @@
         "instruction": {
           "top": [
             {
-              "index": 12,
-              "heading": "3 Proposed Approach",
-              "score": 0.5073
-            },
-            {
               "index": 14,
               "heading": "3.2 Rotary Position Embedding",
-              "score": 0.5048
+              "score": 0.5046
             },
             {
-              "index": 16,
-              "heading": "3.2.2 General form",
-              "score": 0.4899
+              "index": 12,
+              "heading": "3 Proposed Approach",
+              "score": 0.5045
             },
             {
               "index": 11,
               "heading": "2.3 Relative position embedding",
-              "score": 0.4879
+              "score": 0.4888
+            },
+            {
+              "index": 16,
+              "heading": "3.2.2 General form",
+              "score": 0.4886
             },
             {
               "index": 15,
               "heading": "3.2.2 General form",
-              "score": 0.4319
+              "score": 0.4275
+            },
+            {
+              "index": 0,
+              "score": 0.4146
             },
             {
               "index": 3,
               "heading": "1 Introduction",
-              "score": 0.4162
-            },
-            {
-              "index": 0,
-              "score": 0.4142
+              "score": 0.4143
             },
             {
               "index": 1,
               "heading": "ABSTRACT",
-              "score": 0.4079
+              "score": 0.4074
+            },
+            {
+              "index": 4,
+              "heading": "1 Introduction",
+              "score": 0.398
+            },
+            {
+              "index": 18,
+              "heading": "3.3 Properties of RoPE",
+              "score": 0.3905
+            },
+            {
+              "index": 7,
+              "heading": "2.2 Absolute position embedding",
+              "score": 0.3903
+            },
+            {
+              "index": 30,
+              "heading": "References",
+              "score": 0.3882
+            },
+            {
+              "index": 31,
+              "heading": "References",
+              "score": 0.3771
+            },
+            {
+              "index": 24,
+              "heading": "5 Conclusions",
+              "score": 0.3591
+            },
+            {
+              "index": 13,
+              "heading": "3.1 Formulation",
+              "score": 0.3533
+            },
+            {
+              "index": 10,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.3526
+            },
+            {
+              "index": 33,
+              "heading": "References",
+              "score": 0.3501
+            },
+            {
+              "index": 9,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.3257
+            },
+            {
+              "index": 17,
+              "heading": "3.3 Properties of RoPE",
+              "score": 0.3244
+            },
+            {
+              "index": 20,
+              "heading": "4.1 Implementation",
+              "score": 0.3134
             }
           ],
-          "firstEvidenceRank": 2,
-          "mrr": 0.5,
+          "firstEvidenceRank": 1,
+          "mrr": 1,
           "metrics": {
             "5": {
               "hit": true,
@@ -1098,41 +1873,101 @@
             {
               "index": 12,
               "heading": "3 Proposed Approach",
-              "score": 0.4969
+              "score": 0.4963
             },
             {
               "index": 11,
               "heading": "2.3 Relative position embedding",
-              "score": 0.4763
+              "score": 0.4782
             },
             {
               "index": 14,
               "heading": "3.2 Rotary Position Embedding",
-              "score": 0.4637
+              "score": 0.4663
             },
             {
               "index": 16,
               "heading": "3.2.2 General form",
-              "score": 0.443
+              "score": 0.4446
             },
             {
               "index": 0,
-              "score": 0.4044
+              "score": 0.4063
             },
             {
               "index": 15,
               "heading": "3.2.2 General form",
-              "score": 0.4011
+              "score": 0.4012
             },
             {
               "index": 3,
               "heading": "1 Introduction",
-              "score": 0.3853
+              "score": 0.3869
             },
             {
               "index": 1,
               "heading": "ABSTRACT",
-              "score": 0.3713
+              "score": 0.3731
+            },
+            {
+              "index": 7,
+              "heading": "2.2 Absolute position embedding",
+              "score": 0.3714
+            },
+            {
+              "index": 4,
+              "heading": "1 Introduction",
+              "score": 0.3666
+            },
+            {
+              "index": 30,
+              "heading": "References",
+              "score": 0.355
+            },
+            {
+              "index": 18,
+              "heading": "3.3 Properties of RoPE",
+              "score": 0.3393
+            },
+            {
+              "index": 31,
+              "heading": "References",
+              "score": 0.3373
+            },
+            {
+              "index": 33,
+              "heading": "References",
+              "score": 0.3337
+            },
+            {
+              "index": 24,
+              "heading": "5 Conclusions",
+              "score": 0.331
+            },
+            {
+              "index": 13,
+              "heading": "3.1 Formulation",
+              "score": 0.3247
+            },
+            {
+              "index": 10,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.3188
+            },
+            {
+              "index": 17,
+              "heading": "3.3 Properties of RoPE",
+              "score": 0.2995
+            },
+            {
+              "index": 20,
+              "heading": "4.1 Implementation",
+              "score": 0.2961
+            },
+            {
+              "index": 9,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.2926
             }
           ],
           "firstEvidenceRank": 3,
@@ -1181,42 +2016,102 @@
             {
               "index": 9,
               "heading": "2.3 Relative position embedding",
-              "score": 0.5238
+              "score": 0.5237
             },
             {
               "index": 10,
               "heading": "2.3 Relative position embedding",
-              "score": 0.4562
+              "score": 0.4575
             },
             {
               "index": 8,
               "heading": "2.3 Relative position embedding",
-              "score": 0.4545
+              "score": 0.4565
             },
             {
               "index": 11,
               "heading": "2.3 Relative position embedding",
-              "score": 0.4531
+              "score": 0.4554
             },
             {
               "index": 12,
               "heading": "3 Proposed Approach",
-              "score": 0.4429
+              "score": 0.4422
             },
             {
               "index": 3,
               "heading": "1 Introduction",
-              "score": 0.4267
+              "score": 0.4249
             },
             {
               "index": 24,
               "heading": "5 Conclusions",
-              "score": 0.4199
+              "score": 0.4192
             },
             {
               "index": 13,
               "heading": "3.1 Formulation",
-              "score": 0.4195
+              "score": 0.4176
+            },
+            {
+              "index": 30,
+              "heading": "References",
+              "score": 0.4145
+            },
+            {
+              "index": 17,
+              "heading": "3.3 Properties of RoPE",
+              "score": 0.409
+            },
+            {
+              "index": 16,
+              "heading": "3.2.2 General form",
+              "score": 0.4008
+            },
+            {
+              "index": 31,
+              "heading": "References",
+              "score": 0.3959
+            },
+            {
+              "index": 14,
+              "heading": "3.2 Rotary Position Embedding",
+              "score": 0.3935
+            },
+            {
+              "index": 1,
+              "heading": "ABSTRACT",
+              "score": 0.3843
+            },
+            {
+              "index": 4,
+              "heading": "1 Introduction",
+              "score": 0.3717
+            },
+            {
+              "index": 7,
+              "heading": "2.2 Absolute position embedding",
+              "score": 0.363
+            },
+            {
+              "index": 32,
+              "heading": "References",
+              "score": 0.3596
+            },
+            {
+              "index": 18,
+              "heading": "3.3 Properties of RoPE",
+              "score": 0.3326
+            },
+            {
+              "index": 6,
+              "heading": "2.1 Preliminary",
+              "score": 0.3255
+            },
+            {
+              "index": 15,
+              "heading": "3.2.2 General form",
+              "score": 0.3198
             }
           ],
           "firstEvidenceRank": 10,
@@ -1253,42 +2148,102 @@
             {
               "index": 9,
               "heading": "2.3 Relative position embedding",
-              "score": 0.5249
+              "score": 0.5255
             },
             {
               "index": 8,
               "heading": "2.3 Relative position embedding",
-              "score": 0.473
+              "score": 0.4756
             },
             {
               "index": 11,
               "heading": "2.3 Relative position embedding",
-              "score": 0.4584
+              "score": 0.4616
             },
             {
               "index": 10,
               "heading": "2.3 Relative position embedding",
-              "score": 0.4577
+              "score": 0.4591
             },
             {
               "index": 13,
               "heading": "3.1 Formulation",
-              "score": 0.4543
+              "score": 0.4557
             },
             {
               "index": 30,
               "heading": "References",
-              "score": 0.4505
+              "score": 0.4533
             },
             {
               "index": 12,
               "heading": "3 Proposed Approach",
-              "score": 0.4489
+              "score": 0.4487
             },
             {
               "index": 16,
               "heading": "3.2.2 General form",
-              "score": 0.4342
+              "score": 0.4326
+            },
+            {
+              "index": 3,
+              "heading": "1 Introduction",
+              "score": 0.4325
+            },
+            {
+              "index": 17,
+              "heading": "3.3 Properties of RoPE",
+              "score": 0.4194
+            },
+            {
+              "index": 24,
+              "heading": "5 Conclusions",
+              "score": 0.4157
+            },
+            {
+              "index": 32,
+              "heading": "References",
+              "score": 0.4141
+            },
+            {
+              "index": 14,
+              "heading": "3.2 Rotary Position Embedding",
+              "score": 0.4079
+            },
+            {
+              "index": 31,
+              "heading": "References",
+              "score": 0.4057
+            },
+            {
+              "index": 1,
+              "heading": "ABSTRACT",
+              "score": 0.3977
+            },
+            {
+              "index": 6,
+              "heading": "2.1 Preliminary",
+              "score": 0.3821
+            },
+            {
+              "index": 18,
+              "heading": "3.3 Properties of RoPE",
+              "score": 0.3761
+            },
+            {
+              "index": 4,
+              "heading": "1 Introduction",
+              "score": 0.3706
+            },
+            {
+              "index": 7,
+              "heading": "2.2 Absolute position embedding",
+              "score": 0.3667
+            },
+            {
+              "index": 15,
+              "heading": "3.2.2 General form",
+              "score": 0.3504
             }
           ],
           "firstEvidenceRank": 8,
@@ -1334,44 +2289,103 @@
         "instruction": {
           "top": [
             {
-              "index": 19,
-              "heading": "4 Experiment",
-              "score": 0.3697
-            },
-            {
               "index": 22,
               "heading": "4.3 Downstream Tasks & Dataset",
-              "score": 0.3689
+              "score": 0.3691
+            },
+            {
+              "index": 19,
+              "heading": "4 Experiment",
+              "score": 0.3684
             },
             {
               "index": 29,
               "heading": "References",
-              "score": 0.3465
+              "score": 0.3491
             },
             {
               "index": 26,
               "heading": "References",
-              "score": 0.3104
+              "score": 0.3076
             },
             {
               "index": 21,
               "heading": "4.2 Pre-training",
-              "score": 0.3017
+              "score": 0.3022
             },
             {
               "index": 23,
               "heading": "4.4 Results",
-              "score": 0.2986
+              "score": 0.2965
             },
             {
               "index": 4,
               "heading": "1 Introduction",
-              "score": 0.2972
+              "score": 0.2943
             },
             {
               "index": 28,
               "heading": "References",
-              "score": 0.2885
+              "score": 0.2859
+            },
+            {
+              "index": 25,
+              "heading": "References",
+              "score": 0.2857
+            },
+            {
+              "index": 24,
+              "heading": "5 Conclusions",
+              "score": 0.2832
+            },
+            {
+              "index": 27,
+              "heading": "References",
+              "score": 0.2796
+            },
+            {
+              "index": 11,
+              "heading": "2.3 Relative position embedding",
+              "score": 0.2777
+            },
+            {
+              "index": 1,
+              "heading": "ABSTRACT",
+              "score": 0.2758
+            },
+            {
+              "index": 17,
+              "heading": "3.3 Properties of RoPE",
+              "score": 0.2733
+            },
+            {
+              "index": 18,
+              "heading": "3.3 Properties of RoPE",
+              "score": 0.2639
+            },
+            {
+              "index": 20,
+              "heading": "4.1 Implementation",
+              "score": 0.2574
+            },
+            {
+              "index": 13,
+              "heading": "3.1 Formulation",
+              "score": 0.2562
+            },
+            {
+              "index": 12,
+              "heading": "3 Proposed Approach",
+              "score": 0.2498
+            },
+            {
+              "index": 0,
+              "score": 0.2491
+            },
+            {
+              "index": 15,
+              "heading": "3.2.2 General form",
+              "score": 0.2438
             }
           ],
           "mrr": 0,
@@ -1407,42 +2421,101 @@
             {
               "index": 19,
               "heading": "4 Experiment",
-              "score": 0.4013
+              "score": 0.4008
             },
             {
               "index": 29,
               "heading": "References",
-              "score": 0.3841
+              "score": 0.3856
             },
             {
               "index": 22,
               "heading": "4.3 Downstream Tasks & Dataset",
-              "score": 0.3796
+              "score": 0.3803
             },
             {
               "index": 26,
               "heading": "References",
-              "score": 0.351
+              "score": 0.3487
             },
             {
               "index": 28,
               "heading": "References",
-              "score": 0.3446
+              "score": 0.3421
             },
             {
               "index": 4,
               "heading": "1 Introduction",
-              "score": 0.3391
+              "score": 0.3393
             },
             {
               "index": 24,
               "heading": "5 Conclusions",
-              "score": 0.3343
+              "score": 0.3326
             },
             {
               "index": 11,
               "heading": "2.3 Relative position embedding",
-              "score": 0.332
+              "score": 0.3325
+            },
+            {
+              "index": 1,
+              "heading": "ABSTRACT",
+              "score": 0.3281
+            },
+            {
+              "index": 21,
+              "heading": "4.2 Pre-training",
+              "score": 0.3219
+            },
+            {
+              "index": 25,
+              "heading": "References",
+              "score": 0.3168
+            },
+            {
+              "index": 23,
+              "heading": "4.4 Results",
+              "score": 0.3143
+            },
+            {
+              "index": 27,
+              "heading": "References",
+              "score": 0.3096
+            },
+            {
+              "index": 12,
+              "heading": "3 Proposed Approach",
+              "score": 0.3055
+            },
+            {
+              "index": 20,
+              "heading": "4.1 Implementation",
+              "score": 0.304
+            },
+            {
+              "index": 17,
+              "heading": "3.3 Properties of RoPE",
+              "score": 0.304
+            },
+            {
+              "index": 13,
+              "heading": "3.1 Formulation",
+              "score": 0.303
+            },
+            {
+              "index": 18,
+              "heading": "3.3 Properties of RoPE",
+              "score": 0.3021
+            },
+            {
+              "index": 0,
+              "score": 0.2944
+            },
+            {
+              "index": 2,
+              "heading": "1 Introduction",
+              "score": 0.2834
             }
           ],
           "mrr": 0,
@@ -1489,41 +2562,101 @@
             {
               "index": 38,
               "heading": "7Conclusion and Future Work",
-              "score": 0.7047
+              "score": 0.7057
             },
             {
               "index": 1,
               "heading": "Abstract",
-              "score": 0.6955
+              "score": 0.6933
             },
             {
               "index": 11,
               "heading": "3Our Method",
-              "score": 0.6772
+              "score": 0.6795
             },
             {
               "index": 29,
               "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
-              "score": 0.6689
+              "score": 0.6661
+            },
+            {
+              "index": 0,
+              "score": 0.6513
             },
             {
               "index": 30,
               "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
-              "score": 0.6521
-            },
-            {
-              "index": 50,
-              "heading": "References",
-              "score": 0.6494
-            },
-            {
-              "index": 0,
-              "score": 0.6492
+              "score": 0.6503
             },
             {
               "index": 13,
               "heading": "3.1Applying LoRA to Transformer",
-              "score": 0.6475
+              "score": 0.648
+            },
+            {
+              "index": 50,
+              "heading": "References",
+              "score": 0.6472
+            },
+            {
+              "index": 5,
+              "heading": "1Introduction",
+              "score": 0.6415
+            },
+            {
+              "index": 51,
+              "heading": "References",
+              "score": 0.6399
+            },
+            {
+              "index": 14,
+              "heading": "3.1Applying LoRA to Transformer",
+              "score": 0.6319
+            },
+            {
+              "index": 21,
+              "heading": "5.1Baselines",
+              "score": 0.629
+            },
+            {
+              "index": 28,
+              "heading": "6Understanding the Low-Rank Updates",
+              "score": 0.6288
+            },
+            {
+              "index": 10,
+              "heading": "3Our Method",
+              "score": 0.6287
+            },
+            {
+              "index": 53,
+              "heading": "References",
+              "score": 0.6192
+            },
+            {
+              "index": 31,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.6105
+            },
+            {
+              "index": 4,
+              "heading": "1Introduction",
+              "score": 0.6092
+            },
+            {
+              "index": 54,
+              "heading": "References",
+              "score": 0.607
+            },
+            {
+              "index": 52,
+              "heading": "References",
+              "score": 0.5939
+            },
+            {
+              "index": 2,
+              "heading": "Abstract",
+              "score": 0.5915
             }
           ],
           "firstEvidenceRank": 3,
@@ -1560,45 +2693,105 @@
             {
               "index": 38,
               "heading": "7Conclusion and Future Work",
-              "score": 0.6526
-            },
-            {
-              "index": 1,
-              "heading": "Abstract",
-              "score": 0.6322
+              "score": 0.6542
             },
             {
               "index": 11,
               "heading": "3Our Method",
-              "score": 0.6319
+              "score": 0.6367
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.6325
             },
             {
               "index": 29,
               "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
-              "score": 0.6149
+              "score": 0.6137
             },
             {
               "index": 0,
-              "score": 0.6072
+              "score": 0.6127
             },
             {
               "index": 30,
               "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
-              "score": 0.6046
+              "score": 0.6039
             },
             {
               "index": 13,
               "heading": "3.1Applying LoRA to Transformer",
-              "score": 0.5944
+              "score": 0.5963
             },
             {
               "index": 50,
               "heading": "References",
-              "score": 0.5866
+              "score": 0.5865
+            },
+            {
+              "index": 21,
+              "heading": "5.1Baselines",
+              "score": 0.5865
+            },
+            {
+              "index": 51,
+              "heading": "References",
+              "score": 0.5854
+            },
+            {
+              "index": 28,
+              "heading": "6Understanding the Low-Rank Updates",
+              "score": 0.5748
+            },
+            {
+              "index": 5,
+              "heading": "1Introduction",
+              "score": 0.572
+            },
+            {
+              "index": 14,
+              "heading": "3.1Applying LoRA to Transformer",
+              "score": 0.5681
+            },
+            {
+              "index": 10,
+              "heading": "3Our Method",
+              "score": 0.5654
+            },
+            {
+              "index": 54,
+              "heading": "References",
+              "score": 0.5643
+            },
+            {
+              "index": 53,
+              "heading": "References",
+              "score": 0.563
+            },
+            {
+              "index": 2,
+              "heading": "Abstract",
+              "score": 0.5571
+            },
+            {
+              "index": 52,
+              "heading": "References",
+              "score": 0.5561
+            },
+            {
+              "index": 4,
+              "heading": "1Introduction",
+              "score": 0.5496
+            },
+            {
+              "index": 31,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.5442
             }
           ],
-          "firstEvidenceRank": 3,
-          "mrr": 0.3333333333333333,
+          "firstEvidenceRank": 2,
+          "mrr": 0.5,
           "metrics": {
             "5": {
               "hit": true,
@@ -1642,42 +2835,101 @@
             {
               "index": 38,
               "heading": "7Conclusion and Future Work",
-              "score": 0.6628
+              "score": 0.6649
             },
             {
               "index": 5,
               "heading": "1Introduction",
-              "score": 0.6596
+              "score": 0.6599
             },
             {
               "index": 12,
               "heading": "3Our Method",
-              "score": 0.614
+              "score": 0.6143
             },
             {
               "index": 1,
               "heading": "Abstract",
-              "score": 0.6072
+              "score": 0.608
             },
             {
               "index": 14,
               "heading": "3.1Applying LoRA to Transformer",
-              "score": 0.6042
+              "score": 0.6053
             },
             {
               "index": 33,
               "heading": "6.2What is the Optimal Rank r for LoRA?",
-              "score": 0.5743
+              "score": 0.5769
             },
             {
               "index": 51,
               "heading": "References",
-              "score": 0.5594
+              "score": 0.5627
             },
             {
               "index": 31,
               "heading": "6.2What is the Optimal Rank r for LoRA?",
-              "score": 0.5544
+              "score": 0.5559
+            },
+            {
+              "index": 11,
+              "heading": "3Our Method",
+              "score": 0.5499
+            },
+            {
+              "index": 4,
+              "heading": "1Introduction",
+              "score": 0.5444
+            },
+            {
+              "index": 10,
+              "heading": "3Our Method",
+              "score": 0.54
+            },
+            {
+              "index": 0,
+              "score": 0.5363
+            },
+            {
+              "index": 54,
+              "heading": "References",
+              "score": 0.535
+            },
+            {
+              "index": 2,
+              "heading": "Abstract",
+              "score": 0.5346
+            },
+            {
+              "index": 61,
+              "heading": "References",
+              "score": 0.5345
+            },
+            {
+              "index": 13,
+              "heading": "3.1Applying LoRA to Transformer",
+              "score": 0.5324
+            },
+            {
+              "index": 34,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.5267
+            },
+            {
+              "index": 28,
+              "heading": "6Understanding the Low-Rank Updates",
+              "score": 0.517
+            },
+            {
+              "index": 56,
+              "heading": "References",
+              "score": 0.5149
+            },
+            {
+              "index": 30,
+              "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
+              "score": 0.5147
             }
           ],
           "firstEvidenceRank": 3,
@@ -1714,42 +2966,101 @@
             {
               "index": 5,
               "heading": "1Introduction",
-              "score": 0.6084
+              "score": 0.6053
             },
             {
               "index": 38,
               "heading": "7Conclusion and Future Work",
-              "score": 0.6042
+              "score": 0.5997
             },
             {
               "index": 12,
               "heading": "3Our Method",
-              "score": 0.577
+              "score": 0.5754
             },
             {
               "index": 14,
               "heading": "3.1Applying LoRA to Transformer",
-              "score": 0.5441
+              "score": 0.5397
             },
             {
               "index": 1,
               "heading": "Abstract",
-              "score": 0.5333
+              "score": 0.5289
             },
             {
               "index": 33,
               "heading": "6.2What is the Optimal Rank r for LoRA?",
-              "score": 0.5122
+              "score": 0.5095
             },
             {
               "index": 51,
               "heading": "References",
-              "score": 0.5067
+              "score": 0.5062
             },
             {
               "index": 11,
               "heading": "3Our Method",
-              "score": 0.5014
+              "score": 0.5016
+            },
+            {
+              "index": 31,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.4956
+            },
+            {
+              "index": 13,
+              "heading": "3.1Applying LoRA to Transformer",
+              "score": 0.4855
+            },
+            {
+              "index": 4,
+              "heading": "1Introduction",
+              "score": 0.4787
+            },
+            {
+              "index": 10,
+              "heading": "3Our Method",
+              "score": 0.4771
+            },
+            {
+              "index": 34,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.464
+            },
+            {
+              "index": 0,
+              "score": 0.4632
+            },
+            {
+              "index": 54,
+              "heading": "References",
+              "score": 0.4629
+            },
+            {
+              "index": 61,
+              "heading": "References",
+              "score": 0.4627
+            },
+            {
+              "index": 28,
+              "heading": "6Understanding the Low-Rank Updates",
+              "score": 0.4619
+            },
+            {
+              "index": 30,
+              "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
+              "score": 0.4588
+            },
+            {
+              "index": 2,
+              "heading": "Abstract",
+              "score": 0.4464
+            },
+            {
+              "index": 53,
+              "heading": "References",
+              "score": 0.4454
             }
           ],
           "firstEvidenceRank": 3,
@@ -1797,42 +3108,101 @@
             {
               "index": 29,
               "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
-              "score": 0.5917
+              "score": 0.5901
             },
             {
               "index": 13,
               "heading": "3.1Applying LoRA to Transformer",
-              "score": 0.5693
+              "score": 0.5703
             },
             {
               "index": 31,
               "heading": "6.2What is the Optimal Rank r for LoRA?",
-              "score": 0.5671
-            },
-            {
-              "index": 61,
-              "heading": "References",
-              "score": 0.5525
+              "score": 0.5673
             },
             {
               "index": 14,
               "heading": "3.1Applying LoRA to Transformer",
-              "score": 0.5516
+              "score": 0.5529
+            },
+            {
+              "index": 61,
+              "heading": "References",
+              "score": 0.5524
             },
             {
               "index": 33,
               "heading": "6.2What is the Optimal Rank r for LoRA?",
-              "score": 0.5482
+              "score": 0.5495
             },
             {
               "index": 30,
               "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
-              "score": 0.5422
+              "score": 0.5416
             },
             {
               "index": 34,
               "heading": "6.2What is the Optimal Rank r for LoRA?",
-              "score": 0.5409
+              "score": 0.5402
+            },
+            {
+              "index": 1,
+              "heading": "Abstract",
+              "score": 0.5263
+            },
+            {
+              "index": 2,
+              "heading": "Abstract",
+              "score": 0.5206
+            },
+            {
+              "index": 11,
+              "heading": "3Our Method",
+              "score": 0.5202
+            },
+            {
+              "index": 5,
+              "heading": "1Introduction",
+              "score": 0.5176
+            },
+            {
+              "index": 51,
+              "heading": "References",
+              "score": 0.5105
+            },
+            {
+              "index": 38,
+              "heading": "7Conclusion and Future Work",
+              "score": 0.5054
+            },
+            {
+              "index": 0,
+              "score": 0.5043
+            },
+            {
+              "index": 35,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.4987
+            },
+            {
+              "index": 6,
+              "heading": "1Introduction",
+              "score": 0.4845
+            },
+            {
+              "index": 53,
+              "heading": "References",
+              "score": 0.4836
+            },
+            {
+              "index": 19,
+              "heading": "5Empirical Experiments",
+              "score": 0.4831
+            },
+            {
+              "index": 10,
+              "heading": "3Our Method",
+              "score": 0.4768
             }
           ],
           "mrr": 0,
@@ -1868,42 +3238,101 @@
             {
               "index": 29,
               "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
-              "score": 0.5984
+              "score": 0.5968
             },
             {
               "index": 61,
               "heading": "References",
-              "score": 0.5833
+              "score": 0.5818
             },
             {
               "index": 31,
               "heading": "6.2What is the Optimal Rank r for LoRA?",
-              "score": 0.5773
+              "score": 0.5772
             },
             {
               "index": 13,
               "heading": "3.1Applying LoRA to Transformer",
-              "score": 0.5725
+              "score": 0.573
             },
             {
               "index": 2,
               "heading": "Abstract",
-              "score": 0.5724
+              "score": 0.5727
             },
             {
               "index": 14,
               "heading": "3.1Applying LoRA to Transformer",
-              "score": 0.5695
+              "score": 0.5699
             },
             {
               "index": 33,
               "heading": "6.2What is the Optimal Rank r for LoRA?",
-              "score": 0.5673
+              "score": 0.567
             },
             {
               "index": 1,
               "heading": "Abstract",
-              "score": 0.5563
+              "score": 0.5582
+            },
+            {
+              "index": 30,
+              "heading": "6.1Which Weight Matrices in Transformer Should We Apply LoRA to?",
+              "score": 0.5458
+            },
+            {
+              "index": 34,
+              "heading": "6.2What is the Optimal Rank r for LoRA?",
+              "score": 0.5413
+            },
+            {
+              "index": 0,
+              "score": 0.5394
+            },
+            {
+              "index": 38,
+              "heading": "7Conclusion and Future Work",
+              "score": 0.5262
+            },
+            {
+              "index": 19,
+              "heading": "5Empirical Experiments",
+              "score": 0.5241
+            },
+            {
+              "index": 11,
+              "heading": "3Our Method",
+              "score": 0.5239
+            },
+            {
+              "index": 5,
+              "heading": "1Introduction",
+              "score": 0.5223
+            },
+            {
+              "index": 51,
+              "heading": "References",
+              "score": 0.5197
+            },
+            {
+              "index": 53,
+              "heading": "References",
+              "score": 0.5129
+            },
+            {
+              "index": 52,
+              "heading": "References",
+              "score": 0.5077
+            },
+            {
+              "index": 54,
+              "heading": "References",
+              "score": 0.5023
+            },
+            {
+              "index": 23,
+              "heading": "5.2Performance on GPT-3",
+              "score": 0.4955
             }
           ],
           "mrr": 0,
@@ -1952,7 +3381,12 @@
             {
               "index": 11,
               "heading": "2.1. Probabilistic Formulation",
-              "score": 0.6838
+              "score": 0.6856
+            },
+            {
+              "index": 12,
+              "heading": "2.2. Pre-training",
+              "score": 0.6499
             },
             {
               "index": 10,
@@ -1960,34 +3394,89 @@
               "score": 0.6489
             },
             {
-              "index": 12,
-              "heading": "2.2. Pre-training",
-              "score": 0.6489
-            },
-            {
               "index": 37,
               "heading": "5. Conclusion and Discussion",
-              "score": 0.6347
+              "score": 0.6371
             },
             {
               "index": 1,
               "heading": "Abstract",
-              "score": 0.629
-            },
-            {
-              "index": 77,
-              "heading": "References",
-              "score": 0.6229
+              "score": 0.6305
             },
             {
               "index": 5,
               "heading": "1. Introduction",
-              "score": 0.6216
+              "score": 0.6241
+            },
+            {
+              "index": 77,
+              "heading": "References",
+              "score": 0.6236
             },
             {
               "index": 8,
               "heading": "2. Approach",
-              "score": 0.6159
+              "score": 0.619
+            },
+            {
+              "index": 40,
+              "heading": "5. Conclusion and Discussion",
+              "score": 0.6175
+            },
+            {
+              "index": 9,
+              "heading": "2.1. Probabilistic Formulation",
+              "score": 0.6168
+            },
+            {
+              "index": 69,
+              "heading": "References",
+              "score": 0.6154
+            },
+            {
+              "index": 6,
+              "heading": "1. Introduction",
+              "score": 0.6122
+            },
+            {
+              "index": 22,
+              "heading": "3.1. Scalability of LLaDA on Language Tasks",
+              "score": 0.6092
+            },
+            {
+              "index": 60,
+              "heading": "References",
+              "score": 0.6027
+            },
+            {
+              "index": 18,
+              "heading": "2.4. Inference",
+              "score": 0.6005
+            },
+            {
+              "index": 59,
+              "heading": "References",
+              "score": 0.5998
+            },
+            {
+              "index": 83,
+              "heading": "References",
+              "score": 0.5949
+            },
+            {
+              "index": 34,
+              "heading": "3.4. Case Studies",
+              "score": 0.594
+            },
+            {
+              "index": 33,
+              "heading": "3.3. Reversal Reasoning and Analyses",
+              "score": 0.5922
+            },
+            {
+              "index": 16,
+              "heading": "2.3. Supervised Fine-Tuning",
+              "score": 0.5761
             }
           ],
           "firstEvidenceRank": 1,
@@ -2024,42 +3513,102 @@
             {
               "index": 11,
               "heading": "2.1. Probabilistic Formulation",
-              "score": 0.6219
+              "score": 0.6242
             },
             {
               "index": 10,
               "heading": "2.1. Probabilistic Formulation",
-              "score": 0.6006
+              "score": 0.6015
             },
             {
               "index": 5,
               "heading": "1. Introduction",
-              "score": 0.5984
-            },
-            {
-              "index": 69,
-              "heading": "References",
-              "score": 0.5858
+              "score": 0.6003
             },
             {
               "index": 12,
               "heading": "2.2. Pre-training",
-              "score": 0.5858
+              "score": 0.5888
             },
             {
               "index": 37,
               "heading": "5. Conclusion and Discussion",
-              "score": 0.5823
+              "score": 0.5873
+            },
+            {
+              "index": 69,
+              "heading": "References",
+              "score": 0.5873
             },
             {
               "index": 1,
               "heading": "Abstract",
-              "score": 0.5811
+              "score": 0.5855
             },
             {
               "index": 9,
               "heading": "2.1. Probabilistic Formulation",
-              "score": 0.5765
+              "score": 0.5782
+            },
+            {
+              "index": 77,
+              "heading": "References",
+              "score": 0.5779
+            },
+            {
+              "index": 40,
+              "heading": "5. Conclusion and Discussion",
+              "score": 0.5779
+            },
+            {
+              "index": 8,
+              "heading": "2. Approach",
+              "score": 0.5685
+            },
+            {
+              "index": 22,
+              "heading": "3.1. Scalability of LLaDA on Language Tasks",
+              "score": 0.5669
+            },
+            {
+              "index": 83,
+              "heading": "References",
+              "score": 0.5667
+            },
+            {
+              "index": 59,
+              "heading": "References",
+              "score": 0.5626
+            },
+            {
+              "index": 33,
+              "heading": "3.3. Reversal Reasoning and Analyses",
+              "score": 0.5615
+            },
+            {
+              "index": 18,
+              "heading": "2.4. Inference",
+              "score": 0.56
+            },
+            {
+              "index": 34,
+              "heading": "3.4. Case Studies",
+              "score": 0.5596
+            },
+            {
+              "index": 60,
+              "heading": "References",
+              "score": 0.5454
+            },
+            {
+              "index": 6,
+              "heading": "1. Introduction",
+              "score": 0.5373
+            },
+            {
+              "index": 2,
+              "heading": "1. Introduction",
+              "score": 0.5345
             }
           ],
           "firstEvidenceRank": 1,
@@ -2108,42 +3657,102 @@
             {
               "index": 19,
               "heading": "2.4. Inference",
-              "score": 0.5393
+              "score": 0.5372
             },
             {
               "index": 69,
               "heading": "References",
-              "score": 0.4402
+              "score": 0.4391
             },
             {
               "index": 74,
               "heading": "References",
-              "score": 0.4151
+              "score": 0.4159
             },
             {
               "index": 33,
               "heading": "3.3. Reversal Reasoning and Analyses",
-              "score": 0.4078
+              "score": 0.4096
             },
             {
               "index": 75,
               "heading": "References",
-              "score": 0.4063
+              "score": 0.4082
             },
             {
               "index": 73,
               "heading": "References",
-              "score": 0.3872
+              "score": 0.3892
             },
             {
               "index": 79,
               "heading": "References",
-              "score": 0.386
+              "score": 0.3866
             },
             {
               "index": 20,
               "heading": "2.4. Inference",
-              "score": 0.3782
+              "score": 0.3799
+            },
+            {
+              "index": 66,
+              "heading": "References",
+              "score": 0.3499
+            },
+            {
+              "index": 83,
+              "heading": "References",
+              "score": 0.3483
+            },
+            {
+              "index": 62,
+              "heading": "References",
+              "score": 0.345
+            },
+            {
+              "index": 72,
+              "heading": "References",
+              "score": 0.3343
+            },
+            {
+              "index": 67,
+              "heading": "References",
+              "score": 0.332
+            },
+            {
+              "index": 65,
+              "heading": "References",
+              "score": 0.3284
+            },
+            {
+              "index": 9,
+              "heading": "2.1. Probabilistic Formulation",
+              "score": 0.3284
+            },
+            {
+              "index": 18,
+              "heading": "2.4. Inference",
+              "score": 0.3264
+            },
+            {
+              "index": 77,
+              "heading": "References",
+              "score": 0.3097
+            },
+            {
+              "index": 64,
+              "heading": "References",
+              "score": 0.2968
+            },
+            {
+              "index": 11,
+              "heading": "2.1. Probabilistic Formulation",
+              "score": 0.2909
+            },
+            {
+              "index": 32,
+              "heading": "3.3. Reversal Reasoning and Analyses",
+              "score": 0.2904
             }
           ],
           "firstEvidenceRank": 1,
@@ -2180,42 +3789,102 @@
             {
               "index": 19,
               "heading": "2.4. Inference",
-              "score": 0.4458
+              "score": 0.4451
             },
             {
               "index": 69,
               "heading": "References",
-              "score": 0.368
+              "score": 0.3665
             },
             {
               "index": 74,
               "heading": "References",
-              "score": 0.3551
+              "score": 0.3544
             },
             {
               "index": 33,
               "heading": "3.3. Reversal Reasoning and Analyses",
-              "score": 0.337
+              "score": 0.3393
             },
             {
               "index": 75,
               "heading": "References",
-              "score": 0.3314
+              "score": 0.3326
             },
             {
               "index": 73,
               "heading": "References",
-              "score": 0.3122
+              "score": 0.3132
             },
             {
               "index": 79,
               "heading": "References",
-              "score": 0.3053
+              "score": 0.3052
             },
             {
               "index": 20,
               "heading": "2.4. Inference",
-              "score": 0.292
+              "score": 0.2951
+            },
+            {
+              "index": 72,
+              "heading": "References",
+              "score": 0.2906
+            },
+            {
+              "index": 66,
+              "heading": "References",
+              "score": 0.2745
+            },
+            {
+              "index": 62,
+              "heading": "References",
+              "score": 0.2683
+            },
+            {
+              "index": 65,
+              "heading": "References",
+              "score": 0.2647
+            },
+            {
+              "index": 9,
+              "heading": "2.1. Probabilistic Formulation",
+              "score": 0.2608
+            },
+            {
+              "index": 83,
+              "heading": "References",
+              "score": 0.256
+            },
+            {
+              "index": 18,
+              "heading": "2.4. Inference",
+              "score": 0.2487
+            },
+            {
+              "index": 67,
+              "heading": "References",
+              "score": 0.2479
+            },
+            {
+              "index": 64,
+              "heading": "References",
+              "score": 0.2359
+            },
+            {
+              "index": 32,
+              "heading": "3.3. Reversal Reasoning and Analyses",
+              "score": 0.2325
+            },
+            {
+              "index": 77,
+              "heading": "References",
+              "score": 0.2268
+            },
+            {
+              "index": 11,
+              "heading": "2.1. Probabilistic Formulation",
+              "score": 0.2249
             }
           ],
           "firstEvidenceRank": 1,
@@ -2264,42 +3933,102 @@
             {
               "index": 27,
               "heading": "3.2. Benchmark Results",
-              "score": 0.3766
+              "score": 0.3769
             },
             {
               "index": 28,
               "heading": "3.2. Benchmark Results",
-              "score": 0.3379
+              "score": 0.3383
             },
             {
               "index": 81,
               "heading": "References",
-              "score": 0.337
+              "score": 0.3352
             },
             {
               "index": 30,
               "heading": "3.2. Benchmark Results",
-              "score": 0.3269
+              "score": 0.3299
             },
             {
               "index": 63,
               "heading": "References",
-              "score": 0.3159
+              "score": 0.3164
             },
             {
               "index": 74,
               "heading": "References",
-              "score": 0.3153
+              "score": 0.3155
             },
             {
               "index": 77,
               "heading": "References",
-              "score": 0.2945
+              "score": 0.2946
             },
             {
               "index": 46,
               "heading": "References",
-              "score": 0.2874
+              "score": 0.2894
+            },
+            {
+              "index": 31,
+              "heading": "3.2. Benchmark Results",
+              "score": 0.2868
+            },
+            {
+              "index": 43,
+              "heading": "References",
+              "score": 0.2854
+            },
+            {
+              "index": 42,
+              "heading": "5. Conclusion and Discussion",
+              "score": 0.2834
+            },
+            {
+              "index": 32,
+              "heading": "3.3. Reversal Reasoning and Analyses",
+              "score": 0.2829
+            },
+            {
+              "index": 25,
+              "heading": "3.2. Benchmark Results",
+              "score": 0.2816
+            },
+            {
+              "index": 67,
+              "heading": "References",
+              "score": 0.2786
+            },
+            {
+              "index": 51,
+              "heading": "References",
+              "score": 0.278
+            },
+            {
+              "index": 24,
+              "heading": "3.1. Scalability of LLaDA on Language Tasks",
+              "score": 0.2773
+            },
+            {
+              "index": 73,
+              "heading": "References",
+              "score": 0.277
+            },
+            {
+              "index": 72,
+              "heading": "References",
+              "score": 0.2701
+            },
+            {
+              "index": 79,
+              "heading": "References",
+              "score": 0.2667
+            },
+            {
+              "index": 83,
+              "heading": "References",
+              "score": 0.2642
             }
           ],
           "mrr": 0,
@@ -2335,42 +4064,102 @@
             {
               "index": 27,
               "heading": "3.2. Benchmark Results",
-              "score": 0.4015
+              "score": 0.4007
             },
             {
               "index": 28,
               "heading": "3.2. Benchmark Results",
-              "score": 0.364
-            },
-            {
-              "index": 74,
-              "heading": "References",
-              "score": 0.3598
+              "score": 0.363
             },
             {
               "index": 30,
               "heading": "3.2. Benchmark Results",
-              "score": 0.3578
+              "score": 0.3583
+            },
+            {
+              "index": 74,
+              "heading": "References",
+              "score": 0.3561
             },
             {
               "index": 81,
               "heading": "References",
-              "score": 0.3365
+              "score": 0.3346
             },
             {
               "index": 72,
               "heading": "References",
-              "score": 0.3237
+              "score": 0.3202
             },
             {
               "index": 77,
               "heading": "References",
-              "score": 0.3193
+              "score": 0.3157
             },
             {
               "index": 51,
               "heading": "References",
-              "score": 0.3192
+              "score": 0.315
+            },
+            {
+              "index": 24,
+              "heading": "3.1. Scalability of LLaDA on Language Tasks",
+              "score": 0.3108
+            },
+            {
+              "index": 46,
+              "heading": "References",
+              "score": 0.3098
+            },
+            {
+              "index": 73,
+              "heading": "References",
+              "score": 0.3094
+            },
+            {
+              "index": 63,
+              "heading": "References",
+              "score": 0.3078
+            },
+            {
+              "index": 31,
+              "heading": "3.2. Benchmark Results",
+              "score": 0.3013
+            },
+            {
+              "index": 43,
+              "heading": "References",
+              "score": 0.3002
+            },
+            {
+              "index": 67,
+              "heading": "References",
+              "score": 0.2969
+            },
+            {
+              "index": 42,
+              "heading": "5. Conclusion and Discussion",
+              "score": 0.2954
+            },
+            {
+              "index": 25,
+              "heading": "3.2. Benchmark Results",
+              "score": 0.2953
+            },
+            {
+              "index": 32,
+              "heading": "3.3. Reversal Reasoning and Analyses",
+              "score": 0.2948
+            },
+            {
+              "index": 33,
+              "heading": "3.3. Reversal Reasoning and Analyses",
+              "score": 0.293
+            },
+            {
+              "index": 79,
+              "heading": "References",
+              "score": 0.2918
             }
           ],
           "mrr": 0,
@@ -2404,5 +4193,5 @@
       }
     }
   ],
-  "seconds": 177.8
+  "seconds": 4.5
 }

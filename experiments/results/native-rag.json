@@ -8,7 +8,7 @@
       "phase": "ready",
       "owned": true,
       "model": "qwen3-embedding-0.6b",
-      "pid": 241675,
+      "pid": 253707,
       "message": "Embeddings prontos: qwen3-embedding-0.6b."
     },
     {
@@ -33,6 +33,6 @@
     }
   ],
   "errors": [],
-  "promptChars": 22524,
-  "retrievalNote": "Trechos relevantes: 24 de 45 · ~7.168 tokens"
+  "promptChars": 9741,
+  "retrievalNote": "Trechos relevantes: 11 de 45 · ~3.516 tokens"
 }
