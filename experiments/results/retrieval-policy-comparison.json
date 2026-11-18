@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T19:21:24.063Z",
+  "generatedAt": "2026-11-18T19:46:27.918Z",
   "papersDir": "/home/samurai/Projects/zotero-reader-local-ai/.runtime/zotero-splitter-corpus",
   "model": "qwen3-embedding-0.6b",
   "dimensions": 1024,
@@ -12,14 +12,14 @@
     "cases": 10,
     "our75": {
       "avgChunks": 9.4,
-      "avgTokens": 3286,
+      "avgTokens": 3271,
       "hit": 10,
       "allHit": 10,
       "overBudget": 0
     },
     "megagon": {
       "avgChunks": 14.7,
-      "avgTokens": 4605,
+      "avgTokens": 4589,
       "hit": 10,
       "allHit": 10,
       "overBudget": 3
@@ -36,14 +36,14 @@
       "anchorHeading": "3.2.1 Scaled Dot-Product Attention",
       "our75": {
         "chunks": 4,
-        "tokens": 1651,
+        "tokens": 1636,
         "hit": true,
         "allHit": true,
         "overBudget": false
       },
       "megagon": {
         "chunks": 7,
-        "tokens": 2306,
+        "tokens": 2291,
         "hit": true,
         "allHit": true,
         "overBudget": false,
@@ -63,14 +63,14 @@
       "anchorHeading": "3.2.3 Applications of Attention in our Model",
       "our75": {
         "chunks": 12,
-        "tokens": 3857,
+        "tokens": 3841,
         "hit": true,
         "allHit": true,
         "overBudget": false
       },
       "megagon": {
         "chunks": 7,
-        "tokens": 2688,
+        "tokens": 2673,
         "hit": true,
         "allHit": true,
         "overBudget": false,
@@ -89,14 +89,14 @@
       "anchorHeading": "4 RMSNorm",
       "our75": {
         "chunks": 5,
-        "tokens": 2142,
+        "tokens": 2127,
         "hit": true,
         "allHit": true,
         "overBudget": false
       },
       "megagon": {
         "chunks": 7,
-        "tokens": 2741,
+        "tokens": 2725,
         "hit": true,
         "allHit": true,
         "overBudget": false,
@@ -115,14 +115,14 @@
       "anchorHeading": "5 pRMSNorm",
       "our75": {
         "chunks": 11,
-        "tokens": 3656,
+        "tokens": 3641,
         "hit": true,
         "allHit": true,
         "overBudget": false
       },
       "megagon": {
         "chunks": 6,
-        "tokens": 2026,
+        "tokens": 2011,
         "hit": true,
         "allHit": true,
         "overBudget": false,
@@ -141,14 +141,14 @@
       "anchorHeading": "3 Proposed Approach",
       "our75": {
         "chunks": 11,
-        "tokens": 3564,
+        "tokens": 3548,
         "hit": true,
         "allHit": true,
         "overBudget": false
       },
       "megagon": {
         "chunks": 9,
-        "tokens": 2975,
+        "tokens": 2959,
         "hit": true,
         "allHit": true,
         "overBudget": false,
@@ -168,14 +168,14 @@
       "anchorHeading": "3 Proposed Approach",
       "our75": {
         "chunks": 11,
-        "tokens": 3530,
+        "tokens": 3514,
         "hit": true,
         "allHit": true,
         "overBudget": false
       },
       "megagon": {
         "chunks": 25,
-        "tokens": 7016,
+        "tokens": 7000,
         "hit": true,
         "allHit": true,
         "overBudget": true,
@@ -194,14 +194,14 @@
       "anchorHeading": "Abstract",
       "our75": {
         "chunks": 12,
-        "tokens": 4116,
+        "tokens": 4101,
         "hit": true,
         "allHit": true,
         "overBudget": false
       },
       "megagon": {
         "chunks": 37,
-        "tokens": 10730,
+        "tokens": 10715,
         "hit": true,
         "allHit": true,
         "overBudget": true,
@@ -220,14 +220,14 @@
       "anchorHeading": "Abstract",
       "our75": {
         "chunks": 12,
-        "tokens": 4155,
+        "tokens": 4139,
         "hit": true,
         "allHit": true,
         "overBudget": false
       },
       "megagon": {
         "chunks": 7,
-        "tokens": 2746,
+        "tokens": 2731,
         "hit": true,
         "allHit": true,
         "overBudget": false,
@@ -247,14 +247,14 @@
       "anchorHeading": "2.1. Probabilistic Formulation",
       "our75": {
         "chunks": 12,
-        "tokens": 4359,
+        "tokens": 4344,
         "hit": true,
         "allHit": true,
         "overBudget": false
       },
       "megagon": {
         "chunks": 36,
-        "tokens": 10513,
+        "tokens": 10498,
         "hit": true,
         "allHit": true,
         "overBudget": true,
@@ -273,14 +273,14 @@
       "anchorHeading": "2.1. Probabilistic Formulation",
       "our75": {
         "chunks": 4,
-        "tokens": 1830,
+        "tokens": 1814,
         "hit": true,
         "allHit": true,
         "overBudget": false
       },
       "megagon": {
         "chunks": 6,
-        "tokens": 2305,
+        "tokens": 2290,
         "hit": true,
         "allHit": true,
         "overBudget": false,
