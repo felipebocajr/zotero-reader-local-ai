@@ -1,0 +1,163 @@
+{
+  "checks": [
+    {
+      "name": "Groq fields start hidden",
+      "passed": true
+    },
+    {
+      "name": "local fields start visible",
+      "passed": true
+    },
+    {
+      "name": "local starts selected",
+      "passed": true
+    },
+    {
+      "name": "local card starts highlighted",
+      "passed": true
+    },
+    {
+      "name": "Groq click checks Groq",
+      "passed": true
+    },
+    {
+      "name": "Groq card is highlighted",
+      "passed": true
+    },
+    {
+      "name": "Groq card has a selected background",
+      "passed": true
+    },
+    {
+      "name": "Groq fields visible after click",
+      "passed": true
+    },
+    {
+      "name": "local fields hidden after click",
+      "passed": true
+    },
+    {
+      "name": "local model label hidden after click",
+      "passed": true
+    },
+    {
+      "name": "Groq model list is populated",
+      "passed": true
+    },
+    {
+      "name": "Groq model list keeps model ids",
+      "passed": true
+    },
+    {
+      "name": "selecting a Groq model fills the field",
+      "passed": true
+    },
+    {
+      "name": "Groq model details show context",
+      "passed": true
+    },
+    {
+      "name": "Groq model context is applied",
+      "passed": true
+    },
+    {
+      "name": "local click restores local",
+      "passed": true
+    },
+    {
+      "name": "local card is highlighted again",
+      "passed": true
+    },
+    {
+      "name": "local fields visible after click",
+      "passed": true
+    },
+    {
+      "name": "Groq fields hidden after local",
+      "passed": true
+    },
+    {
+      "name": "local model label visible after local",
+      "passed": true
+    }
+  ],
+  "styles": {
+    "localBefore": {
+      "display": "block",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "borderColor": "rgb(224, 224, 224)",
+      "appearance": "none",
+      "width": 17,
+      "height": 11,
+      "checked": true,
+      "hidden": false
+    },
+    "groqBefore": {
+      "display": "block",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "borderColor": "rgb(224, 224, 224)",
+      "appearance": "none",
+      "width": 17,
+      "height": 11,
+      "checked": false,
+      "hidden": false
+    },
+    "localLabel": {
+      "display": "flex",
+      "backgroundColor": "rgba(57, 118, 201, 0.11)",
+      "borderColor": "rgb(57, 118, 201)",
+      "appearance": "none",
+      "width": 527,
+      "height": 42,
+      "hidden": false
+    },
+    "groqLabel": {
+      "display": "flex",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "borderColor": "rgb(183, 188, 196)",
+      "appearance": "none",
+      "width": 527,
+      "height": 42,
+      "hidden": false
+    },
+    "localAfter": {
+      "display": "block",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "borderColor": "rgb(224, 224, 224)",
+      "appearance": "none",
+      "width": 17,
+      "height": 11,
+      "checked": false,
+      "hidden": false
+    },
+    "groqAfter": {
+      "display": "block",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "borderColor": "rgb(224, 224, 224)",
+      "appearance": "none",
+      "width": 17,
+      "height": 11,
+      "checked": true,
+      "hidden": false
+    },
+    "localLabelAfter": {
+      "display": "flex",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "borderColor": "rgb(183, 188, 196)",
+      "appearance": "none",
+      "width": 527,
+      "height": 42,
+      "hidden": false
+    },
+    "groqLabelAfter": {
+      "display": "flex",
+      "backgroundColor": "rgba(57, 118, 201, 0.11)",
+      "borderColor": "rgb(57, 118, 201)",
+      "appearance": "none",
+      "width": 527,
+      "height": 42,
+      "hidden": false
+    }
+  },
+  "errors": []
+}

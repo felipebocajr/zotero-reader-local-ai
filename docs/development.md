@@ -69,6 +69,16 @@ Os testes usam o leitor real e suas seleções temporárias, sem salvar anotaç�
 
 Os testes simulados verificam integração e protocolo. A qualidade e a velocidade da LFM são avaliadas com o runtime real, separadamente.
 
+## Provedor Groq
+
+`tests/groq.test.ts` usa um `fetch` simulado para verificar a requisição OpenAI-compatible, o streaming, o descarte de raciocínio, os erros 401/429/404/5xx, o limite de contexto e a recusa de respostas incompletas. Nenhuma chave real é usada.
+
+`scripts/zotero-groq-pane-tests.js`, executado no perfil isolado com o RDP, verifica os controles nativos: provedor local por padrão, campos do Groq ocultos, troca de provedor, persistência da chave/modelo, endpoint fixo `https://api.groq.com/openai/v1`, estado externo e restauração do modelo local. O teste também não acessa a rede; ele grava `experiments/results/native-groq-pane.json`.
+
+No Groq, o contexto é estimado de forma conservadora (aproximadamente 3,5 caracteres por token) porque a API não expõe `/apply-template` nem `/tokenize`. O artigo completo continua sendo enviado; se a estimativa com a reserva de geração exceder o contexto configurado, o plugin recusa antes do envio e não corta o artigo. O modelo padrão é `openai/gpt-oss-120b`; modelos de raciocínio recebem `reasoning_effort: "low"` para preservar a reserva da resposta. A chave fica nas preferências do Zotero em texto puro neste protótipo e nunca deve ser gravada em logs, status ou artefatos de experimento.
+
+Para o teste real, instale o XPI, abra **Configurações → Assistente local**, escolha **Groq (API)**, informe a chave e o modelo e salve. Depois abra um PDF e faça uma pergunta; a primeira chamada também valida a chave e o modelo.
+
 ## Idioma das respostas
 
 Depois da suíte simulada, com Q4 dos dois modelos preparado:

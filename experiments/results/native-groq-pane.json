@@ -1,0 +1,62 @@
+{
+  "profile": "isolated",
+  "checks": [
+    {
+      "name": "provider selector defaults to local",
+      "passed": true
+    },
+    {
+      "name": "Groq fields start hidden",
+      "passed": true
+    },
+    {
+      "name": "Groq fields become visible",
+      "passed": true
+    },
+    {
+      "name": "local fields hide for Groq",
+      "passed": true
+    },
+    {
+      "name": "local base URL hides for Groq",
+      "passed": true
+    },
+    {
+      "name": "Groq settings save the provider",
+      "passed": true
+    },
+    {
+      "name": "Groq settings save the model",
+      "passed": true
+    },
+    {
+      "name": "Groq settings save the key",
+      "passed": true
+    },
+    {
+      "name": "Groq settings use the fixed HTTPS endpoint",
+      "passed": true
+    },
+    {
+      "name": "Groq is reported as an external provider",
+      "passed": true
+    },
+    {
+      "name": "Groq settings preserve the local model",
+      "passed": true
+    },
+    {
+      "name": "local fields return",
+      "passed": true
+    },
+    {
+      "name": "switching back restores the local provider",
+      "passed": true
+    },
+    {
+      "name": "switching back restores the local model",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

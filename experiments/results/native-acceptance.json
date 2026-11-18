@@ -167,17 +167,17 @@
       "passed": true,
       "bounds": {
         "x": 839,
-        "y": 250.25,
+        "y": 932.25,
         "width": 400,
         "height": 257.75,
-        "top": 250.25,
+        "top": 932.25,
         "right": 1239,
-        "bottom": 508,
+        "bottom": 1190,
         "left": 839
       },
       "viewport": [
         1251,
-        595
+        1277
       ]
     },
     {

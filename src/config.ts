@@ -19,14 +19,44 @@ export const RESPONSE_LANGUAGE_OPTIONS = [
   { id: "pt-BR", label: "Português (Brasil)" },
 ] as const;
 
+export const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
+export const GROQ_DEFAULT_MODEL = "openai/gpt-oss-120b";
+export const GROQ_MAX_CONTEXT = 131072;
+
 export const DEFAULTS: Settings = {
-  baseUrl: "http://127.0.0.1:8080", model: "lfm2.5-8b-a1b",
+  provider: "local",
+  baseUrl: "http://127.0.0.1:8080", model: "lfm2.5-8b-a1b", apiKey: "",
   responseLanguage: "en",
   contextTokens: 64000, generationTokens: 4096, timeoutMs: 600000,
 };
 export const PREF_PREFIX = "extensions.reader-local-ai.";
 
 export function validateSettings(input: Settings): Settings {
+  const rawProvider = (input as { provider?: unknown }).provider;
+  if (rawProvider !== undefined && rawProvider !== "local" && rawProvider !== "groq") {
+    throw new ReaderError("config", "Escolha o servidor local ou o Groq como provedor.");
+  }
+  const provider = rawProvider === "groq" ? "groq" : "local";
+  const apiKey = typeof input.apiKey === "string" ? input.apiKey : "";
+  if (!RESPONSE_LANGUAGE_OPTIONS.some(option => option.id === input.responseLanguage)) {
+    throw new ReaderError("config", "Escolha Português (Brasil) ou Inglês para o idioma das respostas.");
+  }
+  if (
+      !Number.isInteger(input.generationTokens) || input.generationTokens < 256 || input.generationTokens >= input.contextTokens ||
+      !Number.isInteger(input.timeoutMs) || input.timeoutMs < 1000 || input.timeoutMs > 3600000) {
+    throw new ReaderError("config", "Confira modelo, contexto, reserva de geração e tempo limite nas configurações do plugin.");
+  }
+  if (provider === "groq") {
+    const model = input.model.trim();
+    if (!model || /[\x00\r\n]/.test(model)) throw new ReaderError("config", "Informe o modelo do Groq nas configurações do plugin.");
+    if (/[\x00\r\n]/.test(apiKey)) {
+      throw new ReaderError("config", "A chave da API do Groq contém caracteres inválidos.");
+    }
+    if (!Number.isInteger(input.contextTokens) || input.contextTokens < 8192 || input.contextTokens > GROQ_MAX_CONTEXT) {
+      throw new ReaderError("config", `O contexto do Groq deve ficar entre 8.192 e ${GROQ_MAX_CONTEXT.toLocaleString("pt-BR")} tokens.`);
+    }
+    return { ...input, provider: "groq", baseUrl: GROQ_BASE_URL, model, apiKey: apiKey.trim() };
+  }
   let url: URL;
   try { url = new URL(input.baseUrl); } catch { throw new ReaderError("config", "Endereço do servidor inválido."); }
   if (url.protocol !== "http:" || url.hostname !== "127.0.0.1" || url.username || url.password || url.search || url.hash || url.pathname !== "/") {
@@ -34,16 +64,8 @@ export function validateSettings(input: Settings): Settings {
   }
   const model = [...MODEL_OPTIONS, ...LEGACY_MODEL_OPTIONS].find(option => option.id === input.model.trim());
   if (!model) throw new ReaderError("config", "Escolha um dos modelos disponíveis nas configurações do plugin.");
-  if (!RESPONSE_LANGUAGE_OPTIONS.some(option => option.id === input.responseLanguage)) {
-    throw new ReaderError("config", "Escolha Português (Brasil) ou Inglês para o idioma das respostas.");
-  }
   if (!Number.isInteger(input.contextTokens) || input.contextTokens < 8192 || input.contextTokens > model.maxContextTokens) {
     throw new ReaderError("config", `O contexto de ${model.id} deve ficar entre 8.192 e ${model.maxContextTokens.toLocaleString("pt-BR")} tokens.`);
   }
-  if (
-      !Number.isInteger(input.generationTokens) || input.generationTokens < 256 || input.generationTokens >= input.contextTokens ||
-      !Number.isInteger(input.timeoutMs) || input.timeoutMs < 1000 || input.timeoutMs > 3600000) {
-    throw new ReaderError("config", "Confira modelo, contexto, reserva de geração e tempo limite nas configurações do plugin.");
-  }
-  return { ...input, baseUrl: url.origin, model: model.id };
+  return { ...input, provider, baseUrl: url.origin, model: model.id, apiKey };
 }

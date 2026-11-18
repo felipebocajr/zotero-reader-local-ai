@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Assistente Local de Leitura",
-  "version": "0.2.4",
+  "version": "0.2.10",
   "description": "Explica trechos de PDFs usando o artigo completo e uma LLM local.",
   "author": "Zotero Reader Local AI contributors",
   "applications": {

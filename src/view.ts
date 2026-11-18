@@ -95,6 +95,10 @@ export function createPopup(doc: Document, anchor: DOMRect, selection: string, h
       if (manual) clampManual(); else position();
     });
   }
+  function placeNow(): void {
+    if (closed) return;
+    if (manual) clampManual(); else position();
+  }
   function setExpanded(value: boolean): void {
     expanded = value;
     root.classList.toggle("reader-local-ai-expanded", expanded);
@@ -183,7 +187,7 @@ export function createPopup(doc: Document, anchor: DOMRect, selection: string, h
   function question(isFollowup: boolean): void {
     followup = isFollowup; form.hidden = false; more.hidden = true;
     field.value = ""; field.placeholder = isFollowup ? "Pergunte sobre a resposta…" : "O que você quer entender sobre este trecho?";
-    field.focus(); reposition();
+    field.focus(); placeNow(); reposition();
   }
   function close(): void {
     if (closed) return;
@@ -287,6 +291,7 @@ export function createPopup(doc: Document, anchor: DOMRect, selection: string, h
         history.append(container);
       }
       history.scrollTop = history.scrollHeight;
+      if (!busy) placeNow();
       reposition();
     },
   };

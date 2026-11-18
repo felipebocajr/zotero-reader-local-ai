@@ -1,14 +1,75 @@
 <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
       xmlns:html="http://www.w3.org/1999/xhtml" onload="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.init()">
   <groupbox>
+    <html:style>
+      .reader-local-ai-provider-option {
+        display: flex; align-items: center; gap: 10px; box-sizing: border-box;
+        padding: 11px 12px; border: 1px solid #b7bcc4; border-radius: 8px;
+        background: transparent; cursor: pointer;
+      }
+      .reader-local-ai-provider-option:hover { background: rgba(57, 118, 201, 0.07); }
+      .reader-local-ai-provider-option.selected {
+        border-color: #3976c9; background: rgba(57, 118, 201, 0.11);
+        box-shadow: inset 0 0 0 1px #3976c9;
+      }
+      .reader-local-ai-provider-option input[type="radio"] {
+        position: absolute; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none;
+      }
+      .reader-local-ai-provider-option:focus-within { outline: 2px solid #3976c9; outline-offset: 2px; }
+      .reader-local-ai-provider-dot {
+        position: relative; flex: 0 0 auto; box-sizing: border-box;
+        width: 16px; height: 16px; border: 2px solid #7a828d; border-radius: 50%;
+      }
+      .reader-local-ai-provider-option.selected .reader-local-ai-provider-dot { border-color: #3976c9; }
+      .reader-local-ai-provider-option.selected .reader-local-ai-provider-dot::after {
+        content: ""; position: absolute; inset: 3px; border-radius: 50%; background: #3976c9;
+      }
+      #reader-local-ai-preferences [hidden] { display: none !important; }
+      @media (prefers-color-scheme: dark) {
+        .reader-local-ai-provider-option { border-color: #565b64; }
+        .reader-local-ai-provider-option.selected { border-color: #6fa3e0; background: rgba(111, 163, 224, 0.16); box-shadow: inset 0 0 0 1px #6fa3e0; }
+        .reader-local-ai-provider-dot { border-color: #9aa3ae; }
+        .reader-local-ai-provider-option.selected .reader-local-ai-provider-dot { border-color: #8bb8ee; }
+        .reader-local-ai-provider-option.selected .reader-local-ai-provider-dot::after { background: #8bb8ee; }
+      }
+    </html:style>
     <label><html:h2>Assistente local de leitura</html:h2></label>
-    <description>O plugin envia o texto completo do PDF somente ao servidor local.</description>
+    <description>O plugin envia o texto completo do PDF ao servidor local ou ao Groq, conforme o provedor escolhido.</description>
     <html:form id="reader-local-ai-preferences" style="display:grid;gap:12px;max-width:560px" onsubmit="event.preventDefault();Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.save()">
-      <html:label>Modelo <html:select id="reader-local-ai-model" style="width:100%" onchange="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.updateModel()" /></html:label>
+      <html:fieldset style="display:grid;gap:8px;border:1px solid var(--color-border,#999);border-radius:6px">
+        <html:legend>Provedor</html:legend>
+        <html:label id="reader-local-ai-provider-local-label" class="reader-local-ai-provider-option"><html:input id="reader-local-ai-provider-local" type="radio" name="reader-local-ai-provider" value="local" onchange="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.updateProvider()" /><html:span class="reader-local-ai-provider-dot" aria-hidden="true"></html:span><html:span>Servidor local (llama.cpp)</html:span></html:label>
+        <html:label id="reader-local-ai-provider-groq-label" class="reader-local-ai-provider-option"><html:input id="reader-local-ai-provider-groq" type="radio" name="reader-local-ai-provider" value="groq" onchange="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.updateProvider()" /><html:span class="reader-local-ai-provider-dot" aria-hidden="true"></html:span><html:span>Groq (API)</html:span></html:label>
+        <html:p id="reader-local-ai-provider-description" style="margin:0;font-size:12px">O artigo completo é enviado somente ao servidor local.</html:p>
+      </html:fieldset>
+      <html:fieldset id="reader-local-ai-groq-settings" style="display:grid;gap:10px;border:1px solid var(--color-border,#999);border-radius:6px">
+        <html:legend>Groq</html:legend>
+        <html:label>Chave da API <html:input id="reader-local-ai-apiKey" type="password" autocomplete="off" spellcheck="false" style="width:100%" placeholder="gsk_..." /></html:label>
+        <html:p style="margin:0;font-size:12px">A chave fica salva nas preferências do Zotero em texto puro. O artigo completo será enviado ao Groq pela internet. Use uma chave com limite de uso.</html:p>
+        <html:label>Modelo <html:input id="reader-local-ai-groqModel" type="text" list="reader-local-ai-groq-models" spellcheck="false" style="width:100%" placeholder="openai/gpt-oss-120b" /></html:label>
+        <html:div style="display:flex;gap:8px;align-items:flex-end">
+          <html:label style="flex:1;min-width:0">Modelos disponíveis
+            <html:select id="reader-local-ai-groqModelSelect" style="width:100%" onchange="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.selectGroqModel()">
+              <html:option value="">Informe a chave e busque os modelos</html:option>
+            </html:select>
+          </html:label>
+          <html:button type="button" id="reader-local-ai-groq-refresh" onclick="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.loadGroqModels()">Buscar modelos</html:button>
+        </html:div>
+        <html:p id="reader-local-ai-groq-model-details" role="status" aria-live="polite" style="margin:0;font-size:12px">Informe a chave e clique em “Buscar modelos” para carregar a lista.</html:p>
+        <html:datalist id="reader-local-ai-groq-models">
+          <html:option value="openai/gpt-oss-120b" />
+          <html:option value="openai/gpt-oss-20b" />
+          <html:option value="qwen/qwen3.8-27b" />
+          <html:option value="llama-3.3-70b-versatile" />
+          <html:option value="llama-3.1-8b-instant" />
+        </html:datalist>
+        <html:p style="margin:0;font-size:12px">O contexto e a reserva de geração ficam em “Contexto e conexão”.</html:p>
+      </html:fieldset>
+      <html:label id="reader-local-ai-model-label">Modelo <html:select id="reader-local-ai-model" style="width:100%" onchange="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.updateModel()" /></html:label>
       <html:p id="reader-local-ai-model-description" style="margin:0;font-size:12px" />
       <html:label>Idioma das respostas <html:select id="reader-local-ai-responseLanguage" style="width:100%" /></html:label>
       <html:p style="margin:0;font-size:12px">Preferência para novas respostas, inclusive nas continuações. Você pode pedir outro idioma na pergunta. Não é necessário reiniciar o servidor.</html:p>
-      <html:fieldset style="display:grid;gap:10px;border:1px solid var(--color-border,#999);border-radius:6px">
+      <html:fieldset id="reader-local-ai-local-settings" style="display:grid;gap:10px;border:1px solid var(--color-border,#999);border-radius:6px">
         <html:legend>Servidor local</html:legend>
         <html:label>Pasta do projeto <html:input id="reader-local-ai-projectRoot" type="text" style="width:100%" placeholder="Pasta que contém scripts/serve.py e .runtime" /></html:label>
         <html:button type="button" id="reader-local-ai-choose-folder" onclick="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.chooseFolder()">Escolher pasta…</html:button>
@@ -25,10 +86,10 @@
       <html:details>
         <html:summary>Contexto e conexão</html:summary>
         <html:div style="display:grid;gap:10px;padding-top:10px">
-          <html:label>Endereço <html:input id="reader-local-ai-baseUrl" type="text" style="width:100%" /></html:label>
+          <html:label id="reader-local-ai-baseUrl-label">Endereço <html:input id="reader-local-ai-baseUrl" type="text" style="width:100%" /></html:label>
           <html:label>Contexto em tokens <html:input id="reader-local-ai-contextTokens" type="number" min="8192" max="131072" /></html:label>
           <html:label>Reserva de geração em tokens <html:input id="reader-local-ai-generationTokens" type="number" min="256" /></html:label>
-          <html:p style="margin:0;font-size:12px">A reserva inclui o raciocínio e a resposta. Iniciar ou reiniciar pelo Zotero aplica o modelo, a porta e o contexto escolhidos. Um servidor externo precisa ser configurado separadamente.</html:p>
+          <html:p style="margin:0;font-size:12px">A reserva inclui o raciocínio e a resposta. No Groq, o contexto é estimado de forma conservadora; o artigo não é cortado. Iniciar ou reiniciar pelo Zotero aplica o modelo, a porta e o contexto escolhidos ao servidor local.</html:p>
           <html:label>Tempo limite em segundos <html:input id="reader-local-ai-timeoutSeconds" type="number" min="1" max="3600" /></html:label>
         </html:div>
       </html:details>

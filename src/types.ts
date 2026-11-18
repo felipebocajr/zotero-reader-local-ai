@@ -7,9 +7,12 @@ export interface AnswerSaveState { phase: "idle" | "saving" | "saved" | "error";
 export type SaveAnswer = (turn: Turn) => Promise<number>;
 export interface Paper { text: string; extractedPages: number; totalPages: number; title: string }
 export type ResponseLanguage = "pt-BR" | "en";
+export type Provider = "local" | "groq";
 export interface Settings {
+  provider: Provider;
   baseUrl: string;
   model: string;
+  apiKey: string;
   responseLanguage: ResponseLanguage;
   contextTokens: number;
   generationTokens: number;

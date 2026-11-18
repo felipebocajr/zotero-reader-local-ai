@@ -3,7 +3,12 @@ import { ReaderError, abortIfNeeded } from "./errors.ts";
 import { FinalTextFilter, readSSE } from "./sse.ts";
 import type { FetchLike, Generation, Message, Settings } from "./types.ts";
 
-export class LlamaClient {
+export interface ChatClient {
+  generate(messages: Message[], signal: AbortSignal, onText: (text: string) => void, cachePrompt?: boolean,
+    onPrepared?: () => void): Promise<Generation>;
+}
+
+export class LlamaClient implements ChatClient {
   readonly settings: Settings;
   private fetcher: FetchLike;
   constructor(fetcher: FetchLike, settings: Settings = DEFAULTS) { this.fetcher = fetcher; this.settings = validateSettings(settings); }

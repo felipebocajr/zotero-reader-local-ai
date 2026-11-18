@@ -1,5 +1,8 @@
 import { LlamaClient } from "./client.ts";
-import { DEFAULTS, MODEL_OPTIONS, RESPONSE_LANGUAGE_OPTIONS, PREF_PREFIX, validateSettings } from "./config.ts";
+import type { ChatClient } from "./client.ts";
+import { DEFAULTS, GROQ_BASE_URL, GROQ_DEFAULT_MODEL, GROQ_MAX_CONTEXT, MODEL_OPTIONS, RESPONSE_LANGUAGE_OPTIONS, PREF_PREFIX, validateSettings } from "./config.ts";
+import { GroqClient, parseGroqModels } from "./groq.ts";
+import type { GroqModel } from "./groq.ts";
 import { PaperCache } from "./paper.ts";
 import { EXPLAIN_BRIEF_QUESTION, EXPLAIN_QUESTION } from "./prompt.ts";
 import { ReadingSession, RequestGate } from "./session.ts";
@@ -30,10 +33,31 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
 
   function settings(): Settings {
     const value = (key: keyof Settings) => zotero.Prefs.get(PREF_PREFIX + key, true) ?? DEFAULTS[key];
+    const provider = String(value("provider")) === "groq" ? "groq" : "local";
     const savedModel = String(value("model"));
-    const model = MODEL_OPTIONS.some(option => option.id === savedModel) ? savedModel : DEFAULTS.model;
-    if (savedModel !== model) zotero.Prefs.set(PREF_PREFIX + "model", model, true);
-    return validateSettings({ baseUrl: String(value("baseUrl")), model, responseLanguage: String(value("responseLanguage")) as ResponseLanguage, contextTokens: Number(value("contextTokens")), generationTokens: Number(value("generationTokens")), timeoutMs: Number(value("timeoutMs")) });
+    const localModel = MODEL_OPTIONS.some(option => option.id === savedModel) ? savedModel : DEFAULTS.model;
+    if (savedModel !== localModel) zotero.Prefs.set(PREF_PREFIX + "model", localModel, true);
+    const savedGroqModel = String(zotero.Prefs.get(PREF_PREFIX + "groqModel", true) ?? "");
+    const groqModel = savedGroqModel.trim() || GROQ_DEFAULT_MODEL;
+    const localOption = MODEL_OPTIONS.find(option => option.id === localModel)!;
+    const requestedContext = Number(value("contextTokens"));
+    const contextTokens = provider === "groq"
+      ? Math.min(requestedContext, GROQ_MAX_CONTEXT)
+      : Math.min(requestedContext, localOption.maxContextTokens);
+    return validateSettings({
+      provider,
+      baseUrl: provider === "groq" ? GROQ_BASE_URL : String(value("baseUrl")),
+      model: provider === "groq" ? groqModel : localModel,
+      apiKey: String(zotero.Prefs.get(PREF_PREFIX + "apiKey", true) ?? ""),
+      responseLanguage: String(value("responseLanguage")) as ResponseLanguage,
+      contextTokens,
+      generationTokens: Number(value("generationTokens")),
+      timeoutMs: Number(value("timeoutMs")),
+    });
+  }
+  function chatClient(): ChatClient {
+    const current = settings();
+    return current.provider === "groq" ? new GroqClient(host.fetch, current) : new LlamaClient(host.fetch, current);
   }
   function runtimePreferences(): RuntimePreferences {
     return validateRuntimePreferences({
@@ -76,7 +100,7 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
         const anchor = button.getBoundingClientRect();
         popups.get(reader)?.view.close();
         let view: PopupView;
-        const session = new ReadingSession(reader.itemID, selection!, papers, gate, () => new LlamaClient(host.fetch, settings()), settings,
+        const session = new ReadingSession(reader.itemID, selection!, papers, gate, chatClient, settings,
           state => view.render(state), createAnswerAnnotationWriter(zotero, reader.itemID, params.annotation!));
         view = createPopup(doc, anchor, selection!, {
           ask: (question, followup) => { void session.ask(question, followup); },
@@ -93,13 +117,72 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
     strip.append(action("Explicar trecho", true), action("Fazer pergunta", false));
     append(strip);
   }
+  function persistSettings(validated: Settings): void {
+    const { provider, baseUrl, model, ...rest } = validated;
+    for (const [key, value] of Object.entries(rest)) zotero.Prefs.set(PREF_PREFIX + key, value, true);
+    zotero.Prefs.set(PREF_PREFIX + "provider", provider, true);
+    if (provider === "groq") zotero.Prefs.set(PREF_PREFIX + "groqModel", model, true);
+    else {
+      zotero.Prefs.set(PREF_PREFIX + "model", model, true);
+      zotero.Prefs.set(PREF_PREFIX + "baseUrl", baseUrl, true);
+    }
+  }
+  let groqModelsState: { phase: "idle" | "loading" | "ready" | "error"; models: GroqModel[]; error: string; revision: number } =
+    { phase: "idle", models: [], error: "", revision: 0 };
+  let groqModelsRevision = 0;
+  function requestGroqModels(apiKey: string): void {
+    const key = typeof apiKey === "string" ? apiKey.trim() : "";
+    const revision = ++groqModelsRevision;
+    if (!key) {
+      groqModelsState = { phase: "error", models: [], error: "Informe a chave da API do Groq antes de buscar os modelos.", revision };
+      return;
+    }
+    groqModelsState = { phase: "loading", models: [], error: "", revision };
+    void (async () => {
+      const abort = new AbortController();
+      const timer = setTimeout(() => abort.abort(), 15000);
+      try {
+        const response = await host.fetch(GROQ_BASE_URL + "/models", {
+          signal: abort.signal, redirect: "error",
+          headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+        });
+        if (!response.ok) {
+          if (response.status === 401 || response.status === 403) throw new Error("A chave da API do Groq foi recusada.");
+          if (response.status === 429) throw new Error("O Groq limitou os pedidos. Aguarde um pouco e tente novamente.");
+          throw new Error(`O Groq recusou a lista de modelos (HTTP ${response.status}).`);
+        }
+        const models = parseGroqModels(await response.json());
+        if (revision !== groqModelsRevision) return;
+        if (!models.length) throw new Error("Nenhum modelo de texto foi retornado pelo Groq.");
+        groqModelsState = { phase: "ready", models, error: "", revision };
+      } catch (error) {
+        if (revision !== groqModelsRevision) return;
+        groqModelsState = { phase: "error", models: [], error: abort.signal.aborted
+          ? "O pedido à API do Groq excedeu o tempo limite."
+          : String((error as Error)?.message ?? error), revision };
+      } finally {
+        clearTimeout(timer);
+      }
+    })();
+  }
   zotero.ReaderLocalAI = {
     getSettings: settings,
+    getLocalModel: () => {
+      const saved = String(zotero.Prefs.get(PREF_PREFIX + "model", true) ?? DEFAULTS.model);
+      return MODEL_OPTIONS.some(option => option.id === saved) ? saved : DEFAULTS.model;
+    },
+    getLocalBaseUrl: () => String(zotero.Prefs.get(PREF_PREFIX + "baseUrl", true) ?? DEFAULTS.baseUrl),
+    getGroqDefaults: () => ({ baseUrl: GROQ_BASE_URL, model: GROQ_DEFAULT_MODEL }),
+    getGroqModel: () => {
+      const saved = String(zotero.Prefs.get(PREF_PREFIX + "groqModel", true) ?? "");
+      return saved.trim() || GROQ_DEFAULT_MODEL;
+    },
+    requestGroqModels,
+    getGroqModels: () => ({ ...groqModelsState, models: groqModelsState.models.map(model => ({ ...model })) }),
     getModels: () => MODEL_OPTIONS.map(model => ({ ...model })),
     getResponseLanguages: () => RESPONSE_LANGUAGE_OPTIONS.map(language => ({ ...language })),
     saveSettings(input: Settings) {
-      const validated = validateSettings(input);
-      for (const [key, value] of Object.entries(validated)) zotero.Prefs.set(PREF_PREFIX + key, value, true);
+      persistSettings(validateSettings(input));
     },
     getRuntimePreferences: runtimePreferences,
     watchPreferencesWindow(window: any) {
@@ -122,7 +205,8 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
     },
     saveConfiguration(input: Settings, preferences: RuntimePreferences) {
       const validated = validateSettings(input), runtimeSettings = validateRuntimePreferences(preferences);
-      for (const [key, value] of Object.entries({ ...validated, ...runtimeSettings })) zotero.Prefs.set(PREF_PREFIX + key, value, true);
+      persistSettings(validated);
+      for (const [key, value] of Object.entries(runtimeSettings)) zotero.Prefs.set(PREF_PREFIX + key, value, true);
     },
     chooseRuntimeFolder: (window: unknown) => runtime.pickFolder(window),
     browseRuntimeFolder(window: any): void {
@@ -174,7 +258,7 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
     if (stopped) zotero.PreferencePanes.unregister(paneId);
   } catch (error) { stop(); throw error; }
   zotero.debug("Reader Local AI: plugin iniciado");
-  if (!stopped && runtimePreferences().autoStart) void runtime.start();
+  if (!stopped && settings().provider === "local" && runtimePreferences().autoStart) void runtime.start();
 }
 
 export async function stop(): Promise<void> { const clean = stopCurrent; stopCurrent = undefined; await clean?.(); }

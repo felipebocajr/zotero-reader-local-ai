@@ -70,6 +70,10 @@ export class RuntimeController {
   }
   start(): Promise<void> {
     if (this.disposed) return Promise.reject(new Error("O plugin foi desativado."));
+    if (this.settings().provider !== "local") {
+      this.state = { phase: "external", owned: false, message: "Provedor Groq configurado: API externa, sem servidor local para gerenciar." };
+      return Promise.resolve();
+    }
     if (this.operation) return this.operation;
     if (this.owned) return Promise.resolve();
     this.stopping = false;
@@ -119,6 +123,10 @@ export class RuntimeController {
         : "Há um servidor iniciado fora do Zotero com modelo/contexto diferentes. Ajuste as configurações ou encerre-o no aplicativo que o iniciou." };
   }
   async refresh(): Promise<RuntimeState> {
+    if (this.settings().provider !== "local") {
+      this.state = { phase: "external", owned: false, message: "Provedor Groq configurado: API externa. O servidor local não é usado." };
+      return this.getState();
+    }
     if (this.disposed || this.stopping || this.operation) return this.getState();
     const owner = this.owned;
     try {
@@ -159,6 +167,7 @@ export class RuntimeController {
     this.stopping = false;
   }
   async restart(): Promise<void> {
+    if (this.settings().provider !== "local") throw new Error("O Groq é uma API externa; não há servidor local para reiniciar.");
     if (!this.owned && this.state.phase === "external") throw new Error("Este servidor foi iniciado fora do Zotero. Encerre-o no aplicativo que o iniciou.");
     await this.stop(); await this.start();
   }

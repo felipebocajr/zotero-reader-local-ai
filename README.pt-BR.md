@@ -12,6 +12,7 @@ Extensão do Zotero que ajuda a compreender trechos de PDFs e responder a pergun
 - Exibe a assistência junto ao texto e permite salvar respostas úteis como anotações do Zotero.
 - Formata Markdown e expressões matemáticas.
 - O idioma padrão das respostas é inglês; português do Brasil está disponível nas configurações.
+- A inferência é local por padrão; um provedor Groq opcional pode ser configurado com sua própria chave de API.
 - A inferência é local, e as conversas não são salvas automaticamente.
 
 ## Compatibilidade
@@ -48,9 +49,16 @@ Extensão do Zotero que ajuda a compreender trechos de PDFs e responder a pergun
 
 O modelo padrão é o LFM2.5-8B-A1B. Para usar o LFM3-1.7B ou configurar o runtime, consulte o [guia de runtime](docs/runtime.md). O LFM2.5-2.6B legado permanece apenas para o benchmark entregue e não aparece no plugin. As atualizações do plugin são manuais.
 
+### Provedores
+
+- **Servidor local (padrão):** usa o `llama-server` deste projeto, com contagem exata do template e inferência offline depois da preparação.
+- **Groq (API):** usa sua própria chave `gsk_...`, o modelo escolhido e o contexto configurado. O artigo completo, o trecho e a pergunta são enviados ao Groq pela internet. Neste protótipo, a chave fica salva nas preferências do Zotero em texto puro; use uma chave com limite de uso.
+
+Para trocar de provedor, abra **Configurações → Assistente local**, escolha **Groq (API)**, informe a chave e o modelo e clique em **Salvar configurações**. Não há servidor local para iniciar nesse modo.
+
 ## Privacidade e limitações
 
-A inferência de IA acontece no dispositivo; o plugin não envia documentos a um serviço externo de inferência. A preparação inicial baixa o runtime e os arquivos do modelo. PDFs escaneados sem texto selecionável precisam de OCR, que não está incluído. As respostas podem conter erros; consulte a [avaliação e seus limites](experiments/report.md).
+Por padrão, a inferência acontece no dispositivo e o plugin não envia documentos a um serviço externo. Se você selecionar **Groq (API)**, o artigo completo, o trecho selecionado e a pergunta serão enviados ao Groq; isso só acontece depois dessa escolha explícita. A chave fica nas preferências do Zotero em texto puro neste protótipo. A preparação inicial baixa o runtime e os arquivos do modelo. PDFs escaneados sem texto selecionável precisam de OCR, que não está incluído. As respostas podem conter erros; consulte a [avaliação e seus limites](experiments/report.md).
 
 ## Desenvolvimento
 

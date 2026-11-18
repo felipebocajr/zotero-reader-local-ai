@@ -2,7 +2,7 @@ import { ReaderError, abortIfNeeded, userMessage } from "./errors.ts";
 import { buildMessages } from "./prompt.ts";
 import type { PromptMode } from "./prompt.ts";
 import type { Turn, Settings, AnswerSaveState, SaveAnswer } from "./types.ts";
-import type { LlamaClient } from "./client.ts";
+import type { ChatClient } from "./client.ts";
 import type { PaperCache } from "./paper.ts";
 
 export type Phase = "idle" | "extracting" | "preparing" | "generating" | "complete" | "error";
@@ -28,11 +28,11 @@ export class ReadingSession {
   readonly selection: string;
   private papers: PaperCache;
   private gate: RequestGate;
-  private makeClient: () => LlamaClient;
+  private makeClient: () => ChatClient;
   private settings: () => Settings;
   private changed: (state: SessionState) => void;
   constructor(attachmentId: number, selection: string, papers: PaperCache,
-    gate: RequestGate, makeClient: () => LlamaClient, settings: () => Settings,
+    gate: RequestGate, makeClient: () => ChatClient, settings: () => Settings,
     changed: (state: SessionState) => void, saveTurn?: SaveAnswer) {
     this.attachmentId = attachmentId; this.selection = selection; this.papers = papers;
     this.gate = gate; this.makeClient = makeClient; this.settings = settings; this.changed = changed;

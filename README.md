@@ -12,7 +12,8 @@ A Zotero add-on that helps readers understand PDF passages and ask questions abo
 - View assistance alongside the text and optionally save useful answers as Zotero annotations.
 - Read formatted Markdown and mathematical expressions.
 - English is the default response language; Brazilian Portuguese is available in the settings.
-- Inference runs locally, and conversations are not saved automatically.
+- Inference runs locally by default; an optional Groq provider can be configured with your own API key.
+- Conversations are not saved automatically.
 
 ## Compatibility
 
@@ -48,9 +49,16 @@ A Zotero add-on that helps readers understand PDF passages and ask questions abo
 
 The default model is LFM2.5-8B-A1B. To use LFM3-1.7B or configure the runtime, see the [runtime guide](docs/runtime.md). The legacy LFM2.5-2.6B remains only for the delivered benchmark and is not offered in the plugin. Plugin updates are manual.
 
+### Providers
+
+- **Local server (default):** uses this project's `llama-server`, with exact template token counting and offline inference after setup.
+- **Groq (API):** uses your own `gsk_...` key, the selected model and the configured context. The full article, selected passage and question are sent to Groq over the internet. In this prototype the key is stored in Zotero preferences as plain text; use a key with a usage limit.
+
+To switch providers, open **Settings → Assistente local**, choose **Groq (API)**, enter the key and model, and click **Salvar configurações** (Save Settings). There is no local server to start in this mode.
+
 ## Privacy and limitations
 
-AI inference runs on your device; the plugin does not send documents to an external inference service. Initial setup downloads the runtime and model files. Scanned PDFs without selectable text need OCR, which is not included. Answers may contain errors; see the [evaluation and its limitations](experiments/report.md).
+By default, inference runs on your device and the plugin does not send documents to an external service. If you select **Groq (API)**, the full article, selected passage and question are sent to Groq; this happens only after that explicit choice. In this prototype the key is stored in Zotero preferences as plain text. Initial setup downloads the runtime and model files. Scanned PDFs without selectable text need OCR, which is not included. Answers may contain errors; see the [evaluation and its limitations](experiments/report.md).
 
 ## Development
 
