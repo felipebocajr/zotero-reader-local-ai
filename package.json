@@ -1,6 +1,6 @@
 {
   "name": "zotero-reader-local-ai",
-  "version": "0.1.1",
+  "version": "0.2.4",
   "private": true,
   "type": "module",
   "engines": {
@@ -9,10 +9,11 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "check": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test --test-isolation=none tests/*.test.ts",
-    "test:runtime": "python3 -m unittest discover -s tests -p 'test_*.py'",
-    "runtime:setup": "python3 scripts/setup_runtime.py --precision Q4_K_M",
-    "runtime:start": "python3 scripts/serve.py",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "test:runtime": "node scripts/run_python.mjs -m unittest discover -s tests -p 'test_*.py'",
+    "runtime:setup": "node scripts/run_python.mjs scripts/setup_runtime.py --precision Q4_K_M",
+    "runtime:start": "node scripts/run_python.mjs scripts/serve.py",
+    "test:accuracy": "node --experimental-strip-types scripts/accuracy_tests.ts",
     "experiment": "node --experimental-strip-types scripts/experiment.ts"
   },
   "devDependencies": {

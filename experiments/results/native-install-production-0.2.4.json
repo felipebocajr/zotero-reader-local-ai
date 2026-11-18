@@ -1,0 +1,14 @@
+{
+  "artifact": "dist/reader-local-ai-0.2.4.xpi",
+  "version": "0.2.4",
+  "zoteroVersion": "10.0.8",
+  "profile": "production",
+  "dataDir": "/home/felipebocajr/Zotero",
+  "installed": true,
+  "active": true,
+  "appDisabled": false,
+  "userDisabled": false,
+  "error": 0,
+  "state": 10,
+  "projectRoot": "/home/felipebocajr/Projects/zotero-reader-local-ai"
+}

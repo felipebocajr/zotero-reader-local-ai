@@ -1,0 +1,626 @@
+{
+  "version": 1,
+  "paper": "attention",
+  "source": "arXiv:1706.03762v1",
+  "description": "Input/output accuracy suite over the real paper Attention Is All You Need. Each answer is generated with the full paper, the production prompt and the selected response language. Checks are explicit facts, forbidden inventions, language and instruction adherence.",
+  "cases": [
+    {
+      "id": "attention-definition",
+      "paper": "attention",
+      "category": "concept",
+      "selectionPhrase": "Scaled Dot-Product Attention",
+      "question": "Explain how scaled dot-product attention computes its output, and why the scaling factor is used.",
+      "responseLanguage": "en",
+      "expected": "Queries and keys produce compatibility scores; the scores are divided by sqrt(d_k); softmax gives weights; the output is a weighted sum of values. Scaling avoids very large dot products and unstable gradients.",
+      "checks": [
+        {
+          "id": "query-key-score",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["query.{0,100}key|key.{0,100}query|\\bq\\b.{0,50}\\bk\\b|consulta.{0,100}chave"],
+          "description": "Relaciona queries e keys."
+        },
+        {
+          "id": "dot-product",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["dot[- ]product|qk\\s*\\^?\\s*t|\\bq\\s*k\\s*\\^?\\s*t\\b|produto escalar"],
+          "description": "Identifica o produto escalar entre query e key."
+        },
+        {
+          "id": "sqrt-dk",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["sqrt|square root|√|raiz"],
+          "description": "Menciona a divisão pela raiz de d_k."
+        },
+        {
+          "id": "softmax",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["softmax"],
+          "description": "Menciona softmax."
+        },
+        {
+          "id": "weighted-values",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["weight.{0,100}value|value.{0,100}weight|sum.{0,100}value|softmax.{0,240}v\\b|pondera.{0,100}valor|combina.{0,100}valor|sum.{0,160}\\\\?v\\b"],
+          "description": "Explica a soma ponderada dos values."
+        },
+        {
+          "id": "max-150-words",
+          "category": "instruction",
+          "kind": "max_words",
+          "max": 150,
+          "description": "Respeita o limite de 150 palavras do prompt."
+        },
+        {
+          "id": "english",
+          "category": "language",
+          "kind": "language",
+          "expected": "en",
+          "description": "Responde em inglês, o padrão do plugin."
+        }
+      ]
+    },
+    {
+      "id": "attention-scaling",
+      "paper": "attention",
+      "category": "concept",
+      "selectionPhrase": "divide each by",
+      "question": "Why does the paper divide the dot products by sqrt(d_k)? What happens without this scaling?",
+      "responseLanguage": "en",
+      "expected": "Large dot products make the softmax extremely peaked or saturated, producing very small gradients. Dividing by sqrt(d_k) keeps the scores in a useful range and stabilizes training.",
+      "checks": [
+        {
+          "id": "large-dot-products",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["large.{0,120}dot|dot.{0,120}large|grow.{0,120}large|magnitude.{0,120}(large|grow)|produto escalar.{0,120}(grande|aument)"],
+          "description": "Explica que os produtos escalares crescem em magnitude."
+        },
+        {
+          "id": "softmax-saturation",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["softmax.{0,140}(saturat|extreme|peaked|vanishing|exploding|small gradient)|(saturat|extreme|peaked|vanishing|exploding|small gradient).{0,140}softmax|(?:vanishing|exploding|saturat|small gradient).{0,100}gradient|gradient.{0,100}(vanishing|exploding|small|desaparec)|gradiente.{0,120}(pequeno|desaparec)"],
+          "description": "Relaciona a escala ao comportamento do softmax e dos gradientes."
+        },
+        {
+          "id": "sqrt-dk",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["sqrt|square root|√|raiz"],
+          "description": "Menciona a raiz de d_k."
+        },
+        {
+          "id": "training-stability",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["gradient|training|stable|estabilidade|treinamento"],
+          "description": "Liga o fator à estabilidade do treinamento."
+        },
+        {
+          "id": "max-150-words",
+          "category": "instruction",
+          "kind": "max_words",
+          "max": 150,
+          "description": "Respeita o limite de 150 palavras do prompt."
+        },
+        {
+          "id": "english",
+          "category": "language",
+          "kind": "language",
+          "expected": "en",
+          "description": "Responde em inglês, o padrão do plugin."
+        }
+      ]
+    },
+    {
+      "id": "attention-multihead",
+      "paper": "attention",
+      "category": "numeric",
+      "selectionPhrase": "Multi-Head Attention",
+      "question": "In this paper, what are h, d_k, d_v, and d_model for multi-head attention? How are the heads combined?",
+      "responseLanguage": "en",
+      "expected": "h = 8 heads; d_k = d_v = d_model / h = 64; d_model = 512. Each head runs in parallel and the outputs are concatenated.",
+      "checks": [
+        {
+          "id": "eight-heads",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["\\bh\\s*=\\s*8\\b|8\\s+(?:parallel\\s+)?(?:attention\\s+)?heads|oito cabeças"],
+          "description": "Informa que h = 8."
+        },
+        {
+          "id": "head-dimension-64",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["d[_ ]?k\\s*=\\s*d[_ ]?v\\s*=\\s*64|d[_ ]?k.{0,40}64|64\\s*(?:dimensions|dimensões)"],
+          "description": "Informa d_k = d_v = 64."
+        },
+        {
+          "id": "model-dimension-512",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["d[_ ]?model\\s*=\\s*512|512"],
+          "description": "Informa d_model = 512."
+        },
+        {
+          "id": "concatenation",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["concat|concatenat|concatena"],
+          "description": "Explica a concatenação das cabeças."
+        },
+        {
+          "id": "max-150-words",
+          "category": "instruction",
+          "kind": "max_words",
+          "max": 150,
+          "description": "Respeita o limite de 150 palavras do prompt."
+        },
+        {
+          "id": "english",
+          "category": "language",
+          "kind": "language",
+          "expected": "en",
+          "description": "Responde em inglês, o padrão do plugin."
+        }
+      ]
+    },
+    {
+      "id": "attention-architecture",
+      "paper": "attention",
+      "category": "concept",
+      "selectionPhrase": "Encoder and Decoder Stacks",
+      "question": "How many layers are in the encoder and decoder, and what is the basic residual and layer-normalization pattern?",
+      "responseLanguage": "en",
+      "expected": "The encoder and decoder each have N = 6 identical layers; each sub-layer uses a residual connection followed by layer normalization, LayerNorm(x + Sublayer(x)).",
+      "checks": [
+        {
+          "id": "six-layers",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["\\bsix\\s+(?:identical\\s+)?(?:encoder\\s+|decoder\\s+)?layers\\b|\\b6\\s+(?:identical\\s+)?(?:encoder\\s+|decoder\\s+)?layers\\b|N\\s*=\\s*6|seis camadas"],
+          "description": "Informa N = 6 camadas."
+        },
+        {
+          "id": "residual",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["residual|resíduo"],
+          "description": "Menciona conexões residuais."
+        },
+        {
+          "id": "layer-normalization",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["layer\\s*norm|layer normalization|normalização de camada"],
+          "description": "Menciona layer normalization."
+        },
+        {
+          "id": "pattern",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["sublayer\\s*\\(\\s*x\\s*\\)|x\\s*\\+\\s*sublayer|sublayer.{0,80}layer\\s*norm|layer\\s*norm.{0,80}sublayer|added.{0,80}input.{0,80}layer\\s*norm|residual.{0,80}layer\\s*norm"],
+          "description": "Descreve o padrão LayerNorm(x + Sublayer(x))."
+        },
+        {
+          "id": "max-150-words",
+          "category": "instruction",
+          "kind": "max_words",
+          "max": 150,
+          "description": "Respeita o limite de 150 palavras do prompt."
+        },
+        {
+          "id": "english",
+          "category": "language",
+          "kind": "language",
+          "expected": "en",
+          "description": "Responde em inglês, o padrão do plugin."
+        }
+      ]
+    },
+    {
+      "id": "attention-masking",
+      "paper": "attention",
+      "category": "concept",
+      "selectionPhrase": "masking out (setting to -infinity)",
+      "question": "How does the decoder prevent each position from attending to future tokens, and how are its outputs shifted during training?",
+      "responseLanguage": "en",
+      "expected": "The decoder applies a mask that sets illegal future connections to -infinity before softmax. The output embeddings are also offset by one position, so prediction i depends only on known outputs before i, preserving the autoregressive property.",
+      "checks": [
+        {
+          "id": "mask",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["mask|máscara"],
+          "description": "Menciona a máscara."
+        },
+        {
+          "id": "future-tokens",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["future|subsequent|posterior|futuro"],
+          "description": "Identifica tokens futuros/subsequentes."
+        },
+        {
+          "id": "negative-infinity",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["-\\s*inf|−\\s*inf|−\\s*∞|−∞|negative infinity|menos infinito|-\\s*\\\\?infty|−\\s*\\\\?infty"],
+          "description": "Explica que as conexões ilegais viram -infinito."
+        },
+        {
+          "id": "offset-one-position",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["offset|shift|deslocad|one position|uma posição"],
+          "description": "Menciona o deslocamento das saídas em uma posição."
+        },
+        {
+          "id": "autoregressive",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["auto-?regressive|autoregressiv|known outputs|saídas conhecidas|previous positions|posições anteriores|previously generated|earlier positions|preceding (?:tokens|positions)|apenas (?:tokens|posições) anteriores"],
+          "description": "Relaciona a máscara à propriedade autoregressiva."
+        },
+        {
+          "id": "max-150-words",
+          "category": "instruction",
+          "kind": "max_words",
+          "max": 150,
+          "description": "Respeita o limite de 150 palavras do prompt."
+        },
+        {
+          "id": "english",
+          "category": "language",
+          "kind": "language",
+          "expected": "en",
+          "description": "Responde em inglês, o padrão do plugin."
+        }
+      ]
+    },
+    {
+      "id": "attention-positional",
+      "paper": "attention",
+      "category": "concept",
+      "selectionPhrase": "Positional Encoding",
+      "question": "Describe the Transformer positional encoding: its formula, and why sinusoids are used.",
+      "responseLanguage": "en",
+      "expected": "The paper adds sinusoidal encodings to the input embeddings. Even dimensions use sin(pos/10000^(2i/d_model)); odd dimensions use cos of the same argument. The wavelengths form a geometric progression from 2π to 10000·2π, which may help the model learn relative positions.",
+      "checks": [
+        {
+          "id": "sin-and-cos",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["sin.{0,120}cos|cos.{0,120}sin|seno.{0,120}cosseno"],
+          "description": "Menciona seno e cosseno."
+        },
+        {
+          "id": "position-and-dimension",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["\\bpos\\b|position|posição"],
+          "description": "Usa a posição na fórmula."
+        },
+        {
+          "id": "10000",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["10000|10,000|10 000"],
+          "description": "Inclui a constante 10000."
+        },
+        {
+          "id": "relative-position",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["relative|relativa|offset"],
+          "description": "Explica a motivação de posições relativas."
+        },
+        {
+          "id": "wavelength",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["wavelength|comprimento de onda|geometric|geométrica|frequency|frequência"],
+          "description": "Menciona a progressão geométrica dos comprimentos de onda."
+        },
+        {
+          "id": "positional-formula",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["10000\\s*\\^\\s*\\{?\\s*2\\s*i\\s*/\\s*d"],
+          "description": "Usa 10000^(2i/d_model), não uma soma no expoente."
+        },
+        {
+          "id": "max-150-words",
+          "category": "instruction",
+          "kind": "max_words",
+          "max": 150,
+          "description": "Respeita o limite de 150 palavras do prompt."
+        },
+        {
+          "id": "english",
+          "category": "language",
+          "kind": "language",
+          "expected": "en",
+          "description": "Responde em inglês, o padrão do plugin."
+        }
+      ]
+    },
+    {
+      "id": "attention-training",
+      "paper": "attention",
+      "category": "numeric",
+      "selectionPhrase": "Adam optimizer",
+      "question": "Which optimizer and learning-rate schedule did the paper use? Give the warmup length and the schedule shape.",
+      "responseLanguage": "en",
+      "expected": "Adam with beta1 = 0.9, beta2 = 0.98 and epsilon = 1e-9. The learning rate increases linearly during 4000 warmup steps and then decays proportionally to the inverse square root of the step number.",
+      "checks": [
+        {
+          "id": "adam",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["adam"],
+          "description": "Identifica Adam."
+        },
+        {
+          "id": "adam-betas",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["0[.,]9.{0,80}0[.,]98|0[.,]98.{0,80}0[.,]9|β.{0,50}0[.,]9"],
+          "description": "Informa beta1 = 0.9 e beta2 = 0.98."
+        },
+        {
+          "id": "warmup",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["warmup|aquecimento"],
+          "description": "Menciona warmup."
+        },
+        {
+          "id": "warmup-4000",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["4000|4,000|4 000"],
+          "description": "Informa 4.000 passos de warmup."
+        },
+        {
+          "id": "inverse-square-root",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["inverse square root|inverse-square-root|inverso da raiz|raiz inversa|step.{0,60}-?0[.,]5|decay|decaimento"],
+          "description": "Descreve o decaimento pela raiz quadrada inversa."
+        },
+        {
+          "id": "max-150-words",
+          "category": "instruction",
+          "kind": "max_words",
+          "max": 150,
+          "description": "Respeita o limite de 150 palavras do prompt."
+        },
+        {
+          "id": "english",
+          "category": "language",
+          "kind": "language",
+          "expected": "en",
+          "description": "Responde em inglês, o padrão do plugin."
+        }
+      ]
+    },
+    {
+      "id": "attention-results",
+      "paper": "attention",
+      "category": "numeric",
+      "selectionPhrase": "WMT 2014 English-to-German",
+      "question": "What BLEU scores did the big Transformer achieve on WMT 2014 English-to-German and English-to-French?",
+      "responseLanguage": "en",
+      "expected": "28.4 BLEU on WMT 2014 English-to-German and 41.0 BLEU on WMT 2014 English-to-French for the big model.",
+      "checks": [
+        {
+          "id": "bleu-28-4",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["28[.,]4"],
+          "description": "Informa 28.4 BLEU."
+        },
+        {
+          "id": "bleu-41-0",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["41[.,]0"],
+          "description": "Informa 41.0 BLEU."
+        },
+        {
+          "id": "english-german",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["english.to.german|en-de|alemão|alemanha"],
+          "description": "Associa 28.4 ao par inglês-alemão."
+        },
+        {
+          "id": "english-french",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["english.to.french|en-fr|francês|franca"],
+          "description": "Associa 41.0 ao par inglês-francês."
+        },
+        {
+          "id": "max-120-words",
+          "category": "instruction",
+          "kind": "max_words",
+          "max": 120,
+          "description": "Mantém uma resposta curta para uma pergunta factual."
+        },
+        {
+          "id": "english",
+          "category": "language",
+          "kind": "language",
+          "expected": "en",
+          "description": "Responde em inglês, o padrão do plugin."
+        }
+      ]
+    },
+    {
+      "id": "attention-absent",
+      "paper": "attention",
+      "category": "absence",
+      "selectionPhrase": "Scaled Dot-Product Attention",
+      "question": "According to this article, what MMLU score did the Transformer achieve?",
+      "responseLanguage": "en",
+      "expected": "The article does not report an MMLU score; it reports BLEU results on WMT 2014 and constituency parsing. The answer must not invent a score.",
+      "checks": [
+        {
+          "id": "refuses-absent-fact",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["not (?:present|included|reported|mentioned|available|provided)|does not (?:mention|report|provide|contain)|no information|cannot (?:answer|find)|can't (?:answer|find)|n[ãa]o (?:est[áa]|consta|menciona|apresenta|informa)|sem (?:essa )?informa"],
+          "description": "Reconhece que a informação não está no artigo."
+        },
+        {
+          "id": "no-invented-mmlu-score",
+          "category": "content",
+          "kind": "forbidden",
+          "patterns": ["mmlu.{0,60}(?:score|pontuação|result|resultado).{0,25}\\d+(?:[.,]\\d+)?|\\b\\d+(?:[.,]\\d+)?\\s*(?:%|percent|points).{0,40}mmlu"],
+          "description": "Não inventa uma pontuação para MMLU."
+        },
+        {
+          "id": "max-120-words",
+          "category": "instruction",
+          "kind": "max_words",
+          "max": 120,
+          "description": "Resposta curta para uma ausência."
+        },
+        {
+          "id": "english",
+          "category": "language",
+          "kind": "language",
+          "expected": "en",
+          "description": "Responde em inglês, o padrão do plugin."
+        }
+      ]
+    },
+    {
+      "id": "attention-formula",
+      "paper": "attention",
+      "category": "formula",
+      "selectionPhrase": "Scaled Dot-Product Attention",
+      "question": "Write the scaled dot-product attention equation in LaTeX and define Q, K, V, d_k, and softmax.",
+      "responseLanguage": "en",
+      "expected": "Attention(Q,K,V) = softmax(QK^T / sqrt(d_k)) V. Q are queries, K keys, V values, d_k the key/query dimension, and softmax normalizes the scores.",
+      "checks": [
+        {
+          "id": "softmax",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["softmax"],
+          "description": "Inclui softmax."
+        },
+        {
+          "id": "qk-transpose",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["qk\\s*\\^?\\s*\\{?\\s*(?:t|\\\\top)\\b|q\\s*k\\s*\\^?\\s*\\{?\\s*(?:t|\\\\top)\\b|q\\s*\\^?\\s*t\\s*k"],
+          "description": "Inclui o produto QK^T."
+        },
+        {
+          "id": "sqrt-dk",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["sqrt|√|raiz"],
+          "description": "Inclui sqrt(d_k)."
+        },
+        {
+          "id": "value-term",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["\\bv\\b|values|valores"],
+          "description": "Inclui V/values."
+        },
+        {
+          "id": "symbol-definitions",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["quer(?:y|ies)|consultas|chaves|keys|valores|values"],
+          "description": "Define os símbolos principais."
+        },
+        {
+          "id": "max-150-words",
+          "category": "instruction",
+          "kind": "max_words",
+          "max": 150,
+          "description": "Respeita o limite de 150 palavras."
+        },
+        {
+          "id": "english",
+          "category": "language",
+          "kind": "language",
+          "expected": "en",
+          "description": "Responde em inglês, o padrão do plugin."
+        }
+      ]
+    },
+    {
+      "id": "attention-definition-pt",
+      "paper": "attention",
+      "category": "language",
+      "selectionPhrase": "Scaled Dot-Product Attention",
+      "question": "Explique como a atenção por produto escalar escalonado calcula sua saída e por que o fator de escala é usado.",
+      "responseLanguage": "pt-BR",
+      "expected": "Consultas e chaves produzem escores de compatibilidade; divide-se pela raiz de d_k; o softmax gera pesos; a saída é a soma ponderada dos values. O fator evita produtos escalares grandes e gradientes instáveis.",
+      "checks": [
+        {
+          "id": "query-key-score",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["query.{0,100}key|key.{0,100}query|\\bq\\b.{0,50}\\bk\\b|consulta.{0,100}chave"],
+          "description": "Relaciona queries e keys."
+        },
+        {
+          "id": "dot-product",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["dot[- ]product|qk\\s*\\^?\\s*t|\\bq\\s*k\\s*\\^?\\s*t\\b|produto escalar"],
+          "description": "Identifica o produto escalar."
+        },
+        {
+          "id": "sqrt-dk",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["sqrt|square root|√|raiz"],
+          "description": "Menciona a raiz de d_k."
+        },
+        {
+          "id": "softmax",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["softmax"],
+          "description": "Menciona softmax."
+        },
+        {
+          "id": "weighted-values",
+          "category": "content",
+          "kind": "required",
+          "patterns": ["weight.{0,100}value|value.{0,100}weight|sum.{0,100}value|softmax.{0,240}v\\b|pondera.{0,100}valor|combina.{0,100}valor|sum.{0,160}\\\\?v\\b"],
+          "description": "Explica a soma ponderada dos values."
+        },
+        {
+          "id": "max-150-words",
+          "category": "instruction",
+          "kind": "max_words",
+          "max": 150,
+          "description": "Respeita o limite de 150 palavras."
+        },
+        {
+          "id": "portuguese",
+          "category": "language",
+          "kind": "language",
+          "expected": "pt-BR",
+          "description": "Responde em português do Brasil."
+        }
+      ]
+    }
+  ]
+}

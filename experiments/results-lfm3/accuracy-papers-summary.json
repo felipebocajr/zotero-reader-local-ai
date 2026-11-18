@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-11-10T18:12:19.233Z",
+  "dataset": "arXiv:2603.05451v1, arXiv:2505.22618v3",
+  "paper": [
+    "flashattention4",
+    "fastdllm"
+  ],
+  "datasetPath": "experiments/accuracy-papers.json",
+  "precision": "Q4_K_M",
+  "contextTokens": 32768,
+  "thinkBudget": "512",
+  "evaluator": "judge",
+  "judgeModel": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+  "promptVersion": "factscore-1",
+  "cases": 20,
+  "models": [
+    {
+      "model": "lfm2.5-8b-a1b",
+      "precision": "Q4_K_M",
+      "cases": 20,
+      "ok": 19,
+      "errors": 1,
+      "content_aligned": 4,
+      "all_checks_passed": 4,
+      "average_accuracy_percent": 72.64736842105263,
+      "average_words": 108.42105263157895,
+      "claims": 192,
+      "supported": 131,
+      "contradicted": 30,
+      "not_in_source": 31,
+      "fact_precision": 0.6822916666666666,
+      "contradiction_rate": 0.15625,
+      "coverage_rate": 0.5552631578947369
+    },
+    {
+      "model": "lfm3-1.7b",
+      "precision": "Q4_K_M",
+      "cases": 20,
+      "ok": 20,
+      "errors": 0,
+      "content_aligned": 2,
+      "all_checks_passed": 2,
+      "average_accuracy_percent": 83.785,
+      "average_words": 202.8,
+      "claims": 340,
+      "supported": 279,
+      "contradicted": 26,
+      "not_in_source": 35,
+      "fact_precision": 0.8205882352941176,
+      "contradiction_rate": 0.07647058823529412,
+      "coverage_rate": 0.78085
+    }
+  ],
+  "total": {
+    "cases": 40,
+    "ok": 39,
+    "content_aligned": 6,
+    "all_checks_passed": 6,
+    "claims": 532,
+    "supported": 410,
+    "contradicted": 56,
+    "not_in_source": 66
+  }
+}

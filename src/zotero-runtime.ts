@@ -1,13 +1,26 @@
 import type { LaunchConfig, OwnedProcess, RuntimePlatform, ServerProbe, SupervisorStatus } from "./runtime.ts";
 import type { FetchLike } from "./types.ts";
 
-interface NativeHost { io: any; paths: any; subprocess: any; FilePicker: any; processID: number; os: string;
+interface NativeHost { io: any; paths: any; subprocess: any; FilePicker: any; processID: number; os: string; abi: string;
   fetch: FetchLike; setTimeout: (callback: () => void, ms: number) => any; clearTimeout: (timer: any) => void }
 
 /** Gecko process and folder-picker APIs stay outside the portable controller. No shell commands. */
 export function createRuntimePlatform(host: NativeHost): RuntimePlatform {
   const { io, paths, subprocess } = host;
   const later = (callback: () => void, ms: number) => { const id = host.setTimeout(callback, ms); return () => host.clearTimeout(id); };
+  const windows = host.os === "WINNT";
+  function pythonCandidates(): { name: string; prefix: string[] }[] {
+    return windows
+      ? [{ name: "python3.exe", prefix: [] }, { name: "python.exe", prefix: [] }, { name: "py.exe", prefix: ["-3"] }]
+      : [{ name: "python3", prefix: [] }, { name: "python", prefix: [] }];
+  }
+  async function findPython(): Promise<{ command: string; prefix: string[] }> {
+    for (const candidate of pythonCandidates()) {
+      try { return { command: await subprocess.pathSearch(candidate.name), prefix: candidate.prefix }; }
+      catch { /* Try the next installed launcher. */ }
+    }
+    throw new Error("Python 3.12 ou superior não foi encontrado. Instale-o para iniciar o servidor local pelo Zotero.");
+  }
   return {
     later,
     async pickFolder(window, initial) {
@@ -17,8 +30,11 @@ export function createRuntimePlatform(host: NativeHost): RuntimePlatform {
       return await picker.show() === picker.returnOK ? picker.file : undefined;
     },
     async validateRoot(root) {
-      if (host.os !== "Linux") throw new Error("O início pelo Zotero está disponível para Linux. Nos demais sistemas, inicie o runtime separadamente.");
-      if (!root.startsWith("/")) throw new Error("Escolha uma pasta com caminho absoluto.");
+      if (!windows && host.os !== "Linux") throw new Error("O início pelo Zotero está disponível para Linux e Windows x64. Nos demais sistemas, inicie o runtime separadamente.");
+      if (windows) {
+        if (!/^(x86_64|amd64)/i.test(host.abi ?? "")) throw new Error("Windows ARM64 não é suportado. Use Windows x64.");
+        if (!/^(?:[a-zA-Z]:[\\/]|\\\\)/.test(root)) throw new Error("Escolha uma pasta com caminho absoluto.");
+      } else if (!root.startsWith("/")) throw new Error("Escolha uma pasta com caminho absoluto.");
       if (!await io.exists(root) || !await io.exists(paths.join(root, "scripts", "serve.py")) || !await io.exists(paths.join(root, "runtime.lock.json"))) {
         throw new Error("A pasta escolhida não contém scripts/serve.py e runtime.lock.json. Selecione a pasta deste projeto.");
       }
@@ -29,13 +45,12 @@ export function createRuntimePlatform(host: NativeHost): RuntimePlatform {
       const model = config.model === "lfm2.5-2.6b" ? lock.model : lock.additionalModels?.[config.model];
       const filename = model?.variants?.Q4_K_M?.filename;
       if (!filename || !await io.exists(paths.join(config.projectRoot, ".runtime", "models", filename))) {
-        throw new Error(`Os pesos Q4 de ${config.model} ainda não foram preparados. Execute uma vez: python3 scripts/setup_runtime.py --model ${config.model}`);
+        const python = windows ? "py -3" : "python3";
+        throw new Error(`Os pesos Q4 de ${config.model} ainda não foram preparados. Execute uma vez: ${python} scripts/setup_runtime.py --model ${config.model}`);
       }
-      let python: string;
-      try { python = await subprocess.pathSearch("python3"); }
-      catch { throw new Error("Python 3 não foi encontrado. Instale-o para iniciar o servidor local pelo Zotero."); }
-      const process = await subprocess.call({ command: python, workdir: config.projectRoot, stderr: "stdout",
-        arguments: ["-u", paths.join(config.projectRoot, "scripts", "serve.py"), "--model", config.model,
+      const python = await findPython();
+      const process = await subprocess.call({ command: python.command, workdir: config.projectRoot, stderr: "stdout",
+        arguments: [...python.prefix, "-u", paths.join(config.projectRoot, "scripts", "serve.py"), "--model", config.model,
           "--context", String(config.contextTokens), "--port", String(config.port), "--managed", "--parent-pid", String(host.processID)] });
       let tail = "";
       const pump = (async () => {
@@ -47,7 +62,8 @@ export function createRuntimePlatform(host: NativeHost): RuntimePlatform {
       return { pid: process.pid, exited, tail: () => tail,
         stop() {
           if (!stopping) stopping = (async () => {
-            // EOF is the managed launcher's graceful stop signal; it reaps its llama child.
+            // A stop byte is reliable on Windows; EOF remains the POSIX-friendly fallback.
+            try { if (typeof process.stdin.write === "function") await process.stdin.write("stop\n"); } catch { /* Pipe already closed. */ }
             await process.stdin.close().catch(() => {});
             const cancel = later(() => { void process.kill(15000).catch(() => {}); }, 15000);
             try { await exited; } finally { cancel(); }

@@ -1,0 +1,139 @@
+{
+  "zoteroVersion": "10.0.6",
+  "profile": "isolated",
+  "checks": [
+    {
+      "name": "invalid project folder gives a readable error",
+      "passed": true
+    },
+    {
+      "name": "manual launch shows progress immediately",
+      "passed": true
+    },
+    {
+      "name": "ready process belongs to the current controller: lfm2.5-2.6b",
+      "passed": true
+    },
+    {
+      "name": "requested context and unquantized cache preserved: lfm2.5-2.6b",
+      "passed": true
+    },
+    {
+      "name": "manual start button is disabled while owned",
+      "passed": true
+    },
+    {
+      "name": "actual full-paper answer after native launch: lfm2.5-2.6b",
+      "passed": true
+    },
+    {
+      "name": "changing model asks for explicit restart",
+      "passed": true
+    },
+    {
+      "name": "ready process belongs to the current controller: lfm2.5-8b-a1b",
+      "passed": true
+    },
+    {
+      "name": "requested context and unquantized cache preserved: lfm2.5-8b-a1b",
+      "passed": true
+    },
+    {
+      "name": "restart reaps both old processes",
+      "passed": true
+    },
+    {
+      "name": "actual full-paper answer after native launch: lfm2.5-8b-a1b",
+      "passed": true
+    },
+    {
+      "name": "manual stop releases supervisor and llama child",
+      "passed": true
+    },
+    {
+      "name": "external server cannot be stopped or restarted from UI",
+      "passed": true
+    },
+    {
+      "name": "stop leaves the external server available",
+      "passed": true
+    },
+    {
+      "name": "native auto-start preference persists",
+      "passed": true
+    },
+    {
+      "name": "ready process belongs to the current controller: lfm2.5-2.6b",
+      "passed": true
+    },
+    {
+      "name": "requested context and unquantized cache preserved: lfm2.5-2.6b",
+      "passed": true
+    },
+    {
+      "name": "auto-start on plugin startup owns a fresh process",
+      "passed": true
+    },
+    {
+      "name": "plugin disable reaps the llama child",
+      "passed": true
+    },
+    {
+      "name": "auto-start disabled leaves the server stopped",
+      "passed": true
+    }
+  ],
+  "runs": [
+    {
+      "model": "lfm2.5-2.6b",
+      "status": {
+        "supervisorPid": 79422,
+        "model": "lfm2.5-2.6b",
+        "precision": "Q4_K_M",
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "attempts": [
+          {
+            "backend": "cuda",
+            "gpuLayers": "all",
+            "fit": false,
+            "pid": 79447,
+            "ready": true
+          }
+        ],
+        "phase": "ready",
+        "childPid": 79447,
+        "backend": "cuda",
+        "gpuLayers": "all"
+      },
+      "totalMs": 7113,
+      "answer": "The Scaled Dot-Product Attention mechanism divides each dot product by √dk to prevent numerical instability during training. In the attention computation, queries and keys are projected into vectors of dimension dk, and values have dimension dv. The core operation computes QK^T (the matrix of dot products between queries and all keys), then scales each element by 1/√dk before applying a softmax function to obtain attention weights.\n\nThis scaling is crucial because without it, the dot products can grow very large in magnitude when dk is small or moderate. Large values cause the softmax function to produce poorly distributed probabilities with vanishing gradients, making learning difficult. By dividing by √dk, the authors ensure that the scaled dot products remain in a range where the softmax produces well-distributed weights and allows effective gradient flow during backpropagation.\n\nThe paper notes that while additive attention (using a feed-forward network) can outperform dot-product attention without scaling for very small dk values, the scaling factor is essential when using larger key dimensions. This design choice balances computational efficiency with stable training dynamics, enabling the Transformer to train effectively on long sequences where self-attention must compute dependencies across many positions simultaneously."
+    },
+    {
+      "model": "lfm2.5-8b-a1b",
+      "status": {
+        "supervisorPid": 79534,
+        "model": "lfm2.5-8b-a1b",
+        "precision": "Q4_K_M",
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "attempts": [
+          {
+            "backend": "cuda",
+            "gpuLayers": "all",
+            "fit": false,
+            "pid": 79552,
+            "ready": true
+          }
+        ],
+        "phase": "ready",
+        "childPid": 79552,
+        "backend": "cuda",
+        "gpuLayers": "all"
+      },
+      "totalMs": 7045,
+      "answer": "The paper defines Scaled Dot‑Product Attention as taking queries \\(Q\\), keys \\(K\\) and values \\(V\\) each with dimension \\(\\mathbf{d}_k\\). It first computes the dot product of a query with every key, which would otherwise grow proportionally to \\(\\sqrt{\\mathbf{d}_k}\\) when many keys are present; dividing this result by \\(\\sqrt{\\mathbf{d}_k}\\) normalises the magnitude of each score so that the soft‑max operates on values in a bounded range regardless of sequence length or model dimension. This scaling also balances the influence of all keys, preventing any single key from dominating the attention distribution and thereby improving numerical stability and gradient flow during training. The constant number of operations per layer achieved by this simple division is why self‑attention can be parallelised efficiently compared with recurrent or convolutional alternatives."
+    }
+  ],
+  "errors": []
+}

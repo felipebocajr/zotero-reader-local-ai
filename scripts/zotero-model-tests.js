@@ -2,10 +2,12 @@
 // Run only after the mock UI suite finishes, with scripts/rdp.py --file.
 (async function () {
   const root = Zotero.Prefs.get("extensions.reader-local-ai.devRoot", true);
-  if (Zotero.DataDirectory.dir !== root + "/.runtime/zotero-data") throw new Error("Isolated profile required");
+  const base = root.replace(/\\/g, "/").replace(/\/+$/, "");
+  const dataDir = String(Zotero.DataDirectory.dir).replace(/\\/g, "/").replace(/\/+$/, "");
+  if (dataDir !== base + "/.runtime/zotero-data") throw new Error("Isolated profile required");
   const win = Zotero.getMainWindow();
   const sleep = ms => new Promise(resolve => win.setTimeout(resolve, ms));
-  const output = root + "/experiments/results/native-lfm8b.json";
+  const output = base + "/experiments/results/native-lfm8b.json";
   const results = { zoteroVersion: Zotero.version, profile: "isolated", model: "lfm2.5-8b-a1b", checks: [], answers: [], errors: [] };
   const original = Zotero.ReaderLocalAI.getSettings();
   let pref, reader;
@@ -23,7 +25,7 @@
     canvas.width = bitmap.width; canvas.height = bitmap.height;
     canvas.getContext("2d").drawImage(bitmap, 0, 0); bitmap.close();
     const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
-    await IOUtils.write(root + "/.runtime/" + name + ".png", new Uint8Array(await blob.arrayBuffer()));
+    await IOUtils.write(base + "/.runtime/" + name + ".png", new Uint8Array(await blob.arrayBuffer()));
   }
   async function ask(question, followup = false) {
     if (followup) button("Continuar perguntando").click();

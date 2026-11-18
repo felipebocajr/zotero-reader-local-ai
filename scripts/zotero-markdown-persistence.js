@@ -1,8 +1,10 @@
 // Check the release XPI and saved Markdown after restarting the isolated profile.
 (async function () {
   const root = Zotero.Prefs.get("extensions.reader-local-ai.devRoot", true);
-  if (Zotero.DataDirectory.dir !== root + "/.runtime/zotero-data") throw new Error("Isolated profile required");
-  const output = root + "/experiments/results/native-markdown.json";
+  const base = root.replace(/\\/g, "/").replace(/\/+$/, "");
+  const dataDir = String(Zotero.DataDirectory.dir).replace(/\\/g, "/").replace(/\/+$/, "");
+  if (dataDir !== base + "/.runtime/zotero-data") throw new Error("Isolated profile required");
+  const output = base + "/experiments/results/native-markdown.json";
   const results = JSON.parse(await IOUtils.readUTF8(output));
   const win = Zotero.getMainWindow(), sleep = ms => new Promise(resolve => win.setTimeout(resolve, ms));
   const wait = async (predicate, label) => {

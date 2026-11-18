@@ -38,7 +38,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         routes = {"/health": {"status": "ok"}, "/props": {"total_slots": 1, "default_generation_settings": {"n_ctx": 32768}},
-                  "/v1/models": {"data": [{"id": "lfm2.5-2.6b"}]}, "/requests": REQUESTS}
+                  "/v1/models": {"data": [{"id": "lfm2.5-8b-a1b"}]}, "/requests": REQUESTS}
         if self.path in routes: self.json(routes[self.path])
         else: self.send_error(404)
 

@@ -1,0 +1,355 @@
+{
+  "version": 1,
+  "maxWords": 250,
+  "papers": ["flashattention4", "fastdllm"],
+  "source": "arXiv:2603.05451v1, arXiv:2505.22618v3",
+  "description": "Benchmark de fidelidade e cobertura sobre dois artigos completos. O juiz decompõe a resposta em fatos atômicos e verifica cada um contra o texto do artigo; checagens determinísticas cobrem idioma, extensão e vazamento de raciocínio.",
+  "cases": [
+    {
+      "id": "fa4-asymmetric-scaling",
+      "paper": "flashattention4",
+      "category": "concept",
+      "selectionPhrase": "asymmetric hardware scaling",
+      "question": "Why does FlashAttention-4 target Blackwell GPUs specifically, and which hardware resources become the bottleneck under asymmetric scaling?",
+      "responseLanguage": "en",
+      "expected": "Blackwell doubles tensor-core throughput versus Hopper while shared-memory bandwidth and exponential-unit throughput do not scale at the same rate. Attention therefore becomes limited by shared-memory traffic and softmax/exponential operations rather than MMA compute, and FlashAttention-4 co-designs the algorithm and kernel around those bottlenecks.",
+      "keyfacts": [
+        "Blackwell B200 has about 2.25 PFLOPS FP16/BF16 versus about 1 PFLOPS on H100.",
+        "Shared-memory bandwidth and exponential-unit throughput do not scale with tensor cores.",
+        "Shared-memory traffic and exponential operations can dominate attention time, exceeding MMA compute by 25-60%.",
+        "FlashAttention-4 co-designs the algorithm and kernel for Blackwell."
+      ],
+      "evidence": "Section 1 and Section 2.2; roofline analysis in Sections 3.1-3.2.",
+      "absent": false
+    },
+    {
+      "id": "fa4-exp-emulation",
+      "paper": "flashattention4",
+      "category": "method",
+      "selectionPhrase": "software emulation of 2x",
+      "question": "How does FlashAttention-4 reduce the exponential-unit bottleneck, and why does it emulate only part of the exponentials?",
+      "responseLanguage": "en",
+      "expected": "It computes 2^x with range reduction and a polynomial on FMA units: the integer part comes from IEEE-754 exponent manipulation and the fractional part from a polynomial evaluated with Horner's method. It emulates only 10-25% of the entries in each softmax row because full emulation raises register pressure and latency; the rest use hardware MUFU.EX2. After BF16 rounding, even the degree-3 polynomial is close to hardware.",
+      "keyfacts": [
+        "It uses the identity 2^x = 2^floor(x) * 2^(x-floor(x)).",
+        "The integer part is computed by exponent-bit manipulation; the fractional part uses a polynomial on FMA units.",
+        "Only 10-25% of entries are emulated; the rest use hardware MUFU.EX2.",
+        "The degree-3 polynomial matches hardware within about 1 BF16 ULP on 99% of inputs."
+      ],
+      "evidence": "Section 3.1.3, Equations 4-5 and Table 2.",
+      "absent": false
+    },
+    {
+      "id": "fa4-conditional-rescale",
+      "paper": "flashattention4",
+      "category": "method",
+      "selectionPhrase": "Conditional rescaling",
+      "question": "What is conditional softmax rescaling in FlashAttention-4, and what threshold does it use?",
+      "responseLanguage": "en",
+      "expected": "Online softmax normally rescales the running output whenever a new row maximum appears. FlashAttention-4 rescales only when the maximum increases by more than a threshold tau, typically log2(256) = 8, and tracks the accumulated scaling so the final denominator remains exact. This skips most rescaling multiplications.",
+      "keyfacts": [
+        "Rescaling is only necessary when the new row maximum is larger than the previous one.",
+        "FlashAttention-4 rescales only when the maximum increases by more than tau.",
+        "The typical threshold is log2(256) = 8, corresponding to a factor of 256.",
+        "The algorithm tracks accumulated statistics to recover the exact final denominator."
+      ],
+      "evidence": "Section 3.1.4.",
+      "absent": false
+    },
+    {
+      "id": "fa4-tmem-2cta",
+      "paper": "flashattention4",
+      "category": "architecture",
+      "selectionPhrase": "2-CTA tensor core",
+      "question": "How do tensor memory (TMEM) and the 2-CTA MMA mode reduce shared-memory traffic and atomic adds in FlashAttention-4?",
+      "responseLanguage": "en",
+      "expected": "TMEM stores MMA accumulators and intermediates on-chip, reducing register pressure and shared-memory traffic. In 2-CTA mode a CTA pair cooperatively executes one MMA: each CTA stages half of operand B, and the pair supports M=128 or 256. In the backward pass this also restructures the dQ accumulation and halves the number of global atomic adds.",
+      "keyfacts": [
+        "Blackwell has 256 KB of TMEM per SM.",
+        "2-CTA MMA partitions the A tile and accumulator across M and partitions B across the two CTAs.",
+        "Each CTA stages only half of B in its shared memory.",
+        "The 2-CTA backward restructuring halves the global atomic adds in the dQ step."
+      ],
+      "evidence": "Section 2.2 and contribution 3 in Section 1; backward discussion in Sections 3.2 and 5.2.",
+      "absent": false
+    },
+    {
+      "id": "fa4-backward-deterministic",
+      "paper": "flashattention4",
+      "category": "method",
+      "selectionPhrase": "deterministic backward pass",
+      "question": "What does FlashAttention-4 change in the backward pass, and how fast is its deterministic mode compared with the nondeterministic one?",
+      "responseLanguage": "en",
+      "expected": "It uses TMEM and the 2-CTA MMA mode to reduce shared-memory traffic and restructure the dQ accumulation, halving global atomic adds. Its deterministic backward pass uses careful swizzling and scheduling and reaches up to 75% of the speed of the nondeterministic 1-CTA backward pass.",
+      "keyfacts": [
+        "The backward pass uses TMEM and 2-CTA MMA to reduce shared-memory traffic.",
+        "The dQ step halves the number of global atomic reductions.",
+        "The deterministic backward pass reaches up to 75% of the nondeterministic 1-CTA backward speed."
+      ],
+      "evidence": "Section 5.2 and Figure 7.",
+      "absent": false
+    },
+    {
+      "id": "fa4-results",
+      "paper": "flashattention4",
+      "category": "results",
+      "selectionPhrase": "1.3× speedup over cuDNN 9.13",
+      "question": "Report the main B200 speed and throughput results of FlashAttention-4, including baselines and utilization.",
+      "responseLanguage": "en",
+      "expected": "FlashAttention-4 is up to 1.3x faster than cuDNN 9.13 and up to 2.7x faster than Triton on B200 with BF16, reaching up to 1613 TFLOPs/s, about 71% of theoretical peak. For the forward pass it is 1.1-1.3x faster than cuDNN and 2.1-2.7x faster than Triton; gains are larger for causal attention and long sequences.",
+      "keyfacts": [
+        "Up to 1.3x faster than cuDNN 9.13.",
+        "Up to 2.7x faster than Triton.",
+        "Reaches up to 1613 TFLOPs/s.",
+        "Reaches about 71% of theoretical peak utilization.",
+        "Forward pass: 1.1-1.3x over cuDNN and 2.1-2.7x over Triton."
+      ],
+      "evidence": "Abstract and Section 5.1; Figures 4-5.",
+      "absent": false
+    },
+    {
+      "id": "fa4-cutedsl",
+      "paper": "flashattention4",
+      "category": "implementation",
+      "selectionPhrase": "CuTe-DSL",
+      "question": "What is CuTe-DSL, and what compile-time advantage does it give FlashAttention-4?",
+      "responseLanguage": "en",
+      "expected": "FlashAttention-4 is implemented entirely in CuTe-DSL embedded in Python, which lowers the kernel to PTX and then to SASS via ptxas. It preserves low-level control and expressivity while compiling 20-30x faster than the C++ template-based FlashAttention-3 kernels.",
+      "keyfacts": [
+        "FlashAttention-4 is implemented entirely in CuTe-DSL embedded in Python.",
+        "The compiler lowers to PTX and then uses ptxas to produce SASS.",
+        "Compile times are 20-30x faster than C++ template-based kernels.",
+        "It preserves full expressivity and low-level control."
+      ],
+      "evidence": "Section 4 and Table 4.",
+      "absent": false
+    },
+    {
+      "id": "fa4-limitations",
+      "paper": "flashattention4",
+      "category": "limitation",
+      "selectionPhrase": "Although optimized for Blackwell GPUs",
+      "question": "What are the scope and limitations of FlashAttention-4 according to the paper?",
+      "responseLanguage": "en",
+      "expected": "FlashAttention-4 is optimized for Blackwell B200/GB200; some of its algorithms may extend to other accelerators, but the empirical evaluation is Blackwell-specific and does not report H100 or A100 measurements. The paper also notes that newer cuDNN versions have adopted similar techniques and now perform similarly to FlashAttention-4.",
+      "keyfacts": [
+        "FlashAttention-4 is optimized for Blackwell B200/GB200.",
+        "Some algorithms may extend to other accelerators, but the evaluation is Blackwell-specific.",
+        "The paper does not report H100 or A100 benchmark results.",
+        "Newer cuDNN versions now perform similarly to FlashAttention-4."
+      ],
+      "evidence": "Section 6 and the caption of Figure 4.",
+      "absent": false
+    },
+    {
+      "id": "fa4-absent",
+      "paper": "flashattention4",
+      "category": "absence",
+      "selectionPhrase": "NVIDIA Hopper H100 architecture",
+      "question": "Does the paper report measured speedups for FlashAttention-4 on H100 or A100 GPUs?",
+      "responseLanguage": "en",
+      "expected": "No. The empirical evaluation is on B200 (with GB200 discussed as the same Blackwell generation); the paper does not report H100 or A100 measurements. H100 appears as the target of FlashAttention-3 and as a peak-throughput comparison point, not as a measured platform for FlashAttention-4.",
+      "keyfacts": [
+        "The paper does not report H100 or A100 benchmark results for FlashAttention-4.",
+        "The empirical evaluation is on B200.",
+        "H100 is mentioned as the target of FlashAttention-3 and as a comparison point, not as a measured platform."
+      ],
+      "evidence": "Abstract, Section 1, and Section 5.",
+      "absent": true
+    },
+    {
+      "id": "fa4-pt",
+      "paper": "flashattention4",
+      "category": "language",
+      "selectionPhrase": "asymmetric hardware scaling",
+      "question": "Explique, em português, a ideia central do FlashAttention-4 e uma das otimizações que ele usa para reduzir o gargalo no Blackwell.",
+      "responseLanguage": "pt-BR",
+      "expected": "O FlashAttention-4 foi projetado para o Blackwell, onde os tensor cores ficaram muito mais rápidos que a memória compartilhada e a unidade exponencial. Ele reorganiza o pipeline para sobrepor MMA e softmax e usa técnicas como emulação parcial da exponencial, rescaling condicional do softmax, TMEM e MMA 2-CTA para reduzir o tráfego de memória compartilhada.",
+      "keyfacts": [
+        "O Blackwell dobra a vazão dos tensor cores, mas a memória compartilhada e a unidade exponencial não escalam na mesma proporção.",
+        "O gargalo passa a ser o tráfego de memória compartilhada e as operações de softmax/exponencial.",
+        "O FlashAttention-4 sobrepõe MMA e softmax e usa emulação parcial da exponencial.",
+        "Ele também usa TMEM e MMA 2-CTA para reduzir tráfego de memória e atomic adds."
+      ],
+      "evidence": "Abstract and Sections 1-3.",
+      "absent": false
+    },
+    {
+      "id": "dllm-kv",
+      "paper": "fastdllm",
+      "category": "concept",
+      "selectionPhrase": "block-wise approximate KV Cache",
+      "question": "Why can't diffusion LLMs use a standard KV cache, and how does Fast-dLLM approximate one?",
+      "responseLanguage": "en",
+      "expected": "Diffusion LLMs use bidirectional full attention, so keys and values of masked tokens change across denoising steps and an exact autoregressive-style cache is not valid. Fast-dLLM generates in blocks: it computes and stores the KV cache for the prompt and other blocks, reuses it within a block, and refreshes it after the block. DualCache also caches suffix blocks. The approximation relies on the high cosine similarity of KV activations across adjacent inference steps.",
+      "keyfacts": [
+        "Diffusion LLMs use full/bidirectional attention, so a standard KV cache is not directly applicable.",
+        "Fast-dLLM generates in blocks and reuses the cache within a block.",
+        "The cache is updated after each block for all tokens.",
+        "DualCache caches prefix and suffix blocks.",
+        "KV activations are highly similar across adjacent inference steps."
+      ],
+      "evidence": "Section 3.2 and Figure 3.",
+      "absent": false
+    },
+    {
+      "id": "dllm-dualcache",
+      "paper": "fastdllm",
+      "category": "method",
+      "selectionPhrase": "DualCache",
+      "question": "What is DualCache, and why does it give a larger speedup than the prefix-only cache?",
+      "responseLanguage": "en",
+      "expected": "DualCache caches keys and values for both prefix tokens and suffix tokens, which are still masked during block decoding. Because suffix KV activations are also highly similar across adjacent steps, caching them avoids additional recomputation. It gives a higher speedup than prefix-only caching, especially for longer generations: in the 8-shot, length-1024 setting it reaches 27.6x versus 18.6x, with only minor accuracy trade-offs.",
+      "keyfacts": [
+        "DualCache caches prefix and suffix KV.",
+        "Suffix tokens are masked during block decoding.",
+        "Suffix KV activations are highly similar across adjacent steps.",
+        "DualCache gives higher speedup than prefix-only caching, especially at longer generation lengths.",
+        "Example: 27.6x versus 18.6x at 8-shot and generation length 1024."
+      ],
+      "evidence": "Section 3.2 and Sections 4.3/4.4; Tables 4-5.",
+      "absent": false
+    },
+    {
+      "id": "dllm-confidence",
+      "paper": "fastdllm",
+      "category": "method",
+      "selectionPhrase": "confidence-aware parallel decoding",
+      "question": "How does Fast-dLLM's confidence-aware parallel decoding decide which tokens to unmask, and what happens if no token passes the threshold?",
+      "responseLanguage": "en",
+      "expected": "At each step it computes a confidence score for each masked token, for example the maximum softmax probability, and unmasks only tokens whose confidence exceeds a threshold tau. If no token exceeds tau, it always unmasks the single highest-confidence token to guarantee progress. This avoids decoding interdependent tokens in parallel under the conditional-independence assumption.",
+      "keyfacts": [
+        "The confidence score is the maximum softmax probability.",
+        "Only tokens with confidence at or above the threshold are unmasked.",
+        "If no token passes, the highest-confidence token is always unmasked.",
+        "The strategy mitigates errors from the conditional-independence assumption."
+      ],
+      "evidence": "Section 3.3 and Algorithm 1.",
+      "absent": false
+    },
+    {
+      "id": "dllm-theorem",
+      "paper": "fastdllm",
+      "category": "theory",
+      "selectionPhrase": "Theorem 1 (Parallel Decoding under High Confidence)",
+      "question": "What does Theorem 1 say about when parallel decoding matches sequential greedy decoding?",
+      "responseLanguage": "en",
+      "expected": "If each of the n tokens has marginal confidence greater than 1-epsilon and (n+1)epsilon <= 1, then greedy parallel decoding using the product of marginals has the same argmax as greedy sequential decoding. The bound is tight: if epsilon > 1/(n+1), there are distributions where the argmax differs. The theorem also bounds total variation distance by (3n-1)/2 * epsilon and forward KL divergence by (n-1)(H_b(epsilon) + epsilon ln(|V|-1)).",
+      "keyfacts": [
+        "The assumption is p_j(X=x*) > 1-epsilon for all n tokens.",
+        "If (n+1)epsilon <= 1, parallel greedy decoding has the same argmax as sequential greedy decoding.",
+        "The bound is tight for epsilon > 1/(n+1).",
+        "The total variation bound is (3n-1)/2 * epsilon.",
+        "The KL bound uses the binary entropy function and the vocabulary size."
+      ],
+      "evidence": "Section 3.3, Theorem 1 and Equations 4-6.",
+      "absent": false
+    },
+    {
+      "id": "dllm-factor",
+      "paper": "fastdllm",
+      "category": "method",
+      "selectionPhrase": "factor-based parallel decoding",
+      "question": "What is factor-based parallel decoding, and how does it differ from the fixed confidence threshold?",
+      "responseLanguage": "en",
+      "expected": "Instead of a fixed threshold, factor decoding sorts the marginal confidences and chooses the largest n such that (n+1)(1-c(n)) < f, where f is a decoding factor and c(n) is the n-th highest confidence. It then unmasks the top-n tokens, always including the maximum. This adapts the number of tokens decoded per step to the confidence profile and mirrors the bound in Theorem 1.",
+      "keyfacts": [
+        "Sort the marginal confidences in descending order.",
+        "Choose the largest n such that (n+1)(1-c(n)) < f.",
+        "Unmask the top-n tokens, always including the maximum.",
+        "f is a fixed decoding-factor hyperparameter.",
+        "It adapts parallelism per step instead of using a fixed threshold."
+      ],
+      "evidence": "Section 3.3, paragraph after Theorem 1, and Algorithm 1.",
+      "absent": false
+    },
+    {
+      "id": "dllm-results",
+      "paper": "fastdllm",
+      "category": "results",
+      "selectionPhrase": "up to 27.6×",
+      "question": "Report the main speedup and accuracy results of Fast-dLLM on LLaDA and Dream.",
+      "responseLanguage": "en",
+      "expected": "Fast-dLLM achieves up to 27.6x end-to-end throughput improvement with minimal accuracy loss, typically within 1-2 points of the backbone. On LLaDA, the combined cache and parallel decoding gives up to 11x on GSM8K at length 512 and 9.2x on MBPP at length 512; on Dream-Base, the largest gains are 7.8x on MBPP 512 and 5.6x on GSM8K 512. KV cache alone gives 2-3.6x and parallel decoding alone 4-6x; gains grow with prefill and generation length.",
+      "keyfacts": [
+        "Up to 27.6x end-to-end speedup.",
+        "Accuracy remains within 1-2 points of the backbone.",
+        "LLaDA: up to 11x on GSM8K 512 and 9.2x on MBPP 512.",
+        "Dream-Base: 7.8x on MBPP 512 and 5.6x on GSM8K 512.",
+        "KV cache alone gives 2-3.6x; parallel decoding alone gives 4-6x."
+      ],
+      "evidence": "Abstract, Section 4.2, Tables 1-2.",
+      "absent": false
+    },
+    {
+      "id": "dllm-hyperparams",
+      "paper": "fastdllm",
+      "category": "method",
+      "selectionPhrase": "block size of 32 and the threshold to 0.9",
+      "question": "What default block size and confidence threshold does Fast-dLLM use, and what is the trade-off in choosing the block size?",
+      "responseLanguage": "en",
+      "expected": "The default is PrefixCache with block size 32 and confidence threshold 0.9. Smaller blocks tend to improve accuracy but incur frequent cache-update overhead; larger blocks reduce overhead but can hurt accuracy because of greater context mismatch. Block size 32 is the best trade-off in their experiments.",
+      "keyfacts": [
+        "Default block size is 32.",
+        "Default confidence threshold is 0.9.",
+        "Smaller blocks improve accuracy but add cache-update overhead.",
+        "Larger blocks reduce overhead but can lose accuracy due to context mismatch.",
+        "Block size 32 is reported as the best trade-off."
+      ],
+      "evidence": "Section 4.1 and the cache-block-size analysis in Section 4.3.",
+      "absent": false
+    },
+    {
+      "id": "dllm-limitations",
+      "paper": "fastdllm",
+      "category": "limitation",
+      "selectionPhrase": "Decoding Efficiency Analysis and Limitations",
+      "question": "What limitations of Fast-dLLM does the paper acknowledge?",
+      "responseLanguage": "en",
+      "expected": "The KV cache is approximate because diffusion uses full attention. At larger batch sizes, PrefixCache struggles to match autoregressive LLaMA as the workload becomes compute-bound, and diffusion LLMs incur higher computational overhead from full attention during decoding. Accuracy can drop with small block sizes, and LLaDA-V is sensitive to block size: MathVista drops by more than 8% when the block size goes from 96 to 8, so they use full-block refresh updates for that case.",
+      "keyfacts": [
+        "The KV cache is approximate because diffusion uses full attention.",
+        "At larger batch sizes, PrefixCache may not match autoregressive models such as LLaMA.",
+        "Diffusion decoding has higher computational overhead from full attention.",
+        "LLaDA-V is sensitive to block size, with MathVista dropping more than 8% from block 96 to block 8.",
+        "They use full-block refresh updates for the multimodal case."
+      ],
+      "evidence": "Section 4.3, the decoding-efficiency discussion, and Appendix C.5.",
+      "absent": false
+    },
+    {
+      "id": "dllm-absent",
+      "paper": "fastdllm",
+      "category": "absence",
+      "selectionPhrase": "autoregressive (AR) models",
+      "question": "Does the paper report accuracy results for Fast-dLLM against an autoregressive LLM such as LLaMA on the same benchmarks?",
+      "responseLanguage": "en",
+      "expected": "No. The accuracy benchmark tables compare Fast-dLLM with diffusion backbones (LLaDA, LLaDA-1.5, Dream, and LLaDA-V) and their cache/parallel variants. The appendix compares throughput with LLaMA, but the paper does not report LLaMA accuracy on the same GSM8K, MATH, HumanEval, or MBPP benchmarks.",
+      "keyfacts": [
+        "The accuracy benchmarks use LLaDA, LLaDA-1.5, Dream, and LLaDA-V.",
+        "The paper does not report LLaMA accuracy on the same benchmarks.",
+        "LLaMA appears in a throughput comparison in the appendix, not in the accuracy tables."
+      ],
+      "evidence": "Section 4 and Appendix C.5/Figure 9.",
+      "absent": true
+    },
+    {
+      "id": "dllm-pt",
+      "paper": "fastdllm",
+      "category": "language",
+      "selectionPhrase": "confidence-aware parallel decoding",
+      "question": "Explique, em português, as duas técnicas principais do Fast-dLLM e o ganho de velocidade relatado.",
+      "responseLanguage": "pt-BR",
+      "expected": "O Fast-dLLM combina um KV cache aproximado por blocos, que reutiliza chaves e valores entre os passos de decodificação, com uma decodificação paralela consciente da confiança, que só desmascara tokens acima de um limiar. Juntas, as técnicas chegam a 27,6x de vazão, com perda de acurácia de cerca de 1-2 pontos.",
+      "keyfacts": [
+        "O KV cache é aproximado e funciona por blocos, porque a atenção do modelo de difusão é bidirecional.",
+        "O cache reutiliza chaves e valores dentro do bloco e é atualizado depois dele.",
+        "A decodificação paralela desmascara apenas tokens com confiança acima do limiar.",
+        "Se nenhum token passar do limiar, o token de maior confiança é desmascarado.",
+        "O ganho relatado chega a 27,6x, com perda de acurácia de cerca de 1-2 pontos."
+      ],
+      "evidence": "Abstract and Sections 3.2-3.3.",
+      "absent": false
+    }
+  ]
+}

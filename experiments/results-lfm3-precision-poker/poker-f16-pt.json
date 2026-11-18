@@ -1,0 +1,23 @@
+{
+  "label": "f16",
+  "model": "lfm3-1.7b",
+  "precision": "F16",
+  "question": "me de um outro exemplo sem ser sobre poker.",
+  "selection": "The list of poker hands that consist of two English words",
+  "words": 104,
+  "answer": "The passage you quoted mentions “high card,” “two pair,” “full house,” or “straight flush” as examples of two‑word poker hand names that can appear together in a list.  To give another illustration without referring to cards, consider the phrase **“early morning”** and **“late afternoon.”**  In the article’s discussion of conditional dependencies it notes that such word pairs can be correlated (e.g., “high house” was cited as an undesirable combination when two tokens are sampled independently).  Here, “early morning” and “late afternoon” share a temporal relationship—one is before the other—so they exhibit a dependency similar to the poker‑hand example but for time rather than cards.",
+  "promptTokens": 21844,
+  "completionTokens": 658,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 21844,
+    "prompt_ms": 2436.933,
+    "prompt_per_token_ms": 0.11156074894707929,
+    "prompt_per_second": 8963.726126241469,
+    "predicted_n": 658,
+    "predicted_ms": 7040.45,
+    "predicted_per_token_ms": 10.716057838660578,
+    "predicted_per_second": 93.31789871386061
+  },
+  "elapsedSeconds": 9.6
+}

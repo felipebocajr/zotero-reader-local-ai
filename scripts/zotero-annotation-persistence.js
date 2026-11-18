@@ -1,8 +1,10 @@
 // Run after closing/restarting the isolated Zotero and installing the release XPI.
 (async function () {
   const root = Zotero.Prefs.get("extensions.reader-local-ai.devRoot", true);
-  if (Zotero.DataDirectory.dir !== root + "/.runtime/zotero-data") throw new Error("Isolated profile required");
-  const output = root + "/experiments/results/native-annotations.json";
+  const base = root.replace(/\\/g, "/").replace(/\/+$/, "");
+  const dataDir = String(Zotero.DataDirectory.dir).replace(/\\/g, "/").replace(/\/+$/, "");
+  if (dataDir !== base + "/.runtime/zotero-data") throw new Error("Isolated profile required");
+  const output = base + "/experiments/results/native-annotations.json";
   const results = JSON.parse(await IOUtils.readUTF8(output));
   const win = Zotero.getMainWindow();
   const wait = async (predicate, label) => {

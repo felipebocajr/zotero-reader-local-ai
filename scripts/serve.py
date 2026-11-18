@@ -16,21 +16,65 @@ import urllib.error
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
-LOCK = json.loads((ROOT / "runtime.lock.json").read_text())
-DEFAULT_MODEL = "lfm2.5-2.6b"
-MODELS = {DEFAULT_MODEL: LOCK["model"], **LOCK["additionalModels"]}
+LOCK = json.loads((ROOT / "runtime.lock.json").read_text(encoding="utf-8"))
+DEFAULT_MODEL = "lfm2.5-8b-a1b"
+MODELS = {"lfm2.5-2.6b": LOCK["model"], **LOCK["additionalModels"]}
+WINDOWS = os.name == "nt"
 
 
 DEFAULT_CONTEXT = 64000
 
 
+def python_command():
+    return "python" if WINDOWS else "python3"
+
+
+def configure_output():
+    """Gecko's pipe reader expects UTF-8, not the Windows console code page."""
+    if not WINDOWS:
+        return
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, OSError, ValueError):
+            pass
+
+
+def executable_names():
+    return ("llama-server.exe",) if WINDOWS else ("llama-server",)
+
+
+def runtime_roots(backend):
+    """Prefer the legacy Linux directory, then versioned Windows runtime releases."""
+    legacy = ROOT / ".runtime" / ("llama-cuda" if backend == "cuda" else "llama")
+    roots = [legacy]
+    versioned = ROOT / ".runtime" / "runtimes"
+    if versioned.is_dir():
+        prefix = "llama-cuda-" if backend == "cuda" else "llama-cpu-"
+        roots.extend(sorted((path for path in versioned.iterdir() if path.is_dir() and path.name.startswith(prefix)),
+                            key=lambda path: path.name, reverse=True))
+    return roots
+
+
+def find_executable(backend):
+    tag = LOCK["llamaCpp"]["tag"]
+    for root in runtime_roots(backend):
+        for name in executable_names():
+            paths = [path for path in root.rglob(name) if path.is_file()]
+            # Keep an older build in the same tree during an upgrade, but always
+            # launch the build pinned in runtime.lock.json.
+            paths.sort(key=lambda path: (tag not in str(path), -path.stat().st_mtime))
+            if paths:
+                return paths[0]
+    return None
+
+
 def command(precision="Q4_K_M", context=DEFAULT_CONTEXT, port=8080, threads=8, binary=None,
             gpu_layers=0, backend="cpu", fit=False, model_id=DEFAULT_MODEL):
-    candidates = sorted((ROOT / ".runtime" / ("llama-cuda" if backend == "cuda" else "llama")).rglob("llama-server"))
-    executable = Path(binary) if binary else (candidates[0] if candidates else None)
+    executable = Path(binary) if binary else find_executable(backend)
     model = ROOT / ".runtime" / "models" / MODELS[model_id]["variants"][precision]["filename"]
     if not executable or not executable.is_file() or not model.is_file():
-        raise RuntimeError(f"Runtime/modelo ausente. Execute: python3 scripts/setup_runtime.py --model {model_id} --precision {precision} --backend auto")
+        raise RuntimeError(f"Runtime/modelo ausente. Execute: {python_command()} scripts/setup_runtime.py --model {model_id} --precision {precision} --backend auto")
     return [str(executable), "--model", str(model), "--alias", model_id,
             "--host", "127.0.0.1", "--port", str(port), "--ctx-size", str(context),
             "--parallel", "1", "--threads", str(threads), "--threads-batch", str(threads),
@@ -41,18 +85,38 @@ def command(precision="Q4_K_M", context=DEFAULT_CONTEXT, port=8080, threads=8, b
             *(["--device", "none", "--no-op-offload"] if backend == "cpu" else [])]
 
 
-def environment(backend, binary=None):
+def environment(backend, executable=None):
     env = os.environ.copy()
-    if binary or backend == "cuda":
-        library_dirs = sorted({str(p.parent) for p in (ROOT / ".runtime/llama-cuda").rglob("*.so*")})
-        env["LD_LIBRARY_PATH"] = ":".join(library_dirs + ([env["LD_LIBRARY_PATH"]] if env.get("LD_LIBRARY_PATH") else []))
+    roots = []
+    if executable:
+        roots.append(Path(executable).resolve().parent)
+    if backend == "cuda":
+        roots.extend(runtime_roots("cuda"))
+    pattern = "*.dll" if WINDOWS else "*.so*"
+    library_dirs = []
+    for root in roots:
+        if not root.is_dir():
+            continue
+        for path in sorted(root.rglob(pattern)):
+            directory = str(path.parent)
+            if directory not in library_dirs:
+                library_dirs.append(directory)
+    if library_dirs:
+        key = "PATH" if WINDOWS else "LD_LIBRARY_PATH"
+        env[key] = os.pathsep.join(library_dirs + ([env[key]] if env.get(key) else []))
     return env
+
+
+def popen_group_kwargs():
+    if not WINDOWS:
+        return {}
+    return {"creationflags": getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0x00000200)}
 
 
 def cuda_available(executable, env):
     try:
         result = subprocess.run([executable, "--list-devices"], env=env, capture_output=True,
-                                text=True, timeout=15)
+                                text=True, encoding="utf-8", errors="replace", timeout=15)
         return result.returncode == 0 and bool(re.search(r"^\s*CUDA\d+:", result.stdout, re.MULTILINE))
     except (OSError, subprocess.TimeoutExpired):
         return False
@@ -70,11 +134,56 @@ def gpu_unavailable_error(text):
         "cuda driver version is insufficient", "failed to initialize cuda", "cuda error: unknown error"])
 
 
+def windows_process_alive(pid):
+    import ctypes
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.OpenProcess.argtypes = [ctypes.c_uint32, ctypes.c_int, ctypes.c_uint32]
+    kernel32.OpenProcess.restype = ctypes.c_void_p
+    kernel32.WaitForSingleObject.argtypes = [ctypes.c_void_p, ctypes.c_uint32]
+    kernel32.WaitForSingleObject.restype = ctypes.c_uint32
+    kernel32.CloseHandle.argtypes = [ctypes.c_void_p]
+    kernel32.CloseHandle.restype = ctypes.c_int
+    synchronize = 0x00100000
+    wait_timeout = 0x00000102
+    handle = kernel32.OpenProcess(synchronize, False, int(pid))
+    if not handle:
+        # Access denied still proves that the process exists.
+        return ctypes.get_last_error() == 5
+    try:
+        return kernel32.WaitForSingleObject(handle, 0) == wait_timeout
+    finally:
+        kernel32.CloseHandle(handle)
+
+
+def parent_alive(pid):
+    if WINDOWS:
+        return windows_process_alive(pid)
+    try:
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+
+
 def stop_child(child):
-    if child.poll() is None:
-        child.terminate()
-        try: child.wait(timeout=10)
-        except subprocess.TimeoutExpired: child.kill(); child.wait()
+    if child.poll() is not None:
+        return
+    if WINDOWS:
+        try:
+            child.send_signal(getattr(signal, "CTRL_BREAK_EVENT", signal.SIGTERM))
+        except (OSError, ValueError):
+            pass
+        try:
+            child.wait(timeout=10)
+            return
+        except subprocess.TimeoutExpired:
+            pass
+    child.terminate()
+    try: child.wait(timeout=10)
+    except subprocess.TimeoutExpired: child.kill(); child.wait()
 
 
 def local_json(port, path):
@@ -85,22 +194,19 @@ def local_json(port, path):
 
 
 def watch_managed_lifetime(stopped, parent_pid, stream):
-    """The Zotero-owned launcher stops on control-pipe EOF or parent exit."""
+    """The Zotero-owned launcher stops on control-pipe EOF, a stop byte, or parent exit."""
     def watch_pipe():
         try:
-            # No commands or prompts travel over this pipe; closing it means stop.
-            while stream.read(1):
-                pass
+            # Any control byte is a stop request. Closing the pipe is the other signal.
+            stream.read(1)
         finally:
             stopped.set()
 
     def watch_parent():
         while not stopped.wait(.5):
-            try: os.kill(parent_pid, 0)
-            except ProcessLookupError:
-                stopped.set(); return
-            except PermissionError:
-                pass
+            if not parent_alive(parent_pid):
+                stopped.set()
+                return
 
     threading.Thread(target=watch_pipe, daemon=True).start()
     threading.Thread(target=watch_parent, daemon=True).start()
@@ -117,15 +223,16 @@ class RuntimeSupervisor:
         self.status.update(fields)
         self.status_path.parent.mkdir(parents=True, exist_ok=True)
         temp = self.status_path.with_suffix(f".{os.getpid()}.tmp")
-        temp.write_text(json.dumps(self.status, ensure_ascii=False, indent=2) + "\n")
+        temp.write_text(json.dumps(self.status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         temp.replace(self.status_path)
 
     def run_attempt(self, backend, layers, fit=False):
         args = self.args
         launch = command(args.precision, args.context, args.port, args.threads,
                          gpu_layers=layers, backend=backend, fit=fit, model_id=args.model)
-        child = subprocess.Popen(launch, env=environment(backend), stdout=subprocess.PIPE,
-                                 stderr=subprocess.STDOUT, text=True, errors="replace", bufsize=1)
+        child = subprocess.Popen(launch, env=environment(backend, launch[0]), stdout=subprocess.PIPE,
+                                 stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace",
+                                 bufsize=1, **popen_group_kwargs())
         tail, oom, unavailable = deque(maxlen=30), threading.Event(), threading.Event()
 
         def pump():
@@ -187,9 +294,9 @@ class RuntimeSupervisor:
                            self.args.threads, backend="cuda", gpu_layers="all", model_id=self.args.model)[0]
         except RuntimeError:
             # A missing CUDA runtime cannot silently select CPU on a GPU machine.
-            raise RuntimeError(f"Prepare runtime e modelo com: python3 scripts/setup_runtime.py --model {self.args.model} --precision {self.args.precision} --backend auto")
+            raise RuntimeError(f"Prepare runtime e modelo com: {python_command()} scripts/setup_runtime.py --model {self.args.model} --precision {self.args.precision} --backend auto")
         try:
-            available = cuda_available(cuda, environment("cuda"))
+            available = cuda_available(cuda, environment("cuda", cuda))
             if self.stopped.is_set():
                 self.publish(phase="stopped", childPid=None); return
             if available:
@@ -237,12 +344,39 @@ def parse_args(argv=None):
     return args
 
 
+def install_stop_handlers(stopped):
+    for name in ("SIGINT", "SIGTERM", "SIGBREAK"):
+        signum = getattr(signal, name, None)
+        if signum is None:
+            continue
+        try:
+            signal.signal(signum, lambda *_: stopped.set())
+        except (OSError, ValueError):
+            pass
+
+
+def run_fixed(launch, env):
+    """POSIX can replace the launcher; Windows waits and forwards interruption."""
+    if not WINDOWS:
+        os.execve(launch[0], launch, env)
+        return 0
+    child = subprocess.Popen(launch, env=env, **popen_group_kwargs())
+    try:
+        return child.wait()
+    except KeyboardInterrupt:
+        stop_child(child)
+        return 130
+
+
 def main():
+    configure_output()
     args = parse_args()
+    if sys.version_info < (3, 12):
+        print("Use Python 3.12 ou superior para iniciar o runtime.", flush=True)
+        return 1
     if args.backend == "auto" and args.gpu_layers is None and not args.binary:
         stopped = threading.Event()
-        for signum in (signal.SIGINT, signal.SIGTERM):
-            signal.signal(signum, lambda *_: stopped.set())
+        install_stop_handlers(stopped)
         if args.managed:
             watch_managed_lifetime(stopped, args.parent_pid, sys.stdin.buffer)
         try: RuntimeSupervisor(args, stopped).run()
@@ -253,7 +387,7 @@ def main():
     layers = args.gpu_layers if args.gpu_layers is not None else (0 if backend == "cpu" else -1)
     launch = command(args.precision, args.context, args.port, args.threads, args.binary, layers, backend, model_id=args.model)
     print(f"{args.model} {args.precision}, distribuição fixa {backend}/{layers}, contexto {args.context}, http://127.0.0.1:{args.port}", flush=True)
-    os.execve(launch[0], launch, environment(backend, args.binary))
+    return run_fixed(launch, environment(backend, launch[0]))
 
 
 if __name__ == "__main__":

@@ -10,6 +10,8 @@ python3 scripts/prepare_papers.py
 LFM_RESULTS_DIR="$PWD/experiments/results-repeat" LFM_BINARY="$PWD/.runtime/llama-cuda/llama-b11206/llama-server" LFM_GPU_LAYERS=24 LFM_PRECISIONS=F16,Q8_0,Q4_K_M npm run experiment
 ```
 
+O baseline entregue usou b11206; o lock atual fixa b12250. Para uma nova comparação, aponte `LFM_BINARY` para `.runtime/llama-cuda/llama-b12250/llama-server` e registre o novo identificador.
+
 Para CPU, prepare `--backend cpu --precision all` e execute `LFM_RESULTS_DIR="$PWD/experiments/results-cpu" npm run experiment` sem as variáveis CUDA. Não compare números CPU com CUDA como se apenas a precisão tivesse mudado.
 
 O script lança e encerra seu próprio servidor, uma precisão por vez, na porta 18084. Mantém 24 camadas GPU no perfil CUDA acima, oito threads, contexto 32.768, K/V f16, reserva 4.096, temperatura 0,1 e seed 42. O contexto de comparação é explícito e independente do padrão de uso de 64.000 tokens do plugin/launcher. O prompt é o mesmo do plugin. `cache_prompt:false` força processamento do contexto em cada repetição; reutilização de prefixo fica desativada.
@@ -40,6 +42,8 @@ Os downloads PDF vêm do arXiv, com versões e SHA-256 registrados. A extração
 - `results/model-build-validation.json`: hash e ativação do XPI com seletor de modelos, testes TypeScript/Python e verificações nativas.
 - `results/native-math.json`, `math-model-smoke.json`, `math-model-render.json` e `math-build-validation.json`: validação da formatação LaTeX no popup, na visualização dos comentários e em uma resposta real. O prompt com instruções de LaTeX é posterior ao benchmark; não misture esses resultados.
 - `results/native-markdown.json` e `markdown-build-validation.json`: formatação Markdown com MathML, anotação original, persistência após reinício e ativação do XPI final; [detalhes](markdown-validation.md).
+- `results/accuracy-attention-q4.csv` e `accuracy-attention-summary.json`: suíte de 11 perguntas de entrada/saída sobre *Attention Is All You Need*, com fatos, fórmula, recusa, idioma e limite de 150 palavras para Q4 do 2.6B e do 8B; [detalhes](accuracy-input-output.md).
+- `accuracy-papers.json`, `results-lfm3/accuracy-papers-*` (histórico com 150 palavras) e `results-lfm3-direct/accuracy-papers-direct-*` (política direta, 250 palavras, sem listas/tabelas): 20 casos sobre FlashAttention-4 e Fast-dLLM, com juiz FActScore, fatos atômicos, evidência citada, cobertura de keyfacts e direção para Q4 do 8B-A1B e do LFM3-1.7B; [detalhes](accuracy-papers.md).
 - `.runtime/experiment-*.log`: logs locais do runtime, incluindo prefill/decode.
 
 Execuções podem ser retomadas com os mesmos parâmetros e `LFM_RESULTS_DIR`. O script recusa misturar resultados quando o identificador da configuração muda. Use outra pasta para uma nova comparação; os resultados entregues em `results/` ficam preservados. Falta de memória e falhas são resultados; o script não reduz contexto nem altera a distribuição CPU/GPU para conseguir completar uma configuração.

@@ -11,7 +11,8 @@ async function startup(data) {
   Services.scriptloader.loadSubScript(data.rootURI + "reader-local-ai.js");
   const fetcher = (url, options) => fetch(url, options);
   const runtime = ReaderLocalAI.createRuntimePlatform({ io: IOUtils, paths: PathUtils, subprocess: Subprocess, FilePicker,
-    processID: Services.appinfo.processID, os: Services.appinfo.OS, fetch: fetcher, setTimeout, clearTimeout });
+    processID: Services.appinfo.processID, os: Services.appinfo.OS, abi: Services.appinfo.XPCOMABI,
+    fetch: fetcher, setTimeout, clearTimeout });
   await ReaderLocalAI.start(data, { zotero: Zotero, io: IOUtils, fetch: fetcher, runtime });
   // DEV_HARNESS_INSERTION_POINT
 }

@@ -4,11 +4,14 @@ import os
 from pathlib import Path
 import signal
 
-profile = str(Path(__file__).resolve().parents[1] / ".runtime/zotero-profile")
+profile = (Path(__file__).resolve().parents[1] / ".runtime/zotero-profile").resolve()
 for proc in Path("/proc").glob("[0-9]*"):
     try:
         args = (proc / "cmdline").read_bytes().decode().split("\0")
-        if "-profile" in args and args[args.index("-profile") + 1] == profile and "zotero" in args[0].lower():
+        if "-profile" not in args:
+            continue
+        selected = Path(args[args.index("-profile") + 1]).expanduser()
+        if selected.resolve() == profile and "zotero" in Path(args[0]).name.lower():
             os.kill(int(proc.name), signal.SIGTERM)
             print(f"Encerrando somente o Zotero de desenvolvimento (PID {proc.name}).")
     except (OSError, IndexError):

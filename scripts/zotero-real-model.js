@@ -3,11 +3,13 @@
   await Zotero.initializationPromise;
   await Zotero.uiReadyPromise;
   const root = Zotero.Prefs.get("extensions.reader-local-ai.devRoot", true);
-  if (Zotero.DataDirectory.dir !== root + "/.runtime/zotero-data") throw new Error("Isolated profile required");
+  const base = root.replace(/\\/g, "/").replace(/\/+$/, "");
+  const dataDir = String(Zotero.DataDirectory.dir).replace(/\\/g, "/").replace(/\/+$/, "");
+  if (dataDir !== base + "/.runtime/zotero-data") throw new Error("Isolated profile required");
   const win = Zotero.getMainWindow();
   const sleep = ms => new Promise(resolve => win.setTimeout(resolve, ms));
   const results = { zoteroVersion: Zotero.version, profile:"isolated", model:"LFM2.5-2.6B Q4_K_M", cases:[], errors:[] };
-  const save = () => IOUtils.writeUTF8(root + "/experiments/results/native-model.json", JSON.stringify(results,null,2));
+  const save = () => IOUtils.writeUTF8(base + "/experiments/results/native-model.json", JSON.stringify(results,null,2));
   const wait = async (predicate, label, timeout=600000) => {
     const start = Date.now();
     while (!predicate()) { if (Date.now()-start > timeout) throw new Error("Timeout: " + label); await sleep(50); }
@@ -21,7 +23,7 @@
   try {
     Zotero.ReaderLocalAI.saveSettings({...Zotero.ReaderLocalAI.getSettings(),baseUrl:"http://127.0.0.1:18080",timeoutMs:600000});
     for (const test of cases) {
-      const attachment = await Zotero.Attachments.importFromFile({file:root + "/experiments/data/" + test.paper + ".pdf"});
+      const attachment = await Zotero.Attachments.importFromFile({file:base + "/experiments/data/" + test.paper + ".pdf"});
       const reader = await Zotero.Reader.open(attachment.id); await reader._initPromise;
       const view = reader._internalReader._primaryView;
       await wait(()=>view._pdfPages[0],"page initialized",30000);
@@ -52,7 +54,7 @@
         const canvas=win.document.createElementNS("http://www.w3.org/1999/xhtml","canvas"); canvas.width=snapshot.width;canvas.height=snapshot.height;
         canvas.getContext("2d").drawImage(snapshot,0,0);snapshot.close();
         const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/png"));
-        await IOUtils.write(root+"/.runtime/native-model-"+test.paper+(index?"-followup":"")+".png",new Uint8Array(await blob.arrayBuffer()));
+        await IOUtils.write(base+"/.runtime/native-model-"+test.paper+(index?"-followup":"")+".png",new Uint8Array(await blob.arrayBuffer()));
       } finally {win.clearInterval(watch);}
       await save();
       }

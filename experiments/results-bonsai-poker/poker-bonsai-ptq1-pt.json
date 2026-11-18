@@ -1,0 +1,26 @@
+{
+  "label": "bonsai-ptq1-pt",
+  "model": "bonsai-2-27b",
+  "effort": "medium",
+  "maxTokens": 10240,
+  "question": "me de um outro exemplo sem ser sobre poker.",
+  "selection": "The list of poker hands that consist of two English words",
+  "words": 183,
+  "answer": "The article uses the poker-hand example to illustrate the core problem of parallel decoding: when the model samples interdependent token positions independently under the conditional independence assumption, it can produce incoherent combinations (e.g., \"high house\" instead of \"high card\" or \"two pair\").\n\nAnother example: consider filling two blanks in the sentence \"The ___ of a ___ is its head.\" If the model independently samples the two positions given only the surrounding context, it might generate \"The tail of a tree is its head\" or \"The trunk of a river is its head,\" both of which are semantically invalid. A dependency-aware generation would produce a valid pairing such as \"The top of a tree is its head\" or \"The front of a ship is its bow.\" In both the poker example and this one, the issue is identical: the true joint distribution requires that the second token be conditioned on the first (\\(p(x_i, x_j \\mid x_t) = p(x_i \\mid x_t)\\cdot p(x_j \\mid x_t, x_i)\\)), whereas independent parallel sampling approximates this with \\(p(x_i \\mid x_t)\\cdot p(x_j \\mid x_t)\\), discarding the dependency between the two positions.",
+  "finishReason": "stop",
+  "elapsedSeconds": 354.4,
+  "reasoningChars": 3912,
+  "completionTokens": 1120,
+  "promptTokens": 22610,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 22610,
+    "prompt_ms": 61358.154,
+    "prompt_per_token_ms": 2.7137617868199913,
+    "prompt_per_second": 368.4921811695964,
+    "predicted_n": 1120,
+    "predicted_ms": 292839.266,
+    "predicted_per_token_ms": 261.6972886505809,
+    "predicted_per_second": 3.8212088675293976
+  }
+}

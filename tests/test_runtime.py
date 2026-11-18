@@ -16,8 +16,9 @@ class RuntimeTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
+        executable = "llama-server.exe" if serve.WINDOWS else "llama-server"
         for directory in ["llama", "llama-cuda"]:
-            path = self.root / ".runtime" / directory / "llama-server"
+            path = self.root / ".runtime" / directory / executable
             path.parent.mkdir(parents=True); path.touch()
         for definition in serve.MODELS.values():
             model = self.root / ".runtime/models" / definition["variants"]["Q4_K_M"]["filename"]
@@ -37,6 +38,13 @@ class RuntimeTests(unittest.TestCase):
         supervisor = self.run_policy(["exited"])
         self.assertEqual(supervisor.run_attempt.call_args_list[0].args, ("cuda", "all"))
         self.assertEqual(supervisor.run_attempt.call_count, 1)
+
+    def test_upgrade_tree_prefers_the_pinned_build_over_an_older_sibling(self):
+        old = self.root / ".runtime/llama-cuda/llama-b11206/llama-server"
+        new = self.root / ".runtime/llama-cuda/llama-b12250/llama-server"
+        old.parent.mkdir(parents=True, exist_ok=True); old.touch()
+        new.parent.mkdir(parents=True, exist_ok=True); new.touch()
+        self.assertEqual(serve.find_executable("cuda"), new)
 
     def test_gpu_oom_prefers_sharing_over_cpu(self):
         supervisor = self.run_policy(["oom", "exited"])
@@ -82,8 +90,9 @@ class RuntimeTests(unittest.TestCase):
                 self.assertEqual(launch[launch.index(flag) + 1], value)
 
     def test_model_specific_context_limit_and_missing_weight_do_not_select_another_model(self):
+        self.assertEqual(serve.parse_args([]).model, "lfm2.5-8b-a1b")
         self.assertEqual(serve.parse_args(["--model", "lfm2.5-8b-a1b", "--context", "128000"]).context, 128000)
-        self.assertEqual(serve.parse_args(["--context", "131072"]).context, 131072)
+        self.assertEqual(serve.parse_args(["--model", "lfm2.5-2.6b", "--context", "131072"]).context, 131072)
         with patch("sys.stderr", new=io.StringIO()), self.assertRaises(SystemExit):
             serve.parse_args(["--model", "lfm2.5-8b-a1b", "--context", "131072"])
         weight = self.root / ".runtime/models/LFM2.5-8B-A1B-Q4_K_M.gguf"
@@ -166,10 +175,51 @@ class RuntimeTests(unittest.TestCase):
         class OpenPipe:
             def read(self, _):
                 release.wait(timeout=2); return b""
-        with patch.object(serve.os, "kill", side_effect=ProcessLookupError):
+        with patch.object(serve, "parent_alive", return_value=False):
             serve.watch_managed_lifetime(stopped, 12345, OpenPipe())
             self.assertTrue(stopped.wait(timeout=1))
         release.set()
+
+    def test_managed_launcher_stops_on_a_control_byte_before_eof(self):
+        stopped = threading.Event()
+        with patch.object(serve, "parent_alive", return_value=True):
+            serve.watch_managed_lifetime(stopped, 12345, io.BytesIO(b"stop\n"))
+            self.assertTrue(stopped.wait(timeout=1))
+
+    def test_parent_probe_distinguishes_missing_and_permission_denied(self):
+        with patch.object(serve, "WINDOWS", False), patch.object(serve.os, "kill", side_effect=ProcessLookupError):
+            self.assertFalse(serve.parent_alive(12345))
+        with patch.object(serve, "WINDOWS", False), patch.object(serve.os, "kill", side_effect=PermissionError):
+            self.assertTrue(serve.parent_alive(12345))
+
+    def test_parent_probe_never_uses_kill_on_windows(self):
+        kernel32 = Mock()
+        kernel32.OpenProcess.return_value = 1
+        kernel32.WaitForSingleObject.return_value = 0x102
+        with patch.object(serve, "WINDOWS", True), patch("ctypes.WinDLL", return_value=kernel32, create=True):
+            self.assertTrue(serve.parent_alive(12345))
+        kernel32.CloseHandle.assert_called_once_with(1)
+
+    def test_windows_versioned_runtime_and_dll_search_path(self):
+        for name in ("llama", "llama-cuda"):
+            (self.root / ".runtime" / name / "llama-server.exe").unlink(missing_ok=True)
+        runtime = self.root / ".runtime/runtimes/llama-cpu-b11206-abc"
+        executable = runtime / "bin/llama-server.exe"
+        library = runtime / "bin/ggml.dll"
+        executable.parent.mkdir(parents=True)
+        executable.touch(); library.touch()
+        with patch.object(serve, "WINDOWS", True):
+            launch = serve.command(backend="cpu")
+            env = serve.environment("cpu", launch[0])
+        self.assertEqual(Path(launch[0]), executable)
+        self.assertIn(str(library.parent), env["PATH"].split(serve.os.pathsep))
+
+    def test_fixed_windows_placement_waits_instead_of_execve(self):
+        child = Mock()
+        child.wait.return_value = 0
+        with patch.object(serve, "WINDOWS", True), patch.object(serve.subprocess, "Popen", return_value=child) as popen:
+            self.assertEqual(serve.run_fixed(["llama-server.exe"], {}), 0)
+        self.assertEqual(popen.call_args.kwargs["creationflags"], 0x00000200)
 
     def test_managed_mode_does_not_change_fixed_experiment_placement(self):
         args = serve.parse_args(["--managed", "--parent-pid", "12345"])

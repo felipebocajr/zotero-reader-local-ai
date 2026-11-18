@@ -1,10 +1,12 @@
 // Native MathML, streaming, annotation editing and cleanup in the isolated profile.
 (async function () {
   const root = Zotero.Prefs.get("extensions.reader-local-ai.devRoot", true);
-  if (Zotero.DataDirectory.dir !== root + "/.runtime/zotero-data") throw new Error("Isolated profile required");
+  const base = root.replace(/\\/g, "/").replace(/\/+$/, "");
+  const dataDir = String(Zotero.DataDirectory.dir).replace(/\\/g, "/").replace(/\/+$/, "");
+  if (dataDir !== base + "/.runtime/zotero-data") throw new Error("Isolated profile required");
   const win = Zotero.getMainWindow(), sleep = ms => new Promise(resolve=>win.setTimeout(resolve,ms));
   const result = { zoteroVersion:Zotero.version, profile:"isolated", checks:[], errors:[], saved:[] };
-  const output = root + "/experiments/results/native-math.json";
+  const output = base + "/experiments/results/native-math.json";
   const original = Zotero.ReaderLocalAI.getSettings();
   let reader;
   const check = (name, passed, detail={}) => { result.checks.push({name,passed:!!passed,...detail}); if (!passed) throw new Error(name); };
@@ -32,10 +34,10 @@
     const canvas=win.document.createElementNS("http://www.w3.org/1999/xhtml","canvas"); canvas.width=bitmap.width;canvas.height=bitmap.height;
     canvas.getContext("2d").drawImage(bitmap,0,0); bitmap.close();
     const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/png"));
-    await IOUtils.write(root+"/.runtime/"+name+".png",new Uint8Array(await blob.arrayBuffer()));
+    await IOUtils.write(base+"/.runtime/"+name+".png",new Uint8Array(await blob.arrayBuffer()));
   }
   try {
-    Zotero.ReaderLocalAI.saveSettings({...original,baseUrl:"http://127.0.0.1:18080",model:"lfm2.5-2.6b"});
+    Zotero.ReaderLocalAI.saveSettings({...original,baseUrl:"http://127.0.0.1:18080",model:"lfm2.5-8b-a1b"});
     await win.fetch("http://127.0.0.1:18080/control",{method:"POST",body:JSON.stringify({tokens:10000,math:true})});
     const id=Zotero.Prefs.get("extensions.reader-local-ai.devAttachmentID",true);
     reader=await Zotero.Reader.open(id);await reader._initPromise;

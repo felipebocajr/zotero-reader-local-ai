@@ -16,14 +16,16 @@ A Zotero add-on that helps readers understand PDF passages and ask questions abo
 
 ## Compatibility
 
-- Zotero 10.0.3–10.0.x; validated with Zotero 10.0.3.
-- The bundled runtime and in-app server controls are validated on Linux x86_64 with Python 3.12 or newer. Other platforms are not yet validated.
-- An NVIDIA GPU is optional. With a driver compatible with CUDA 12.8, automatic mode can use the GPU, share work between GPU and CPU, or fall back to CPU.
+- Zotero 10.0.3–10.0.x. The current stable release, 10.0.6, and the 10.0.3 floor are covered by native activation, interface and managed-runtime evidence on Linux.
+- The bundled runtime and in-app server controls are validated on Linux x86_64 with Python 3.12 or newer. Windows 10 22H2 and Windows 11 x64 support is implemented, but native acceptance on Windows is still pending. macOS, Windows ARM64 and 32-bit Windows are not supported.
+- An NVIDIA GPU is optional. Linux uses CUDA 12.8; Windows uses CUDA 12.4 with driver 551.61 or newer. Automatic mode can use the GPU, share work between GPU and CPU, or fall back to CPU.
 
 ## Get started
 
 1. Download the `.xpi` package from [Releases](https://github.com/felipebocajr/zotero-reader-local-ai/releases).
-2. Clone the project and prepare the runtime and default model (LFM2.5-2.6B, Q4_K_M):
+2. Clone the project and prepare the runtime and default model (LFM2.5-8B-A1B, Q4_K_M):
+
+   Linux:
 
    ```bash
    git clone https://github.com/felipebocajr/zotero-reader-local-ai.git
@@ -31,12 +33,20 @@ A Zotero add-on that helps readers understand PDF passages and ask questions abo
    python3 scripts/setup_runtime.py --backend auto --precision Q4_K_M
    ```
 
-   This step downloads the required files and needs an internet connection and disk space. Inference can run offline after setup.
+   Windows (PowerShell, 64-bit Python 3.12 or newer):
+
+   ```powershell
+   git clone https://github.com/felipebocajr/zotero-reader-local-ai.git
+   cd zotero-reader-local-ai
+   py -3 scripts\setup_runtime.py --backend auto --precision Q4_K_M
+   ```
+
+   This step downloads the required files and needs an internet connection and disk space. Inference can run offline after setup. Use `--backend cpu` to skip the CUDA download when starting the server manually with `--backend cpu`; the in-app control expects the automatic GPU and CPU runtimes.
 
 3. In Zotero, open the Plugins menu, choose **Install Plugin From File** from the gear menu, and select the `.xpi`.
-4. In the **Assistente local** (Local Assistant) preferences pane, choose the cloned project folder and click **Iniciar servidor** (Start Server). When the status is **Pronto** (Ready), open a PDF, select a passage, and choose **Explicar trecho** (Explain Passage) or **Fazer pergunta** (Ask a Question).
+4. In the **Assistente local** (Local Assistant) preferences pane, choose the cloned project folder and click **Iniciar servidor** (Start Server). When the status is **Pronto** (Ready), open a PDF, select a passage, and choose **Explicar trecho** (Explain Passage) or **Fazer pergunta** (Ask a Question). The first explanation is brief; choose **Explicar com mais detalhes** (Explain in More Detail) after it for a deeper answer. Use **Expandir** (Expand) in the popup header to enlarge the popup and **Restaurar** (Restore) to return to the default size; drag the header to move the popup and the bottom-right corner to resize it freely.
 
-The default model is LFM2.5-2.6B. To use LFM2.5-8B-A1B or configure the runtime, see the [runtime guide](docs/runtime.md). Plugin updates are manual.
+The default model is LFM2.5-8B-A1B. To use LFM3-1.7B or configure the runtime, see the [runtime guide](docs/runtime.md). The legacy LFM2.5-2.6B remains only for the delivered benchmark and is not offered in the plugin. Plugin updates are manual.
 
 ## Privacy and limitations
 

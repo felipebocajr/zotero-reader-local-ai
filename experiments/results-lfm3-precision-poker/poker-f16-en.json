@@ -1,0 +1,23 @@
+{
+  "label": "f16-en",
+  "model": "lfm3-1.7b",
+  "precision": "F16",
+  "question": "Can you give me another example that is not about poker?",
+  "selection": "The list of poker hands that consist of two English words",
+  "words": 66,
+  "answer": "Sure—here’s a different pair of English words that could appear in such a list, unrelated to poker:\n\n**“big cat” and “small dog.”**\n\nThese two word pairs illustrate how the choice of adjacent terms can create unexpected or contradictory meanings (e.g., “big cat” vs. “small dog”), which is why independent sampling of each token’s distribution can produce undesirable combinations like “high house” in the diffusion model context.",
+  "promptTokens": 21846,
+  "completionTokens": 604,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 21846,
+    "prompt_ms": 2613.286,
+    "prompt_per_token_ms": 0.11962308889499222,
+    "prompt_per_second": 8359.590186454907,
+    "predicted_n": 604,
+    "predicted_ms": 7228.352,
+    "predicted_per_token_ms": 11.987316749585407,
+    "predicted_per_second": 83.42150465278947
+  },
+  "elapsedSeconds": 10.1
+}

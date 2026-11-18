@@ -1,11 +1,13 @@
 // Development-only native acceptance tests. Run with scripts/rdp.py --file.
 (async function () {
   const root = Zotero.Prefs.get("extensions.reader-local-ai.devRoot", true);
-  if (Zotero.DataDirectory.dir !== root + "/.runtime/zotero-data") throw new Error("Isolated profile required");
+  const base = root.replace(/\\/g, "/").replace(/\/+$/, "");
+  const dataDir = String(Zotero.DataDirectory.dir).replace(/\\/g, "/").replace(/\/+$/, "");
+  if (dataDir !== base + "/.runtime/zotero-data") throw new Error("Isolated profile required");
   const win = Zotero.getMainWindow();
   const sleep = ms => new Promise(resolve => win.setTimeout(resolve, ms));
   const results = { zoteroVersion: Zotero.version, profile: "isolated", checks: [], errors: [] };
-  const output = root + "/experiments/results/native-acceptance.json";
+  const output = base + "/experiments/results/native-acceptance.json";
   const save = () => IOUtils.writeUTF8(output, JSON.stringify(results, null, 2));
   const check = (name, okay, detail = {}) => {
     results.checks.push({ name, passed: !!okay, ...detail });
@@ -21,6 +23,7 @@
   async function select(reader, edge = false) {
     const view = reader._internalReader._primaryView;
     await view.initializedPromise;
+    await wait(() => view._pdfPages?.[0]?.chars?.length, "PDF pages", 30000);
     const chars = view._pdfPages[0].chars.slice(0, 26);
     view._setSelectionRanges(Components.utils.cloneInto([{ collapsed: false, text: chars.map(c => c.u).join(""), sortIndex: "00000|000000|00000",
       position: { pageIndex: 0, rects: [[chars[0].rect[0], chars[0].rect[1], chars.at(-1).rect[2], chars[0].rect[3]]] } }], reader._iframe.contentWindow));
@@ -55,12 +58,12 @@
     canvas.width = snapshot.width; canvas.height = snapshot.height;
     canvas.getContext("2d").drawImage(snapshot, 0, 0); snapshot.close();
     const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
-    await IOUtils.write(root + "/.runtime/" + name + ".png", new Uint8Array(await blob.arrayBuffer()));
+    await IOUtils.write(base + "/.runtime/" + name + ".png", new Uint8Array(await blob.arrayBuffer()));
   }
   const originalSettings = Zotero.ReaderLocalAI.getSettings();
   try {
-    // The mock serves 2.6B only; persisted optional-model preferences are unrelated.
-    Zotero.ReaderLocalAI.saveSettings({...originalSettings,baseUrl:"http://127.0.0.1:18080",model:"lfm2.5-2.6b",responseLanguage:"en",contextTokens:32768,generationTokens:4096});
+    // The mock serves the 8B only; persisted optional-model preferences are unrelated.
+    Zotero.ReaderLocalAI.saveSettings({...originalSettings,baseUrl:"http://127.0.0.1:18080",model:"lfm2.5-8b-a1b",responseLanguage:"en",contextTokens:32768,generationTokens:4096});
     const settingsBefore = Zotero.ReaderLocalAI.getSettings();
     const pref = Zotero.Utilities.Internal.openPreferences("reader-local-ai@local.invalid-preferences");
     await wait(() => pref.document.getElementById("reader-local-ai-baseUrl")?.value, "preferences loaded");
@@ -76,13 +79,20 @@
     pref.document.getElementById("reader-local-ai-preferences").requestSubmit();
     check("native preferences save the English response preference", Zotero.ReaderLocalAI.getSettings().responseLanguage === "en");
     const modelSelect = pref.document.getElementById("reader-local-ai-model");
-    check("native model selector offers both models", modelSelect.localName === "select" &&
-      [...modelSelect.options].map(option=>option.value).join(",") === "lfm2.5-2.6b,lfm2.5-8b-a1b");
+    check("native model selector offers every model", modelSelect.localName === "select" &&
+      [...modelSelect.options].map(option=>option.value).join(",") === "lfm2.5-8b-a1b,lfm3-1.7b");
     modelSelect.value = "lfm2.5-8b-a1b";
     modelSelect.dispatchEvent(new pref.Event("change",{bubbles:true}));
     check("larger model shows native launch controls and context limit",
       !!pref.document.getElementById("reader-local-ai-start-server") &&
       pref.document.getElementById("reader-local-ai-contextTokens").max === "128000");
+    modelSelect.value = "lfm3-1.7b";
+    modelSelect.dispatchEvent(new pref.Event("change",{bubbles:true}));
+    check("LFM3 shows native launch controls and 256K context limit",
+      !!pref.document.getElementById("reader-local-ai-start-server") &&
+      pref.document.getElementById("reader-local-ai-contextTokens").max === "262144");
+    modelSelect.value = "lfm2.5-8b-a1b";
+    modelSelect.dispatchEvent(new pref.Event("change",{bubbles:true}));
     pref.document.getElementById("reader-local-ai-preferences").requestSubmit();
     check("native preference pane saves larger model", Zotero.ReaderLocalAI.getSettings().model === "lfm2.5-8b-a1b");
     modelSelect.value = settingsBefore.model;
@@ -102,9 +112,9 @@
     const reader = Zotero.Reader.getByTabID(win.Zotero_Tabs.selectedID) || Zotero.Reader._readers.at(-1);
     const attachment = Zotero.Items.get(reader.itemID);
     const before = attachment.getAnnotations().length;
-    Zotero.ReaderLocalAI.saveSettings({...settingsBefore, model:"lfm2.5-8b-a1b"});
+    Zotero.ReaderLocalAI.saveSettings({...settingsBefore, model:"lfm3-1.7b"});
     await open(reader); submit(reader, "Modelo escolhido ainda não carregado");
-    await expectError(reader, "--model lfm2.5-8b-a1b");
+    await expectError(reader, "--model lfm3-1.7b");
     Zotero.ReaderLocalAI.saveSettings(settingsBefore);
     await open(reader);
     check("question field focused", doc(reader).activeElement === popup(reader).querySelector("textarea"));
@@ -143,11 +153,46 @@
     check("new question resets history", requests.at(-1).messages.length === 2 && popup(reader).querySelectorAll(".reader-local-ai-turn").length === 1);
     popup(reader).querySelector(".reader-local-ai-close").click();
     await open(reader, true); await complete(reader);
+    const expand = button(reader, "Expandir");
+    const normalWidth = popup(reader).getBoundingClientRect().width;
+    check("popup offers a size toggle", !!expand);
+    expand.click(); await sleep(100);
+    check("popup expands", popup(reader).classList.contains("reader-local-ai-expanded") &&
+      popup(reader).getBoundingClientRect().width > normalWidth);
+    button(reader, "Restaurar").click(); await sleep(100);
+    check("popup restores its size", !popup(reader).classList.contains("reader-local-ai-expanded") &&
+      popup(reader).getBoundingClientRect().width <= normalWidth + 1);
+    popup(reader).style.left = "40px"; popup(reader).style.top = "40px"; await sleep(50);
+    const resizeHandle = popup(reader).querySelector(".reader-local-ai-resize");
+    check("popup offers a resize handle", !!resizeHandle);
+    const beforeResize = popup(reader).getBoundingClientRect();
+    const iframeWindow = reader._iframeWindow;
+    resizeHandle.dispatchEvent(new iframeWindow.PointerEvent("pointerdown", { bubbles: true, clientX: beforeResize.right - 4, clientY: beforeResize.bottom - 4, button: 0, pointerId: 1 }));
+    iframeWindow.dispatchEvent(new iframeWindow.PointerEvent("pointermove", { bubbles: true, clientX: beforeResize.right + 80, clientY: beforeResize.bottom + 60, pointerId: 1 }));
+    iframeWindow.dispatchEvent(new iframeWindow.PointerEvent("pointerup", { bubbles: true, clientX: beforeResize.right + 80, clientY: beforeResize.bottom + 60, pointerId: 1 }));
+    await sleep(100);
+    const afterResize = popup(reader).getBoundingClientRect();
+    check("popup resizes by dragging", afterResize.width > beforeResize.width + 40 && afterResize.height > beforeResize.height + 20);
+    const beforeMove = popup(reader).getBoundingClientRect();
+    const dragHeader = popup(reader).querySelector("header");
+    dragHeader.dispatchEvent(new iframeWindow.PointerEvent("pointerdown", { bubbles: true, clientX: beforeMove.left + 40, clientY: beforeMove.top + 12, button: 0, pointerId: 2 }));
+    iframeWindow.dispatchEvent(new iframeWindow.PointerEvent("pointermove", { bubbles: true, clientX: beforeMove.left + 140, clientY: beforeMove.top + 92, pointerId: 2 }));
+    iframeWindow.dispatchEvent(new iframeWindow.PointerEvent("pointerup", { bubbles: true, clientX: beforeMove.left + 140, clientY: beforeMove.top + 92, pointerId: 2 }));
+    await sleep(100);
+    const afterMove = popup(reader).getBoundingClientRect();
+    check("popup moves by dragging its header", afterMove.left > beforeMove.left + 70 && afterMove.top > beforeMove.top + 50);
     check("generic explanation action works", popup(reader).querySelector(".reader-local-ai-question").textContent.includes("Explique"));
     requests = await (await win.fetch("http://127.0.0.1:18080/requests")).json();
     check("generic explanation sends English after the entire article",
       requests.at(-1).messages[0].content.startsWith("Answer in English (en)") &&
       requests.at(-1).messages.at(-1).content.lastIndexOf("Answer in English (en)") > requests.at(-1).messages.at(-1).content.indexOf("</artigo>"));
+    const detail = button(reader, "Explicar com mais detalhes");
+    check("brief explanation offers a detailed follow-up", !!detail && !detail.hidden);
+    detail.click();
+    await wait(() => popup(reader).querySelectorAll(".reader-local-ai-turn").length === 2, "detail response");
+    check("detailed explanation displays both turns", popup(reader).querySelectorAll(".reader-local-ai-turn").length === 2);
+    await wait(() => !button(reader, "Explicar com mais detalhes"), "detail option consumed");
+    check("detailed follow-up is offered only once", !button(reader, "Explicar com mais detalhes"));
     await open(reader); submit(reader, "UI_SLOW: aguarde");
     await wait(() => !button(reader, "Cancelar").hidden, "cancel button");
     await sleep(300); button(reader, "Cancelar").click(); await expectError(reader, "cancelado");

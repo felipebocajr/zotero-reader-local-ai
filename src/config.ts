@@ -2,10 +2,16 @@ import { ReaderError } from "./errors.ts";
 import type { Settings } from "./types.ts";
 
 export const MODEL_OPTIONS = [
-  { id: "lfm2.5-2.6b", label: "LFM2.5-2.6B — mais leve", maxContextTokens: 131072,
-    description: "Pesos Q4: cerca de 1,67 GB. Opção inicial para menor consumo de memória." },
-  { id: "lfm2.5-8b-a1b", label: "LFM2.5-8B-A1B — maior capacidade", maxContextTokens: 128000,
+  { id: "lfm2.5-8b-a1b", label: "LFM2.5-8B-A1B — padrão", maxContextTokens: 128000,
     description: "Modelo com especialistas: 8,3 bilhões de parâmetros totais e 1,5 bilhão ativos por token. Pesos Q4: cerca de 5,16 GB; o consumo total é maior." },
+  { id: "lfm3-1.7b", label: "LFM3-1.7B — contexto de 256K", maxContextTokens: 262144,
+    description: "Modelo novo da Liquid AI, com 1,73 bilhão de parâmetros e 256 mil tokens de contexto. Pesos Q4: cerca de 1,10 GB." },
+] as const;
+
+// Kept only for the delivered 2.6B benchmark; it is not exposed in the plugin UI.
+export const LEGACY_MODEL_OPTIONS = [
+  { id: "lfm2.5-2.6b", label: "LFM2.5-2.6B — benchmark legado", maxContextTokens: 131072,
+    description: "Pesos Q4: cerca de 1,67 GB. Não é oferecido nas preferências do plugin." },
 ] as const;
 
 export const RESPONSE_LANGUAGE_OPTIONS = [
@@ -14,7 +20,7 @@ export const RESPONSE_LANGUAGE_OPTIONS = [
 ] as const;
 
 export const DEFAULTS: Settings = {
-  baseUrl: "http://127.0.0.1:8080", model: "lfm2.5-2.6b",
+  baseUrl: "http://127.0.0.1:8080", model: "lfm2.5-8b-a1b",
   responseLanguage: "en",
   contextTokens: 64000, generationTokens: 4096, timeoutMs: 600000,
 };
@@ -26,7 +32,7 @@ export function validateSettings(input: Settings): Settings {
   if (url.protocol !== "http:" || url.hostname !== "127.0.0.1" || url.username || url.password || url.search || url.hash || url.pathname !== "/") {
     throw new ReaderError("config", "Use um servidor local em http://127.0.0.1:PORTA, sem caminho adicional.");
   }
-  const model = MODEL_OPTIONS.find(option => option.id === input.model.trim());
+  const model = [...MODEL_OPTIONS, ...LEGACY_MODEL_OPTIONS].find(option => option.id === input.model.trim());
   if (!model) throw new ReaderError("config", "Escolha um dos modelos disponíveis nas configurações do plugin.");
   if (!RESPONSE_LANGUAGE_OPTIONS.some(option => option.id === input.responseLanguage)) {
     throw new ReaderError("config", "Escolha Português (Brasil) ou Inglês para o idioma das respostas.");

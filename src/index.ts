@@ -1,7 +1,7 @@
 import { LlamaClient } from "./client.ts";
 import { DEFAULTS, MODEL_OPTIONS, RESPONSE_LANGUAGE_OPTIONS, PREF_PREFIX, validateSettings } from "./config.ts";
 import { PaperCache } from "./paper.ts";
-import { EXPLAIN_QUESTION } from "./prompt.ts";
+import { EXPLAIN_BRIEF_QUESTION, EXPLAIN_QUESTION } from "./prompt.ts";
 import { ReadingSession, RequestGate } from "./session.ts";
 import { createPopup } from "./view.ts";
 import type { PopupView } from "./view.ts";
@@ -30,7 +30,10 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
 
   function settings(): Settings {
     const value = (key: keyof Settings) => zotero.Prefs.get(PREF_PREFIX + key, true) ?? DEFAULTS[key];
-    return validateSettings({ baseUrl: String(value("baseUrl")), model: String(value("model")), responseLanguage: String(value("responseLanguage")) as ResponseLanguage, contextTokens: Number(value("contextTokens")), generationTokens: Number(value("generationTokens")), timeoutMs: Number(value("timeoutMs")) });
+    const savedModel = String(value("model"));
+    const model = MODEL_OPTIONS.some(option => option.id === savedModel) ? savedModel : DEFAULTS.model;
+    if (savedModel !== model) zotero.Prefs.set(PREF_PREFIX + "model", model, true);
+    return validateSettings({ baseUrl: String(value("baseUrl")), model, responseLanguage: String(value("responseLanguage")) as ResponseLanguage, contextTokens: Number(value("contextTokens")), generationTokens: Number(value("generationTokens")), timeoutMs: Number(value("timeoutMs")) });
   }
   function runtimePreferences(): RuntimePreferences {
     return validateRuntimePreferences({
@@ -77,12 +80,13 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
           state => view.render(state), createAnswerAnnotationWriter(zotero, reader.itemID, params.annotation!));
         view = createPopup(doc, anchor, selection!, {
           ask: (question, followup) => { void session.ask(question, followup); },
+          explainDetail: () => { void session.ask(EXPLAIN_QUESTION, true, "detail"); },
           cancel: () => session.cancel(), reset: () => session.reset(),
           saveAnswer: index => { void session.saveAnswer(index); },
           closed: () => { session.dispose(); if (popups.get(reader)?.session === session) popups.delete(reader); },
         });
         popups.set(reader, { signature, view, session }); view.render(session.state);
-        if (explain) void session.ask(EXPLAIN_QUESTION); else view.question(false);
+        if (explain) void session.ask(EXPLAIN_BRIEF_QUESTION, false, "explain"); else view.question(false);
       });
       return button;
     }

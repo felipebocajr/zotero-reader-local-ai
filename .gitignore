@@ -3,6 +3,9 @@ node_modules/
 .codex/
 __pycache__/
 *.pyc
+.env
+.env.*
+!.env.example
 dist/
 .runtime/
 experiments/data/

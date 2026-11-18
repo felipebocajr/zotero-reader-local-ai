@@ -1,11 +1,12 @@
 import { ReaderError, abortIfNeeded, userMessage } from "./errors.ts";
 import { buildMessages } from "./prompt.ts";
+import type { PromptMode } from "./prompt.ts";
 import type { Turn, Settings, AnswerSaveState, SaveAnswer } from "./types.ts";
 import type { LlamaClient } from "./client.ts";
 import type { PaperCache } from "./paper.ts";
 
 export type Phase = "idle" | "extracting" | "preparing" | "generating" | "complete" | "error";
-export interface SessionState { phase: Phase; history: readonly Turn[]; question: string; draft: string; error: string; answerSaves: readonly AnswerSaveState[] }
+export interface SessionState { phase: Phase; history: readonly Turn[]; question: string; draft: string; error: string; answerSaves: readonly AnswerSaveState[]; showDetail: boolean }
 export class RequestGate {
   private owner: symbol | null = null;
   acquire(): () => void {
@@ -16,11 +17,13 @@ export class RequestGate {
 }
 
 export class ReadingSession {
-  state: SessionState = { phase: "idle", history: [], question: "", draft: "", error: "", answerSaves: [] };
+  state: SessionState = { phase: "idle", history: [], question: "", draft: "", error: "", answerSaves: [], showDetail: false };
   private savedAnswers = new WeakMap<Turn, AnswerSaveState>();
   private saveTurn?: SaveAnswer;
   private active: AbortController | null = null;
   private disposed = false;
+  private explainFlow = false;
+  private detailUsed = false;
   readonly attachmentId: number;
   readonly selection: string;
   private papers: PaperCache;
@@ -42,8 +45,16 @@ export class ReadingSession {
     this.changed(this.state);
   }
   cancel(): void { this.active?.abort(); }
-  reset(): void { if (!this.active) this.publish({ phase: "idle", history: [], question: "", draft: "", error: "" }); }
-  dispose(): void { this.disposed = true; this.cancel(); this.state = { phase: "idle", history: [], question: "", draft: "", error: "", answerSaves: [] }; }
+  reset(): void {
+    if (!this.active) {
+      this.explainFlow = false; this.detailUsed = false;
+      this.publish({ phase: "idle", history: [], question: "", draft: "", error: "", showDetail: false });
+    }
+  }
+  dispose(): void {
+    this.disposed = true; this.cancel(); this.explainFlow = false; this.detailUsed = false;
+    this.state = { phase: "idle", history: [], question: "", draft: "", error: "", answerSaves: [], showDetail: false };
+  }
   async saveAnswer(index: number): Promise<void> {
     if (this.disposed || !Number.isInteger(index)) return;
     const turn = this.state.history[index];
@@ -59,28 +70,35 @@ export class ReadingSession {
     // A reset/new question must not associate a late save with another answer.
     if (this.state.history.includes(turn)) this.publish({});
   }
-  async ask(question: string, followup = false): Promise<void> {
+  async ask(question: string, followup = false, mode: PromptMode = "default"): Promise<void> {
     if (this.disposed || this.active) return;
     let release: (() => void) | undefined;
     let timeout: ReturnType<typeof setTimeout> | undefined;
     const abort = new AbortController();
     let timedOut = false;
+    const brief = mode === "explain" && !followup;
+    const detail = mode === "detail";
     try {
       if (!question.trim()) throw new ReaderError("question", "Escreva uma pergunta antes de enviar.");
+      if (brief) { this.explainFlow = true; this.detailUsed = false; }
+      else if (!followup) { this.explainFlow = false; this.detailUsed = false; }
       release = this.gate.acquire(); this.active = abort;
       const settings = this.settings();
       timeout = setTimeout(() => { timedOut = true; abort.abort(); }, settings.timeoutMs);
-      this.publish({ phase: "extracting", history: followup ? this.state.history : [], question: question.trim(), draft: "", error: "" });
+      this.publish({ phase: "extracting", history: followup ? this.state.history : [], question: question.trim(), draft: "", error: "", showDetail: false });
       const paper = await this.papers.get(this.attachmentId, abort.signal);
       abortIfNeeded(abort.signal);
       this.publish({ phase: "preparing" });
-      const messages = buildMessages(paper, this.selection, question, this.state.history, settings.responseLanguage);
+      const messages = buildMessages(paper, this.selection, question, this.state.history, settings.responseLanguage, mode);
       const result = await this.makeClient().generate(messages, abort.signal,
         text => this.publish({ draft: this.state.draft + text }), true, () => this.publish({ phase: "generating" }));
       abortIfNeeded(abort.signal);
-      this.publish({ phase: "complete", history: [...this.state.history, { question: question.trim(), answer: result.answer }], draft: "", error: "" });
+      if (detail) this.detailUsed = true;
+      this.publish({ phase: "complete", history: [...this.state.history, { question: question.trim(), answer: result.answer }], draft: "", error: "",
+        showDetail: brief || (this.explainFlow && !this.detailUsed && !detail) });
     } catch (error) {
-      this.publish({ phase: "error", draft: "", error: timedOut ? "O pedido excedeu o tempo limite. Tente novamente ou aumente o limite nas configurações." : userMessage(error) });
+      this.publish({ phase: "error", draft: "", error: timedOut ? "O pedido excedeu o tempo limite. Tente novamente ou aumente o limite nas configurações." : userMessage(error),
+        showDetail: detail && this.explainFlow && !this.detailUsed });
     } finally {
       if (timeout) clearTimeout(timeout);
       this.active = null; release?.();

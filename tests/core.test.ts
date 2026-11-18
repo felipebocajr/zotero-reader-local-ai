@@ -56,11 +56,31 @@ test("runtime cannot send article to remote host or via redirectable URL", () =>
   assert.equal(validateSettings({ ...DEFAULTS, baseUrl: "http://127.0.0.1:18080/" }).baseUrl, "http://127.0.0.1:18080");
 });
 test("context respects the selected model's limit without changing defaults", () => {
-  assert.equal(validateSettings(DEFAULTS).model, "lfm2.5-2.6b");
-  assert.equal(validateSettings({ ...DEFAULTS, contextTokens: 131072 }).contextTokens, 131072);
+  assert.equal(validateSettings(DEFAULTS).model, "lfm2.5-8b-a1b");
+  assert.equal(validateSettings({ ...DEFAULTS, model: "lfm2.5-2.6b", contextTokens: 131072 }).contextTokens, 131072);
   assert.equal(validateSettings({ ...DEFAULTS, model: "lfm2.5-8b-a1b", contextTokens: 128000 }).contextTokens, 128000);
   assert.throws(() => validateSettings({ ...DEFAULTS, model: "lfm2.5-8b-a1b", contextTokens: 131072 }), /128\.000/);
+  assert.equal(validateSettings({ ...DEFAULTS, model: "lfm3-1.7b", contextTokens: 262144 }).contextTokens, 262144);
+  assert.throws(() => validateSettings({ ...DEFAULTS, model: "lfm3-1.7b", contextTokens: 262145 }), /262\.144/);
   assert.throws(() => validateSettings({ ...DEFAULTS, model: "unknown" }), /modelos disponíveis/);
+});
+test("prompt requires an explicit insufficient-information statement", () => {
+  const messages = buildMessages(paper, "trecho", "Pergunta");
+  assert.match(messages[0].content, /does not contain enough information/);
+  assert.match(messages[0].content, /first sentence/);
+  assert.match(messages[0].content, /Do not fill the gap/);
+  assert.match(messages[0].content, /clearly mark the rest as not reported/);
+  const brief = buildMessages(paper, "trecho", "Explique", [], "en", "explain");
+  assert.match(brief[0].content, /does not contain enough information/);
+});
+test("explain and detail modes use different instruction budgets", () => {
+  const brief = buildMessages(paper, "trecho", "Explique brevemente.", [], "en", "explain");
+  const detail = buildMessages(paper, "trecho", "Explique melhor.", [], "en", "detail");
+  const typed = buildMessages(paper, "trecho", "Pergunta.", [], "en");
+  assert.match(brief[0].content, /under 120 words/);
+  assert.doesNotMatch(brief[0].content, /under 250 words/);
+  assert.match(detail[0].content, /under 250 words/);
+  assert.match(typed[0].content, /under 250 words/);
 });
 test("paper cache invalidates on file revision and refuses partial extraction", async () => {
   let modified = 1, extractions = 0;

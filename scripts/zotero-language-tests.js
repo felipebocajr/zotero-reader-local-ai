@@ -1,12 +1,14 @@
 // Real multilingual inference through the native settings and reader, isolated profile only.
 (async function () {
   const root = Zotero.Prefs.get("extensions.reader-local-ai.devRoot", true);
-  if (Zotero.DataDirectory.dir !== root + "/.runtime/zotero-data") throw new Error("Isolated profile required");
+  const base = root.replace(/\\/g, "/").replace(/\/+$/, "");
+  const dataDir = String(Zotero.DataDirectory.dir).replace(/\\/g, "/").replace(/\/+$/, "");
+  if (dataDir !== base + "/.runtime/zotero-data") throw new Error("Isolated profile required");
   const win = Zotero.getMainWindow(), api = Zotero.ReaderLocalAI;
   const original = api.getSettings(), originalRuntime = api.getRuntimePreferences();
   const languagePref = "extensions.reader-local-ai.responseLanguage";
   const hadLanguagePref = Services.prefs.prefHasUserValue(languagePref);
-  const output = root + "/experiments/results/native-languages-en-default.json";
+  const output = base + "/experiments/results/native-languages-en-default.json";
   const results = { zoteroVersion: Zotero.version, profile: "isolated", status: "running", checks: [], answers: [], runtimes: [], errors: [] };
   const save = () => IOUtils.writeUTF8(output, JSON.stringify(results, null, 2));
   const sleep = ms => new Promise(resolve => win.setTimeout(resolve, ms));
@@ -39,7 +41,7 @@
     canvas.width = bitmap.width; canvas.height = bitmap.height;
     canvas.getContext("2d").drawImage(bitmap, 0, 0); bitmap.close();
     const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
-    await IOUtils.write(root + "/.runtime/" + name + ".png", new Uint8Array(await blob.arrayBuffer()));
+    await IOUtils.write(base + "/.runtime/" + name + ".png", new Uint8Array(await blob.arrayBuffer()));
   }
   async function answer(model, language, question, followup = false) {
     const started = Date.now();
@@ -70,7 +72,7 @@
     const paper = await Zotero.PDFWorker.getFullText(reader.itemID, null);
     results.paper = { title: attachment.getField("title"), pages: paper.extractedPages, totalPages: paper.totalPages, chars: paper.text.length };
     check("full English PDF is available", paper.extractedPages === paper.totalPages && paper.text.includes("Attention Is All You Need"));
-    for (const model of ["lfm2.5-2.6b", "lfm2.5-8b-a1b"]) {
+    for (const model of ["lfm2.5-8b-a1b", "lfm3-1.7b"]) {
       // Optional existing 8B runtime: do not duplicate its weights or take ownership.
       let external = false;
       if (model === "lfm2.5-8b-a1b") {

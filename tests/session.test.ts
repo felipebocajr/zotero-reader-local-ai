@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { ReadingSession, RequestGate } from "../src/session.ts";
 import { PaperCache } from "../src/paper.ts";
 import { DEFAULTS } from "../src/config.ts";
+import { EXPLAIN_BRIEF_QUESTION, EXPLAIN_QUESTION } from "../src/prompt.ts";
 import type { LlamaClient } from "../src/client.ts";
 import type { Message, SaveAnswer, Settings } from "../src/types.ts";
 
@@ -27,6 +28,23 @@ test("session reads the language for each request, including an existing convers
   assert.match(requests[2].at(-1)!.content, /Answer in English \(en\)/);
   assert.deepEqual(session.state.history.map(turn => turn.question), ["Explain this English passage.", "Uma continuação em português.", "Outra continuação."]);
   assert.deepEqual(session.state.history.map(turn => turn.answer), ["Original answer 1", "Original answer 2", "Original answer 3"]);
+});
+test("explain flow offers one detailed follow-up and typed questions do not", async () => {
+  const requests: Message[][] = [];
+  const session = sessionWith(new RequestGate(), async messages => { requests.push(messages); return { answer: "A" + requests.length, promptTokens: 1 }; });
+  await session.ask(EXPLAIN_BRIEF_QUESTION, false, "explain");
+  assert.equal(session.state.showDetail, true);
+  assert.match(requests[0][0].content, /under 120 words/);
+  await session.ask(EXPLAIN_QUESTION, true, "detail");
+  assert.equal(session.state.showDetail, false);
+  assert.equal(session.state.history.length, 2);
+  assert.match(requests[1][0].content, /under 250 words/);
+  assert.match(requests[1].at(-1)!.content, /Explique melhor/);
+  await session.ask(EXPLAIN_BRIEF_QUESTION, false, "explain");
+  assert.equal(session.state.showDetail, true);
+  await session.ask("pergunta digitada");
+  assert.equal(session.state.showDetail, false);
+  assert.equal(session.state.history.length, 1);
 });
 test("only successful turns enter history; new questions reset it", async () => {
   let calls = 0;

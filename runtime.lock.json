@@ -1,18 +1,30 @@
 {
   "llamaCpp": {
-    "tag": "b11206",
-    "commit": "2b129ccfa03aea330d2d9ac4650a10de393dbe3a",
+    "tag": "b12250",
+    "commit": "ae4893a092e060cfbd4979600bf3c1e48a710874",
     "linuxX64Cpu": {
-      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11206/llama-b11206-bin-ubuntu-x64.tar.gz",
-      "sha256": "aea9ff64167ea473bf5cf463f07b42beac16c857cdffce57c7ed9cc323ea4da5"
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12250/llama-b12250-bin-ubuntu-x64.tar.gz",
+      "sha256": "5a2cb0188a3f392f88c5d226768abd0da7b2b6a5abdbb50abedcd7c8f42d9fb1"
     },
     "linuxX64Cuda": {
-      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11206/llama-b11206-bin-ubuntu-cuda-12.8-x64.tar.gz",
-      "sha256": "fa78d7d80b8dca117638c49fc4aa58d6b01407541804483876c27323ebb887de"
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12250/llama-b12250-bin-ubuntu-cuda-12.8-x64.tar.gz",
+      "sha256": "638acf3b8ff2e04459f2adf7bb43a27908efeca10160a43e06537beb1c1a1db4"
     },
     "cudaLibraries": {
-      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11206/cudart-llama-b11206-bin-ubuntu-cuda-12.8-x64.tar.gz",
-      "sha256": "bcc52b864ad3edbdd18d10d8061bb84af2c085c50621d0cc19e135130cc360e8"
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12250/cudart-llama-b12250-bin-ubuntu-cuda-12.8-x64.tar.gz",
+      "sha256": "9f011951d8a3934b5dfbe5378e809dde2eeb969926aa0c4e670759afa98120ed"
+    },
+    "windowsX64Cpu": {
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12250/llama-b12250-bin-win-cpu-x64.zip",
+      "sha256": "dff351112e50606f5ce4b433c2e018021721f75ef1fe298016e42e0dac8fb910"
+    },
+    "windowsX64Cuda": {
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12250/llama-b12250-bin-win-cuda-12.4-x64.zip",
+      "sha256": "e655b91f3bbf908e21d733c26dee487ea5d94e2cd51a8e18c9ebb7c23e04b949"
+    },
+    "cudaLibrariesWindows": {
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12250/cudart-llama-bin-win-cuda-12.4-x64.zip",
+      "sha256": "8c79a9b226de4b3cacfd1f83d24f962d0773be79f1e7b75c6af4ded7e32ae1d6"
     }
   },
   "model": {
@@ -45,6 +57,28 @@
           "filename": "LFM2.5-8B-A1B-F16.gguf",
           "size": 16947260640,
           "sha256": "c6eb857414327e26d32654d996838d305cb57c01c06def0894bde244f7baa159"
+        }
+      }
+    },
+    "lfm3-1.7b": {
+      "repository": "LiquidAI/LFM3-1.7B-GGUF",
+      "revision": "cd0c74c575b5c416f3011b5b4c298077f26ca8c2",
+      "maxContextTokens": 262144,
+      "variants": {
+        "Q4_K_M": {
+          "filename": "LFM3-1.7B-Q4_K_M.gguf",
+          "size": 1099627808,
+          "sha256": "3793e1e6e2266919d6e015287221b41100175a98eddaba92e111aed3b05c93c4"
+        },
+        "Q8_0": {
+          "filename": "LFM3-1.7B-Q8_0.gguf",
+          "size": 1846238496,
+          "sha256": "8f6b24182258205e9e01e21f1f24a1f208c1e8115578825d202ce39976af20b6"
+        },
+        "F16": {
+          "filename": "LFM3-1.7B-F16.gguf",
+          "size": 3466626336,
+          "sha256": "b7ab8b69a85e4dfbf62cdfd0e02d7d051ed09f2c5b84c701771dddb073b85970"
         }
       }
     }

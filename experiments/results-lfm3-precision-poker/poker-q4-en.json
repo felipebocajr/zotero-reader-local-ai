@@ -1,0 +1,23 @@
+{
+  "label": "q4-en",
+  "model": "lfm3-1.7b",
+  "precision": "Q4_K_M",
+  "question": "Can you give me another example that is not about poker?",
+  "selection": "The list of poker hands that consist of two English words",
+  "words": 135,
+  "answer": "The passage you referenced mentions a **list of poker hands** (e.g., “high card,” “two pair,” “full house,” or “straight flush”). An alternative, non‑poker example from the same article appears in the discussion of conditional independence: consider two token positions \\(i\\) and \\(j\\). The article states that MDMs sample these tokens jointly as  \n\n\\[\np(x_i, x_j \\mid E) = p(x_i \\mid E)\\,p(x_j \\mid E, x_i),\n\\]\n\nwhich differs from the independent‑sampling assumption used in many parallel decoding schemes. This illustrates a dependency between token positions rather than treating them as independent draws.\n\nThus, instead of listing poker hands, an example of inter‑token dependence is given by the joint distribution \\(p(x_i, x_j \\mid E)\\) for two masked tokens \\(x_i\\) and \\(x_j\\). The article notes that this discrepancy can cause quality degradation when multiple tokens are unmasked simultaneously.",
+  "promptTokens": 21846,
+  "completionTokens": 719,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 21846,
+    "prompt_ms": 2188.179,
+    "prompt_per_token_ms": 0.1001638286185114,
+    "prompt_per_second": 9983.643934065723,
+    "predicted_n": 719,
+    "predicted_ms": 4091.597,
+    "predicted_per_token_ms": 5.698603064066853,
+    "predicted_per_second": 175.4816029046849
+  },
+  "elapsedSeconds": 6.4
+}

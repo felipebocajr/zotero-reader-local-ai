@@ -11,10 +11,34 @@ python3 scripts/prepare_papers.py
 python3 scripts/setup_dev.py
 ```
 
+## Windows x64
+
+O fluxo é o mesmo em Windows 10 22H2 ou Windows 11 x64, com Python 3.12+ de 64 bits. Use PowerShell e `py -3` (ou `python`) no lugar de `python3`:
+
+```powershell
+npm ci
+npm run check
+npm test
+npm run test:runtime
+npm run build
+py -3 scripts\prepare_papers.py
+py -3 scripts\setup_dev.py
+```
+
+`npm run build` e `test:runtime` usam `scripts/run_python.mjs`, que procura `python`, `py -3` e `python3`; defina `PYTHON` para indicar um interpretador específico. O instalador publica runtimes Windows em `.runtime\runtimes\...` e o harness usa `tasklist.exe` para confirmar que os processos antigos foram encerrados. `scripts/stop_dev.py` é específico de Linux; no Windows, feche apenas a janela do Zotero do perfil isolado pelo Gerenciador de Tarefas. `prepare_papers.py` requer Poppler (`pdftotext` e `pdfinfo`) no `PATH`; se os PDFs já estiverem em `experiments\data`, essa etapa pode ser pulada.
+
+O RDP e o perfil isolado continuam em loopback. Nunca instale o XPI de desenvolvimento no perfil pessoal. A validação nativa Windows deve registrar evidência separada; o suporte Linux não prova o comportamento de `Subprocess`, pipes, caminhos ou DLLs no Windows.
+
 Abra esse Zotero em outro terminal:
 
 ```bash
 zotero -no-remote -profile "$PWD/.runtime/zotero-profile" -ZoteroDebugText -purgecaches --start-debugger-server 18085 > .runtime/zotero-dev.log 2>&1
+```
+
+No Windows, o caminho padrão do executável é usado neste exemplo; ajuste-o se o Zotero estiver instalado em outro local:
+
+```powershell
+& "$env:ProgramFiles\Zotero\zotero.exe" -no-remote -profile "$PWD\.runtime\zotero-profile" -ZoteroDebugText -purgecaches --start-debugger-server 18085 *> .runtime\zotero-dev.log
 ```
 
 O debugger Gecko escuta somente em loopback neste perfil. O cliente de teste usa esse protocolo para carregar scripts privilegiados; não é um componente do plugin.
@@ -41,7 +65,7 @@ Depois:
 python3 scripts/rdp.py --file scripts/zotero-ui-tests.js
 ```
 
-Os testes usam o leitor real e suas seleções temporárias, sem salvar anotações. Verificam as ações, foco, streaming sem raciocínio, conversa, independência das perguntas, texto completo, cancelamento, erros e posição. Evidências ficam em `experiments/results/native-acceptance.json`; capturas de tela ficam em `.runtime/native-popup-*.png`.
+Os testes usam o leitor real e suas seleções temporárias, sem salvar anotações. Verificam as ações, foco, streaming sem raciocínio, conversa, independência das perguntas, texto completo, cancelamento, erros, posição, o botão Expandir/Restaurar, o redimensionamento por arrasto e a movimentação pelo cabeçalho do popup. Evidências ficam em `experiments/results/native-acceptance.json`; capturas de tela ficam em `.runtime/native-popup-*.png`.
 
 Os testes simulados verificam integração e protocolo. A qualidade e a velocidade da LFM são avaliadas com o runtime real, separadamente.
 

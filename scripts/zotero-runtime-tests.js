@@ -1,7 +1,9 @@
 // Start/stop/restart from the native preferences pane, using actual Q4 inference.
 (async function () {
   const root = Zotero.Prefs.get("extensions.reader-local-ai.devRoot", true);
-  if (Zotero.DataDirectory.dir !== root + "/.runtime/zotero-data") throw new Error("Isolated profile required");
+  const base = root.replace(/\\/g, "/").replace(/\/+$/, "");
+  const dataDir = String(Zotero.DataDirectory.dir).replace(/\\/g, "/").replace(/\/+$/, "");
+  if (dataDir !== base + "/.runtime/zotero-data") throw new Error("Isolated profile required");
   const win = Zotero.getMainWindow(), sleep = ms => new Promise(r => win.setTimeout(r, ms));
   const results = { zoteroVersion: Zotero.version, profile: "isolated", checks: [], runs: [], errors: [] };
   const original = Zotero.ReaderLocalAI.getSettings(), originalRuntime = Zotero.ReaderLocalAI.getRuntimePreferences();
@@ -15,7 +17,18 @@
   const field = id => pref.document.getElementById("reader-local-ai-" + id);
   const click = id => field(id).click();
   const save = () => pref.document.getElementById("reader-local-ai-preferences").requestSubmit();
-  const stopped = async pid => !pid || !await IOUtils.exists("/proc/" + pid);
+  const processExists = async pid => {
+    if (!pid) return false;
+    if (Services.appinfo.OS !== "WINNT") return IOUtils.exists("/proc/" + pid);
+    const {Subprocess} = ChromeUtils.importESModule("resource://gre/modules/Subprocess.sys.mjs");
+    const tasklist = await Subprocess.pathSearch("tasklist.exe");
+    const proc = await Subprocess.call({ command: tasklist, arguments: ["/FI", `PID eq ${pid}`, "/NH"],
+      stdout: "pipe", stderr: "ignore" });
+    const output = await proc.stdout.readString();
+    await proc.wait();
+    return output.includes(String(pid));
+  };
+  const stopped = async pid => !pid || !await processExists(pid);
   async function openPreferences() {
     pref = Zotero.Utilities.Internal.openPreferences("reader-local-ai@local.invalid-preferences");
     await wait(() => field("model")?.options.length === 2, "preferences", 15000);
@@ -25,7 +38,7 @@
       if (state().phase === "error") throw new Error(state().message + "\n" + state().details);
       return state().phase === "ready" && state().model === model;
     }, "actual runtime ready");
-    const status = await IOUtils.readJSON(root + "/.runtime/server-18094.json");
+    const status = await IOUtils.readJSON(base + "/.runtime/server-18094.json");
     check("ready process belongs to the current controller: " + model, state().owned && state().pid === status.supervisorPid);
     check("requested context and unquantized cache preserved: " + model, status.contextTokens === 32768 && status.cacheTypes === "f16/f16");
     return status;
@@ -56,23 +69,23 @@
     const canvas = pref.document.createElementNS("http://www.w3.org/1999/xhtml", "canvas");
     canvas.width = bitmap.width; canvas.height = bitmap.height; canvas.getContext("2d").drawImage(bitmap, 0, 0); bitmap.close();
     const blob = await new Promise(r=>canvas.toBlob(r,"image/png"));
-    await IOUtils.write(root+"/.runtime/native-runtime-preferences.png", new Uint8Array(await blob.arrayBuffer()));
+    await IOUtils.write(base+"/.runtime/native-runtime-preferences.png", new Uint8Array(await blob.arrayBuffer()));
   }
   try {
     await openPreferences();
-    field("baseUrl").value = "http://127.0.0.1:18094"; field("model").value = "lfm2.5-2.6b";
+    field("baseUrl").value = "http://127.0.0.1:18094"; field("model").value = "lfm2.5-8b-a1b";
     field("model").dispatchEvent(new pref.Event("change", {bubbles:true}));
     field("contextTokens").value = "32768"; field("generationTokens").value = "4096";
-    field("autoStart").checked = false; field("projectRoot").value = root+"/missing-folder";
+    field("autoStart").checked = false; field("projectRoot").value = base+"/missing-folder";
     click("start-server"); await wait(() => state().phase === "error", "invalid folder", 10000);
     check("invalid project folder gives a readable error", state().message.includes("pasta") && !state().owned);
     await wait(() => !field("start-server").disabled, "native status refresh after failed start", 5000);
     field("projectRoot").value = root; click("start-server"); click("start-server");
     check("manual launch shows progress immediately", state().phase === "starting");
-    let status = await ready("lfm2.5-2.6b");
+    let status = await ready("lfm2.5-8b-a1b");
     check("manual start button is disabled while owned", field("start-server").disabled);
     await snapshot(); pref.close(); pref = null;
-    await answer("lfm2.5-2.6b", status);
+    await answer("lfm2.5-8b-a1b", status);
     await openPreferences(); field("model").value = "lfm2.5-8b-a1b";
     field("model").dispatchEvent(new pref.Event("change", {bubbles:true})); save();
     check("changing model asks for explicit restart", state().restartRequired && field("runtime-status").textContent.includes("Reinicie"));
@@ -81,7 +94,7 @@
     pref.close(); pref = null; await answer("lfm2.5-8b-a1b", status);
     await openPreferences(); click("stop-server"); await wait(() => state().phase === "stopped", "manual stop", 45000);
     check("manual stop releases supervisor and llama child", await stopped(status.supervisorPid) && await stopped(status.attempts.at(-1).pid));
-    field("baseUrl").value = "http://127.0.0.1:18080"; field("model").value = "lfm2.5-2.6b"; save();
+    field("baseUrl").value = "http://127.0.0.1:18080"; field("model").value = "lfm2.5-8b-a1b"; save();
     await wait(() => state().phase === "external", "external server detected", 10000);
     check("external server cannot be stopped or restarted from UI", !state().owned && field("stop-server").disabled && field("restart-server").disabled);
     await Zotero.ReaderLocalAI.stopRuntime();
@@ -92,7 +105,7 @@
     const {AddonManager} = ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs");
     const addon = await AddonManager.getAddonByID("reader-local-ai@local.invalid");
     await addon.disable(); await addon.enable();
-    await wait(() => !!Zotero.ReaderLocalAI, "plugin re-enabled", 15000); status = await ready("lfm2.5-2.6b");
+    await wait(() => !!Zotero.ReaderLocalAI, "plugin re-enabled", 15000); status = await ready("lfm2.5-8b-a1b");
     check("auto-start on plugin startup owns a fresh process", status.supervisorPid > 0);
     Zotero.ReaderLocalAI.saveRuntimePreferences({ projectRoot: root, autoStart: false });
     await addon.disable();
@@ -107,6 +120,6 @@
       await Zotero.ReaderLocalAI.stopRuntime(); Zotero.ReaderLocalAI.saveSettings(original);
       Zotero.ReaderLocalAI.saveRuntimePreferences(originalRuntime);
     }
-    await IOUtils.writeUTF8(root+"/experiments/results/native-runtime.json", JSON.stringify(results,null,2));
+    await IOUtils.writeUTF8(base+"/experiments/results/native-runtime.json", JSON.stringify(results,null,2));
   }
 })();

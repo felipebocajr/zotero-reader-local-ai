@@ -79,10 +79,10 @@ test("fallback transitions preserve ownership and show shared GPU/CPU then CPU",
 test("configuration change needs explicit restart and cancels current requests", async () => {
   const f = fixture(); await f.controller.start(); f.setSettings({ responseLanguage: "en" });
   assert.equal(f.controller.getState().restartRequired, false); assert.equal(f.launches.length, 1);
-  f.setSettings({ model: "lfm2.5-8b-a1b" });
+  f.setSettings({ model: "lfm3-1.7b" });
   assert.equal(f.controller.getState().restartRequired, true); assert.equal(f.launches.length, 1);
   await f.controller.restart(); assert.equal(f.stops, 1); assert.equal(f.cancelled, 1);
-  assert.equal(f.launches.length, 2); assert.equal(f.launches[1].model, "lfm2.5-8b-a1b");
+  assert.equal(f.launches.length, 2); assert.equal(f.launches[1].model, "lfm3-1.7b");
   await f.controller.dispose();
 });
 

@@ -1,0 +1,23 @@
+{
+  "label": "q4",
+  "model": "lfm3-1.7b",
+  "precision": "Q4_K_M",
+  "question": "me de um outro exemplo sem ser sobre poker.",
+  "selection": "The list of poker hands that consist of two English words",
+  "words": 307,
+  "answer": "In the section on masked diffusion models (MDMs) the authors illustrate how independent sampling can produce undesirable token combinations, using the example of two English words in a poker hand such as “high card” and “two pair.” To show why this matters for parallel decoding they contrast it with other word pairs. A different illustration appears earlier when they discuss high cosine similarity among KV‑cache activations: Figure 3 displays heatmaps that highlight the strong diagonal similarity of key–value (KV) activation vectors across adjacent inference steps, while showing low similarity between distant blocks. This demonstrates how caching can be safely reused without losing accuracy.\n\nThus another concrete example from the paper is the **high cosine‑similarity pattern among KV‑cache activations** shown in Figure 3a and Figure 3b. The heatmap (Figure 3) reveals that for each block, the activation vectors of neighboring steps have cosine similarity values ranging from about 0.84 to 0.98 near the diagonal, indicating that the cached key–value states change only slightly between consecutive decoding steps. This high similarity allows the authors’ approximate KV‑cache mechanism (block‑wise generation and DualCache) to reuse previously computed activations with negligible error.\n\n**Key terms:**  \n- *Masked Diffusion Model (MDM)* – a discrete diffusion model that replaces tokens one‑by‑one with a special `[MASK]` token.  \n- *KV Cache* – stores past key and value vectors from previous decoding steps so the attention computation can reuse them instead of recomputing.  \n- *Block‑wise generation* – splits the output into blocks; before each block, the KV cache for earlier blocks is computed and stored, then after finishing a block it is refreshed for all tokens.  \n- *DualCache* – extends prefix caching to also store suffix (masked) tokens, further reducing redundant work.  \n\nThese examples illustrate how the authors address two major bottlenecks in diffusion LLMs: lack of KV cache and quality loss when decoding multiple tokens at once.",
+  "promptTokens": 21844,
+  "completionTokens": 944,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 21844,
+    "prompt_ms": 2379.587,
+    "prompt_per_token_ms": 0.108935497161692,
+    "prompt_per_second": 9179.744216118175,
+    "predicted_n": 944,
+    "predicted_ms": 5932.73,
+    "predicted_per_token_ms": 6.291336161187698,
+    "predicted_per_second": 158.94874703551318
+  },
+  "elapsedSeconds": 8.5
+}

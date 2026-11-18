@@ -1,0 +1,148 @@
+{
+  "zoteroVersion": "10.0.3",
+  "profile": "isolated",
+  "checks": [
+    {
+      "name": "invalid project folder gives a readable error",
+      "passed": true
+    },
+    {
+      "name": "manual launch shows progress immediately",
+      "passed": true
+    },
+    {
+      "name": "ready process belongs to the current controller: lfm2.5-2.6b",
+      "passed": true
+    },
+    {
+      "name": "requested context and unquantized cache preserved: lfm2.5-2.6b",
+      "passed": true
+    },
+    {
+      "name": "manual start button is disabled while owned",
+      "passed": true
+    },
+    {
+      "name": "actual full-paper answer after native launch: lfm2.5-2.6b",
+      "passed": true
+    },
+    {
+      "name": "changing model asks for explicit restart",
+      "passed": true
+    },
+    {
+      "name": "ready process belongs to the current controller: lfm2.5-8b-a1b",
+      "passed": true
+    },
+    {
+      "name": "requested context and unquantized cache preserved: lfm2.5-8b-a1b",
+      "passed": true
+    },
+    {
+      "name": "restart reaps both old processes",
+      "passed": true
+    },
+    {
+      "name": "actual full-paper answer after native launch: lfm2.5-8b-a1b",
+      "passed": true
+    },
+    {
+      "name": "manual stop releases supervisor and llama child",
+      "passed": true
+    },
+    {
+      "name": "external server cannot be stopped or restarted from UI",
+      "passed": true
+    },
+    {
+      "name": "stop leaves the external server available",
+      "passed": true
+    },
+    {
+      "name": "native auto-start preference persists",
+      "passed": true
+    },
+    {
+      "name": "ready process belongs to the current controller: lfm2.5-2.6b",
+      "passed": true
+    },
+    {
+      "name": "requested context and unquantized cache preserved: lfm2.5-2.6b",
+      "passed": true
+    },
+    {
+      "name": "auto-start on plugin startup owns a fresh process",
+      "passed": true
+    },
+    {
+      "name": "plugin disable reaps the llama child",
+      "passed": true
+    },
+    {
+      "name": "auto-start disabled leaves the server stopped",
+      "passed": true
+    }
+  ],
+  "runs": [
+    {
+      "model": "lfm2.5-2.6b",
+      "status": {
+        "supervisorPid": 270212,
+        "model": "lfm2.5-2.6b",
+        "precision": "Q4_K_M",
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "attempts": [
+          {
+            "backend": "cuda",
+            "gpuLayers": "all",
+            "fit": false,
+            "pid": 270226,
+            "ready": true
+          }
+        ],
+        "phase": "ready",
+        "childPid": 270226,
+        "backend": "cuda",
+        "gpuLayers": "all"
+      },
+      "totalMs": 9242,
+      "answer": "A divisão pelo √dk na atenção por produto escalar é uma técnica de normalização que evita que os valores do produto escalar QK^T cresçam excessivamente. Como descrito no artigo (seção 3.2.1), calculamos o produto escalar entre a query e todas as chaves, dividimos cada resultado por √dk e aplicamos uma função softmax para obter os pesos sobre os valores. Essa normalização é crucial porque, sem ela, quando dk é grande, os produtos escalares podem se tornar muito grandes em magnitude, resultando em gradientes instáveis após a aplicação da softmax.\n\nA justificativa está na análise de complexidade e desempenho (seção 5.5). A auto-atenção permite que cada posição atenda a todas as outras com um número constante de operações sequenciais, enquanto camadas recursivas exigem O(n) passos. Dividir pelo √dk mantém o custo computacional similar ao de uma única cabeça de atenção (head), mas permite que múltiplas cabeças trabalhem em paralelo sem inflar as dimensões efetivas. Isso resulta em um modelo mais rápido e estável, especialmente para sequências longas onde a capacidade de capturar dependências de longo alcance é importante.\n\nEm resumo, a normalização por √dk equilibra a escala dos pesos de atenção, garantindo que a softmax funcione corretamente e que o treinamento seja estável. Sem essa divisão, os gradientes poderiam explodir ou desaparecer, prejudicando o aprendizado das dependências globais que a arquitetura Transformer busca modelar."
+    },
+    {
+      "model": "lfm2.5-8b-a1b",
+      "status": {
+        "supervisorPid": 270429,
+        "model": "lfm2.5-8b-a1b",
+        "precision": "Q4_K_M",
+        "contextTokens": 32768,
+        "cacheTypes": "f16/f16",
+        "attempts": [
+          {
+            "backend": "cuda",
+            "gpuLayers": "all",
+            "fit": false,
+            "pid": 270443,
+            "exitCode": -15,
+            "gpuMemoryError": true,
+            "ready": false
+          },
+          {
+            "backend": "cuda",
+            "gpuLayers": "auto",
+            "fit": true,
+            "pid": 270519,
+            "ready": true
+          }
+        ],
+        "phase": "ready",
+        "childPid": 270519,
+        "backend": "cuda",
+        "gpuLayers": "auto"
+      },
+      "totalMs": 15290,
+      "answer": "O artigo justifica a divisão por \\(\\sqrt{d_k}\\) na atenção escalar‑produto porque, ao calcular os scores de similaridade entre consultas e chaves, o produto interno cresce linearmente com a dimensão \\(d_k\\); sem normalização, esses valores tornam‑se excessivamente grandes, prejudicando a aplicação da função softmax e gerando gradientes instáveis. Ao escalar os scores por \\(\\frac{1}{\\sqrt{d_k}}\\) (conforme descrito na seção 3.2.2), o artigo garante que as contribuições de diferentes posições tenham magnitude comparável, melhorando a estabilidade numérica e permitindo um treinamento mais estável e paralelizável."
+    }
+  ],
+  "errors": []
+}

@@ -1,5 +1,5 @@
 {
-  "zoteroVersion": "10.0.3",
+  "zoteroVersion": "10.0.6",
   "profile": "isolated",
   "checks": [
     {
@@ -87,7 +87,7 @@
     {
       "model": "lfm2.5-2.6b",
       "status": {
-        "supervisorPid": 270212,
+        "supervisorPid": 79422,
         "model": "lfm2.5-2.6b",
         "precision": "Q4_K_M",
         "contextTokens": 32768,
@@ -97,22 +97,22 @@
             "backend": "cuda",
             "gpuLayers": "all",
             "fit": false,
-            "pid": 270226,
+            "pid": 79447,
             "ready": true
           }
         ],
         "phase": "ready",
-        "childPid": 270226,
+        "childPid": 79447,
         "backend": "cuda",
         "gpuLayers": "all"
       },
-      "totalMs": 9242,
-      "answer": "A divisão pelo √dk na atenção por produto escalar é uma técnica de normalização que evita que os valores do produto escalar QK^T cresçam excessivamente. Como descrito no artigo (seção 3.2.1), calculamos o produto escalar entre a query e todas as chaves, dividimos cada resultado por √dk e aplicamos uma função softmax para obter os pesos sobre os valores. Essa normalização é crucial porque, sem ela, quando dk é grande, os produtos escalares podem se tornar muito grandes em magnitude, resultando em gradientes instáveis após a aplicação da softmax.\n\nA justificativa está na análise de complexidade e desempenho (seção 5.5). A auto-atenção permite que cada posição atenda a todas as outras com um número constante de operações sequenciais, enquanto camadas recursivas exigem O(n) passos. Dividir pelo √dk mantém o custo computacional similar ao de uma única cabeça de atenção (head), mas permite que múltiplas cabeças trabalhem em paralelo sem inflar as dimensões efetivas. Isso resulta em um modelo mais rápido e estável, especialmente para sequências longas onde a capacidade de capturar dependências de longo alcance é importante.\n\nEm resumo, a normalização por √dk equilibra a escala dos pesos de atenção, garantindo que a softmax funcione corretamente e que o treinamento seja estável. Sem essa divisão, os gradientes poderiam explodir ou desaparecer, prejudicando o aprendizado das dependências globais que a arquitetura Transformer busca modelar."
+      "totalMs": 7113,
+      "answer": "The Scaled Dot-Product Attention mechanism divides each dot product by √dk to prevent numerical instability during training. In the attention computation, queries and keys are projected into vectors of dimension dk, and values have dimension dv. The core operation computes QK^T (the matrix of dot products between queries and all keys), then scales each element by 1/√dk before applying a softmax function to obtain attention weights.\n\nThis scaling is crucial because without it, the dot products can grow very large in magnitude when dk is small or moderate. Large values cause the softmax function to produce poorly distributed probabilities with vanishing gradients, making learning difficult. By dividing by √dk, the authors ensure that the scaled dot products remain in a range where the softmax produces well-distributed weights and allows effective gradient flow during backpropagation.\n\nThe paper notes that while additive attention (using a feed-forward network) can outperform dot-product attention without scaling for very small dk values, the scaling factor is essential when using larger key dimensions. This design choice balances computational efficiency with stable training dynamics, enabling the Transformer to train effectively on long sequences where self-attention must compute dependencies across many positions simultaneously."
     },
     {
       "model": "lfm2.5-8b-a1b",
       "status": {
-        "supervisorPid": 270429,
+        "supervisorPid": 79534,
         "model": "lfm2.5-8b-a1b",
         "precision": "Q4_K_M",
         "contextTokens": 32768,
@@ -122,26 +122,17 @@
             "backend": "cuda",
             "gpuLayers": "all",
             "fit": false,
-            "pid": 270443,
-            "exitCode": -15,
-            "gpuMemoryError": true,
-            "ready": false
-          },
-          {
-            "backend": "cuda",
-            "gpuLayers": "auto",
-            "fit": true,
-            "pid": 270519,
+            "pid": 79552,
             "ready": true
           }
         ],
         "phase": "ready",
-        "childPid": 270519,
+        "childPid": 79552,
         "backend": "cuda",
-        "gpuLayers": "auto"
+        "gpuLayers": "all"
       },
-      "totalMs": 15290,
-      "answer": "O artigo justifica a divisão por \\(\\sqrt{d_k}\\) na atenção escalar‑produto porque, ao calcular os scores de similaridade entre consultas e chaves, o produto interno cresce linearmente com a dimensão \\(d_k\\); sem normalização, esses valores tornam‑se excessivamente grandes, prejudicando a aplicação da função softmax e gerando gradientes instáveis. Ao escalar os scores por \\(\\frac{1}{\\sqrt{d_k}}\\) (conforme descrito na seção 3.2.2), o artigo garante que as contribuições de diferentes posições tenham magnitude comparável, melhorando a estabilidade numérica e permitindo um treinamento mais estável e paralelizável."
+      "totalMs": 7045,
+      "answer": "The paper defines Scaled Dot‑Product Attention as taking queries \\(Q\\), keys \\(K\\) and values \\(V\\) each with dimension \\(\\mathbf{d}_k\\). It first computes the dot product of a query with every key, which would otherwise grow proportionally to \\(\\sqrt{\\mathbf{d}_k}\\) when many keys are present; dividing this result by \\(\\sqrt{\\mathbf{d}_k}\\) normalises the magnitude of each score so that the soft‑max operates on values in a bounded range regardless of sequence length or model dimension. This scaling also balances the influence of all keys, preventing any single key from dominating the attention distribution and thereby improving numerical stability and gradient flow during training. The constant number of operations per layer achieved by this simple division is why self‑attention can be parallelised efficiently compared with recurrent or convolutional alternatives."
     }
   ],
   "errors": []

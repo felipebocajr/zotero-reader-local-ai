@@ -46,8 +46,8 @@ test("uses actual server context and refuses multiple slots", async () => {
   await assert.rejects(fixture({ slots: 2 }).client.prepare(messages, new AbortController().signal), /único slot/);
 });
 test("model selection refuses a different server before sending the paper", async () => {
-  const { client, requests } = fixture({ model: "lfm2.5-8b-a1b" });
-  await assert.rejects(client.generate(messages, new AbortController().signal, () => {}), /Reinicie-o com --model lfm2\.5-8b-a1b/);
+  const { client, requests } = fixture({ model: "lfm3-1.7b", loadedModel: "lfm2.5-8b-a1b" });
+  await assert.rejects(client.generate(messages, new AbortController().signal, () => {}), /Reinicie-o com --model lfm3-1\.7b/);
   assert.deepEqual(requests.map(request => request.path), ["/health", "/props", "/v1/models"]);
 });
 test("larger model uses its own template and keeps reasoning out of the answer", async () => {

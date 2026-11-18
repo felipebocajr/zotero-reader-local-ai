@@ -1,7 +1,9 @@
 // Exercise a status response arriving after the preferences window is destroyed.
 (async function () {
   const root=Zotero.Prefs.get("extensions.reader-local-ai.devRoot",true);
-  if(Zotero.DataDirectory.dir !== root+"/.runtime/zotero-data")throw new Error("Isolated profile required");
+  const base = root.replace(/\\/g, "/").replace(/\/+$/, "");
+  const dataDir = String(Zotero.DataDirectory.dir).replace(/\\/g, "/").replace(/\/+$/, "");
+  if(dataDir !== base+"/.runtime/zotero-data")throw new Error("Isolated profile required");
   const api=Zotero.ReaderLocalAI, original=api.requestRuntimeRefresh, win=Zotero.getMainWindow();
   const sleep=ms=>new Promise(r=>win.setTimeout(r,ms));
   const results={profile:"isolated",checks:[],errors:[]}, consoleErrors=[];
@@ -23,6 +25,6 @@
   finally {
     pref?.close();resolve?.(api.getRuntimeState());api.requestRuntimeRefresh=original;
     Services.console.unregisterListener(listener);
-    await IOUtils.writeUTF8(root+"/experiments/results/native-runtime-pane.json",JSON.stringify(results,null,2));
+    await IOUtils.writeUTF8(base+"/experiments/results/native-runtime-pane.json",JSON.stringify(results,null,2));
   }
 })();

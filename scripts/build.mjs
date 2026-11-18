@@ -1,7 +1,7 @@
 import { build } from "esbuild";
 import { mkdir, cp, readFile } from "node:fs/promises";
-import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { runPython } from "./python-command.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const stage = new URL("../dist/addon/", import.meta.url);
@@ -18,5 +18,5 @@ for (const [name, file] of [
 await build({ entryPoints: [root + "/src/index.ts"], outfile: fileURLToPath(new URL("reader-local-ai.js", stage)),
   bundle: true, format: "iife", globalName: "ReaderLocalAI", target: "firefox140", loader: { ".css": "text" }, legalComments: "none" });
 const manifest = JSON.parse(await readFile(new URL("manifest.json", stage), "utf8"));
-const result = spawnSync("python3", [root + "/scripts/package_xpi.py", fileURLToPath(stage), root + `/dist/reader-local-ai-${manifest.version}.xpi`], { stdio: "inherit" });
-if (result.status !== 0) process.exit(result.status ?? 1);
+const status = runPython([root + "/scripts/package_xpi.py", fileURLToPath(stage), root + `/dist/reader-local-ai-${manifest.version}.xpi`]);
+if (status !== 0) process.exit(status);

@@ -1,5 +1,5 @@
 {
-  "zoteroVersion": "10.0.3",
+  "zoteroVersion": "10.0.8",
   "profile": "isolated",
   "checks": [
     {
@@ -7,11 +7,15 @@
       "passed": true
     },
     {
-      "name": "native language selector offers Brazilian Portuguese and English",
+      "name": "native language selector offers English and Brazilian Portuguese",
       "passed": true
     },
     {
-      "name": "native language selector initializes in Brazilian Portuguese",
+      "name": "native language selector initializes in English",
+      "passed": true
+    },
+    {
+      "name": "native preferences save the Brazilian Portuguese response preference",
       "passed": true
     },
     {
@@ -19,11 +23,15 @@
       "passed": true
     },
     {
-      "name": "native model selector offers both models",
+      "name": "native model selector offers every model",
       "passed": true
     },
     {
       "name": "larger model shows native launch controls and context limit",
+      "passed": true
+    },
+    {
+      "name": "LFM3 shows native launch controls and 256K context limit",
       "passed": true
     },
     {
@@ -39,9 +47,9 @@
       "passed": true
     },
     {
-      "name": "legible error: --model lfm2.5-8b-a1b",
+      "name": "legible error: --model lfm3-1.7b",
       "passed": true,
-      "text": "O modelo lfm2.5-8b-a1b não está carregado no servidor local. Reinicie-o com --model lfm2.5-8b-a1b ou escolha o modelo em uso nas configurações do plugin."
+      "text": "O modelo lfm3-1.7b não está carregado no servidor local. Reinicie-o com --model lfm3-1.7b ou escolha o modelo em uso nas configurações do plugin."
     },
     {
       "name": "question field focused",
@@ -86,11 +94,47 @@
       "passed": true
     },
     {
+      "name": "popup offers a size toggle",
+      "passed": true
+    },
+    {
+      "name": "popup expands",
+      "passed": true
+    },
+    {
+      "name": "popup restores its size",
+      "passed": true
+    },
+    {
+      "name": "popup offers a resize handle",
+      "passed": true
+    },
+    {
+      "name": "popup resizes by dragging",
+      "passed": true
+    },
+    {
+      "name": "popup moves by dragging its header",
+      "passed": true
+    },
+    {
       "name": "generic explanation action works",
       "passed": true
     },
     {
-      "name": "generic explanation sends Portuguese after the entire English article",
+      "name": "generic explanation sends English after the entire article",
+      "passed": true
+    },
+    {
+      "name": "brief explanation offers a detailed follow-up",
+      "passed": true
+    },
+    {
+      "name": "detailed explanation displays both turns",
+      "passed": true
+    },
+    {
+      "name": "detailed follow-up is offered only once",
       "passed": true
     },
     {
@@ -122,18 +166,18 @@
       "name": "popup clamped to viewport edges",
       "passed": true,
       "bounds": {
-        "x": 2114,
-        "y": 980.25,
+        "x": 839,
+        "y": 250.25,
         "width": 400,
-        "height": 241.75,
-        "top": 980.25,
-        "right": 2514,
-        "bottom": 1222,
-        "left": 2114
+        "height": 257.75,
+        "top": 250.25,
+        "right": 1239,
+        "bottom": 508,
+        "left": 839
       },
       "viewport": [
-        2526,
-        1307
+        1251,
+        595
       ]
     },
     {

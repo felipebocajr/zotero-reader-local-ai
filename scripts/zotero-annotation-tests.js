@@ -1,12 +1,14 @@
 // Native persistence tests, with the loopback fixture and isolated development profile.
 (async function () {
   const root = Zotero.Prefs.get("extensions.reader-local-ai.devRoot", true);
-  if (Zotero.DataDirectory.dir !== root + "/.runtime/zotero-data") throw new Error("Isolated profile required");
+  const base = root.replace(/\\/g, "/").replace(/\/+$/, "");
+  const dataDir = String(Zotero.DataDirectory.dir).replace(/\\/g, "/").replace(/\/+$/, "");
+  if (dataDir !== base + "/.runtime/zotero-data") throw new Error("Isolated profile required");
   const win = Zotero.getMainWindow();
   const initialSettings = Zotero.ReaderLocalAI.getSettings();
   const sleep = ms => new Promise(resolve => win.setTimeout(resolve, ms));
   const results = { zoteroVersion: Zotero.version, profile: "isolated", checks: [], errors: [], saved: [] };
-  const output = root + "/experiments/results/native-annotations.json";
+  const output = base + "/experiments/results/native-annotations.json";
   const write = () => IOUtils.writeUTF8(output, JSON.stringify(results, null, 2));
   const check = (name, passed, detail = {}) => {
     results.checks.push({ name, passed: !!passed, ...detail });
@@ -46,12 +48,12 @@
     canvas.width = snapshot.width; canvas.height = snapshot.height;
     canvas.getContext("2d").drawImage(snapshot, 0, 0); snapshot.close();
     const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
-    await IOUtils.write(root + "/.runtime/native-annotations-popup.png", new Uint8Array(await blob.arrayBuffer()));
+    await IOUtils.write(base + "/.runtime/native-annotations-popup.png", new Uint8Array(await blob.arrayBuffer()));
   }
   let restoreEditable, restoreSave;
   try {
     // The fixture serves 2.6B only; another native test may have left 8B selected.
-    Zotero.ReaderLocalAI.saveSettings({ ...initialSettings, baseUrl: "http://127.0.0.1:18080", model: "lfm2.5-2.6b", contextTokens: 32768, generationTokens: 4096 });
+    Zotero.ReaderLocalAI.saveSettings({ ...initialSettings, baseUrl: "http://127.0.0.1:18080", model: "lfm2.5-8b-a1b", contextTokens: 32768, generationTokens: 4096 });
     await win.fetch("http://127.0.0.1:18080/control", { method: "POST", body: JSON.stringify({ tokens: 10000, math: false }) });
     const attachmentId = Zotero.Prefs.get("extensions.reader-local-ai.devAttachmentID", true);
     let reader = Zotero.Reader.getByTabID(win.Zotero_Tabs.selectedID);

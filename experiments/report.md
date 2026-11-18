@@ -79,9 +79,9 @@ Inferências adicionais em CUDA e CPU com o artigo inteiro confirmaram que a con
 ## Rastreabilidade e limites
 
 - [Configuração/hashes](results/experiment-config.json), [135 respostas e medições](results/runs.jsonl), [resumo calculado](results/summary.json) e [medianas por caso](results/case-summary.csv).
-- [Carregamento](results/load-memory.json), [picos do kernel](results/memory-highwater.json), [aceitação nativa](results/native-acceptance.json), [instalação XPI](results/native-install.json) e [inferências nativas](results/native-model.json).
+- [Carregamento](results/load-memory.json), [picos do kernel](results/memory-highwater.json), [aceitação nativa no Zotero 10.0.6](results/native-acceptance-10.0.6.json), [instalação XPI 0.2.0](results/native-install-0.2.0.json) e [inferências nativas](results/native-model.json).
 - A contagem prévia do benchmark omitira **um BOS**. A entrada efetiva sempre continha esse token; os números de contexto deste relatório usam `timings.prompt_n`. O código de distribuição foi corrigido, sem alterar as mensagens de geração. O registro bruto permanece intacto; [evidência da correção](results/preflight-correction.json).
 - Apenas cinco artigos de aprendizado de máquina, perguntas fixas, seed única e revisão assistida não cega. Não há avaliação humana independente, generalização para outros domínios, medição de energia ou controle de clocks/carga do desktop.
-- OCR, interpretação visual de gráficos, busca externa, agentes, quantização de K/V e validação Windows/macOS ficam fora desta versão. O alvo validado é Zotero 10.0.3 em Linux x86_64.
+- OCR, interpretação visual de gráficos, busca externa, agentes e quantização de K/V ficam fora desta versão. O alvo validado é Zotero 10.0.6 (e o piso 10.0.3) em Linux x86_64. O suporte a Windows x64 está implementado, mas a validação nativa Windows/macOS ainda não faz parte desta evidência.
 
 Os comandos para repetir o experimento em outra pasta de resultados estão no [README experimental](README.md).

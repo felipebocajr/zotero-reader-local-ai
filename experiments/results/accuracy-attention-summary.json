@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-10-22T03:39:23.189Z",
+  "dataset": "arXiv:1706.03762v1",
+  "paper": "attention",
+  "precision": "Q4_K_M",
+  "contextTokens": 32768,
+  "thinkBudget": "512",
+  "cases": 11,
+  "models": [
+    {
+      "model": "lfm2.5-2.6b",
+      "precision": "Q4_K_M",
+      "cases": 11,
+      "ok": 11,
+      "errors": 0,
+      "content_aligned": 8,
+      "all_checks_passed": 8,
+      "average_accuracy_percent": 91.88181818181819,
+      "average_words": 117.63636363636364
+    },
+    {
+      "model": "lfm2.5-8b-a1b",
+      "precision": "Q4_K_M",
+      "cases": 11,
+      "ok": 11,
+      "errors": 0,
+      "content_aligned": 9,
+      "all_checks_passed": 7,
+      "average_accuracy_percent": 93.82727272727274,
+      "average_words": 84.45454545454545
+    }
+  ],
+  "total": {
+    "cases": 22,
+    "ok": 22,
+    "content_aligned": 17,
+    "all_checks_passed": 15
+  }
+}
