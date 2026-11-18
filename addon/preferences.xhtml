@@ -46,23 +46,12 @@
         <html:legend>Groq</html:legend>
         <html:label>Chave da API <html:input id="reader-local-ai-apiKey" type="password" autocomplete="off" spellcheck="false" style="width:100%" placeholder="gsk_..." /></html:label>
         <html:p style="margin:0;font-size:12px">A chave fica salva nas preferências do Zotero em texto puro. O artigo completo será enviado ao Groq pela internet. Use uma chave com limite de uso.</html:p>
-        <html:label>Modelo <html:input id="reader-local-ai-groqModel" type="text" list="reader-local-ai-groq-models" spellcheck="false" style="width:100%" placeholder="openai/gpt-oss-120b" /></html:label>
-        <html:div style="display:flex;gap:8px;align-items:flex-end">
-          <html:label style="flex:1;min-width:0">Modelos disponíveis
-            <html:select id="reader-local-ai-groqModelSelect" style="width:100%" onchange="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.selectGroqModel()">
-              <html:option value="">Informe a chave e busque os modelos</html:option>
-            </html:select>
-          </html:label>
-          <html:button type="button" id="reader-local-ai-groq-refresh" onclick="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.loadGroqModels()">Buscar modelos</html:button>
-        </html:div>
-        <html:p id="reader-local-ai-groq-model-details" role="status" aria-live="polite" style="margin:0;font-size:12px">Informe a chave e clique em “Buscar modelos” para carregar a lista.</html:p>
-        <html:datalist id="reader-local-ai-groq-models">
-          <html:option value="openai/gpt-oss-120b" />
-          <html:option value="openai/gpt-oss-20b" />
-          <html:option value="qwen/qwen3.8-27b" />
-          <html:option value="llama-3.3-70b-versatile" />
-          <html:option value="llama-3.1-8b-instant" />
-        </html:datalist>
+        <html:label>Modelos disponíveis
+          <html:select id="reader-local-ai-groqModelSelect" style="width:100%" onchange="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.selectGroqModel()">
+            <html:option value="">Cole a chave e pressione Enter</html:option>
+          </html:select>
+        </html:label>
+        <html:p id="reader-local-ai-groq-model-details" role="status" aria-live="polite" style="margin:0;font-size:12px">Cole a chave e pressione Enter para buscar os modelos automaticamente.</html:p>
         <html:p style="margin:0;font-size:12px">O contexto e a reserva de geração ficam em “Contexto e conexão”.</html:p>
       </html:fieldset>
       <html:label id="reader-local-ai-model-label">Modelo <html:select id="reader-local-ai-model" style="width:100%" onchange="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.updateModel()" /></html:label>

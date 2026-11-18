@@ -54,7 +54,7 @@ O modelo padrão é o LFM2.5-8B-A1B. Para usar o LFM3-1.7B ou configurar o runti
 - **Servidor local (padrão):** usa o `llama-server` deste projeto, com contagem exata do template e inferência offline depois da preparação.
 - **Groq (API):** usa sua própria chave `gsk_...`, o modelo escolhido e o contexto configurado. O artigo completo, o trecho e a pergunta são enviados ao Groq pela internet. Neste protótipo, a chave fica salva nas preferências do Zotero em texto puro; use uma chave com limite de uso.
 
-Para trocar de provedor, abra **Configurações → Assistente local**, escolha **Groq (API)**, informe a chave e o modelo e clique em **Salvar configurações**. Não há servidor local para iniciar nesse modo.
+Para trocar de provedor, abra **Configurações → Assistente local**, escolha **Groq (API)**, cole a chave e pressione **Enter** para buscar os modelos. Escolha um modelo na lista e clique em **Salvar configurações**. Não há servidor local para iniciar nesse modo.
 
 ## Privacidade e limitações
 

@@ -31,7 +31,6 @@
     check("local base URL hides for Groq", pref.document.getElementById("reader-local-ai-baseUrl-label").hidden);
 
     pref.document.getElementById("reader-local-ai-apiKey").value = "gsk_test_pane_key";
-    pref.document.getElementById("reader-local-ai-groqModel").value = "openai/gpt-oss-120b";
     pref.document.getElementById("reader-local-ai-contextTokens").value = "64000";
     pref.document.getElementById("reader-local-ai-preferences").requestSubmit();
     await sleep(100);

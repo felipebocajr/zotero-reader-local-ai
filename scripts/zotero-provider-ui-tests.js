@@ -8,6 +8,7 @@
   const sleep = ms => new Promise(resolve => win.setTimeout(resolve, ms));
   const results = { checks: [], styles: {}, errors: [] };
   const api = Zotero.ReaderLocalAI;
+  const originalSettings = api.getSettings();
   const originalRequestGroqModels = api.requestGroqModels;
   const originalGetGroqModels = api.getGroqModels;
   let mockModelsRevision = 0;
@@ -72,18 +73,23 @@
     check("local model label hidden after click", display(localModelLabel) === "none");
     await snapshot("native-provider-ui-groq");
 
-    pref.document.getElementById("reader-local-ai-apiKey").value = "gsk_test_pane_key";
-    pref.document.getElementById("reader-local-ai-groq-refresh").click();
+    const keyInput = pref.document.getElementById("reader-local-ai-apiKey");
+    keyInput.value = "gsk_test_pane_key";
+    keyInput.dispatchEvent(new pref.KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true }));
     await sleep(1600);
     const modelSelect = pref.document.getElementById("reader-local-ai-groqModelSelect");
-    check("Groq model list is populated", modelSelect.options.length === 3);
+    check("Enter loads the Groq model list", modelSelect.options.length === 3);
     check("Groq model list keeps model ids", [...modelSelect.options].some(option => option.value === "openai/gpt-oss-120b"));
+    check("Groq has no manual model field", !pref.document.getElementById("reader-local-ai-groqModel"));
     modelSelect.value = "openai/gpt-oss-120b";
     modelSelect.dispatchEvent(new pref.Event("change", { bubbles: true }));
     await sleep(100);
-    check("selecting a Groq model fills the field", pref.document.getElementById("reader-local-ai-groqModel").value === "openai/gpt-oss-120b");
+    check("selecting a Groq model stores the choice", modelSelect.value === "openai/gpt-oss-120b");
     check("Groq model details show context", pref.document.getElementById("reader-local-ai-groq-model-details").textContent.includes("131.072"));
     check("Groq model context is applied", pref.document.getElementById("reader-local-ai-contextTokens").max === "131072");
+    pref.document.getElementById("reader-local-ai-preferences").requestSubmit();
+    await sleep(100);
+    check("selected Groq model saves", api.getSettings().model === "openai/gpt-oss-120b");
 
     local.click();
     await sleep(300);
@@ -96,6 +102,7 @@
   } catch (error) {
     results.errors.push({ message: String(error), stack: error.stack });
   } finally {
+    try { api.saveSettings(originalSettings); } catch { /* Best effort restore. */ }
     api.requestGroqModels = originalRequestGroqModels;
     api.getGroqModels = originalGetGroqModels;
     pref?.close();

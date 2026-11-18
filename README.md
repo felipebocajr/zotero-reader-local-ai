@@ -54,7 +54,7 @@ The default model is LFM2.5-8B-A1B. To use LFM3-1.7B or configure the runtime, s
 - **Local server (default):** uses this project's `llama-server`, with exact template token counting and offline inference after setup.
 - **Groq (API):** uses your own `gsk_...` key, the selected model and the configured context. The full article, selected passage and question are sent to Groq over the internet. In this prototype the key is stored in Zotero preferences as plain text; use a key with a usage limit.
 
-To switch providers, open **Settings → Assistente local**, choose **Groq (API)**, enter the key and model, and click **Salvar configurações** (Save Settings). There is no local server to start in this mode.
+To switch providers, open **Settings → Assistente local**, choose **Groq (API)**, paste the key and press **Enter** to load the models. Choose a model from the list and click **Salvar configurações** (Save Settings). There is no local server to start in this mode.
 
 ## Privacy and limitations
 

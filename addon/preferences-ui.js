@@ -4,6 +4,7 @@ var ReaderLocalAIPreferences = {
     if (this.timer) document.defaultView.clearTimeout(this.timer);
     this.groqModels = [];
     this.modelsRevision = 0;
+    this.groqModel = Zotero.ReaderLocalAI.getGroqModel();
     const settings = Zotero.ReaderLocalAI.getSettings();
     const select = document.getElementById("reader-local-ai-model");
     select.replaceChildren();
@@ -24,7 +25,12 @@ var ReaderLocalAIPreferences = {
     document.getElementById("reader-local-ai-baseUrl").value = Zotero.ReaderLocalAI.getLocalBaseUrl();
     document.getElementById("reader-local-ai-timeoutSeconds").value = settings.timeoutMs / 1000;
     document.getElementById("reader-local-ai-apiKey").value = String(settings.apiKey ?? "");
-    document.getElementById("reader-local-ai-groqModel").value = Zotero.ReaderLocalAI.getGroqModel();
+    document.getElementById("reader-local-ai-apiKey").onkeydown = event => {
+      if (event.key === "Enter" && !event.isComposing) {
+        event.preventDefault();
+        this.loadGroqModels();
+      }
+    };
     const provider = settings.provider === "groq" ? "groq" : "local";
     document.getElementById("reader-local-ai-provider-" + provider).checked = true;
     const runtime = Zotero.ReaderLocalAI.getRuntimePreferences();
@@ -81,7 +87,8 @@ var ReaderLocalAIPreferences = {
     const key = document.getElementById("reader-local-ai-apiKey").value;
     if (!key.trim()) { details.textContent = "Informe a chave da API do Groq para buscar os modelos."; return; }
     details.textContent = "Buscando modelos na API do Groq…";
-    document.getElementById("reader-local-ai-groq-refresh").disabled = true;
+    const select = document.getElementById("reader-local-ai-groqModelSelect");
+    if (select) select.disabled = true;
     this.modelsRevision = -1;
     Zotero.ReaderLocalAI.requestGroqModels(key);
   },
@@ -92,14 +99,17 @@ var ReaderLocalAIPreferences = {
     this.modelsRevision = state.revision;
     const select = document.getElementById("reader-local-ai-groqModelSelect");
     const details = document.getElementById("reader-local-ai-groq-model-details");
-    const refresh = document.getElementById("reader-local-ai-groq-refresh");
-    if (!select || !details || !refresh) return;
+    if (!select || !details) return;
     if (state.phase === "loading") {
-      refresh.disabled = true;
+      select.disabled = true;
+      select.replaceChildren();
+      const option = document.createElementNS("http://www.w3.org/1999/xhtml", "option");
+      option.value = ""; option.textContent = "Buscando modelos…";
+      select.append(option);
       details.textContent = "Buscando modelos na API do Groq…";
       return;
     }
-    refresh.disabled = false;
+    select.disabled = false;
     if (state.phase === "error") {
       this.groqModels = [];
       select.replaceChildren();
@@ -119,16 +129,24 @@ var ReaderLocalAIPreferences = {
       const option = document.createElementNS("http://www.w3.org/1999/xhtml", "option");
       option.value = model.id; option.textContent = this.modelLabel(model); select.append(option);
     }
-    const current = document.getElementById("reader-local-ai-groqModel").value;
-    if (this.groqModels.some(model => model.id === current)) select.value = current;
-    details.textContent = this.groqModels.length === 1
-      ? "1 modelo de texto disponível. Selecione para preencher o campo."
-      : this.groqModels.length + " modelos de texto disponíveis. Selecione um para preencher o campo.";
+    const current = this.groqModel;
+    if (current && !this.groqModels.some(model => model.id === current)) {
+      const saved = document.createElementNS("http://www.w3.org/1999/xhtml", "option");
+      saved.value = current; saved.textContent = current + " (salvo)"; select.append(saved);
+    }
+    if (current) select.value = current;
+    if (current && this.groqModels.some(model => model.id === current)) this.showGroqModelDetails(current);
+    else details.textContent = this.groqModels.length === 1
+      ? "1 modelo de texto disponível. Selecione um para usar."
+      : this.groqModels.length + " modelos de texto disponíveis. Selecione um para usar.";
   },
   selectGroqModel() {
     const id = document.getElementById("reader-local-ai-groqModelSelect").value;
     if (!id) return;
-    document.getElementById("reader-local-ai-groqModel").value = id;
+    this.groqModel = id;
+    this.showGroqModelDetails(id);
+  },
+  showGroqModelDetails(id) {
     const model = this.groqModels.find(model => model.id === id);
     if (!model) return;
     const details = [];
@@ -156,7 +174,7 @@ var ReaderLocalAIPreferences = {
       Zotero.ReaderLocalAI.saveConfiguration({
         provider,
         baseUrl: provider === "groq" ? Zotero.ReaderLocalAI.getGroqDefaults().baseUrl : read("baseUrl"),
-        model: provider === "groq" ? read("groqModel") : read("model"),
+        model: provider === "groq" ? (this.groqModel || Zotero.ReaderLocalAI.getGroqModel()) : read("model"),
         apiKey: read("apiKey"),
         responseLanguage: read("responseLanguage"),
         contextTokens: Number(read("contextTokens")),
