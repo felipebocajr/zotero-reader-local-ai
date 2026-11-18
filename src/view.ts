@@ -28,7 +28,10 @@ export function createPopup(doc: Document, anchor: DOMRect, selection: string, h
   const headerActions = doc.createElement("div"); headerActions.className = "reader-local-ai-header-actions";
   headerActions.append(expand, closeButton);
   header.append(title, headerActions);
+  const quoteSection = doc.createElement("div"); quoteSection.className = "reader-local-ai-selection";
+  const quoteLabel = doc.createElement("div"); quoteLabel.className = "reader-local-ai-author"; quoteLabel.textContent = "Trecho selecionado";
   const quote = doc.createElement("blockquote"); quote.textContent = selection; quote.title = selection;
+  quoteSection.append(quoteLabel, quote);
   const history = doc.createElement("div"); history.className = "reader-local-ai-history";
   const status = doc.createElement("div"); status.className = "reader-local-ai-status"; status.setAttribute("role", "status");
   const error = doc.createElement("div"); error.className = "reader-local-ai-error"; error.setAttribute("role", "alert");
@@ -49,7 +52,7 @@ export function createPopup(doc: Document, anchor: DOMRect, selection: string, h
   footer.append(more, fresh, cancel);
   const resize = doc.createElement("div"); resize.className = "reader-local-ai-resize";
   resize.title = "Arraste para redimensionar"; resize.setAttribute("aria-hidden", "true");
-  root.append(header, quote, history, status, error, form, footer, resize);
+  root.append(header, quoteSection, history, status, error, form, footer, resize);
   doc.body.append(root);
   let followup = false, closed = false;
   let frame = 0;
@@ -257,11 +260,18 @@ export function createPopup(doc: Document, anchor: DOMRect, selection: string, h
       if (state.draft) turns.push({ question: state.question, answer: state.draft });
       for (const [index, turn] of turns.entries()) {
         const container = doc.createElement("div"); container.className = "reader-local-ai-turn";
+        const questionMessage = doc.createElement("div"); questionMessage.className = "reader-local-ai-message reader-local-ai-question-message";
+        const questionAuthor = doc.createElement("div"); questionAuthor.className = "reader-local-ai-author"; questionAuthor.textContent = "Você";
         const q = doc.createElement("div"); q.className = "reader-local-ai-question"; q.textContent = turn.question;
+        questionMessage.append(questionAuthor, q);
+        const answerMessage = doc.createElement("div"); answerMessage.className = "reader-local-ai-message reader-local-ai-answer-message";
+        const answerAuthor = doc.createElement("div"); answerAuthor.className = "reader-local-ai-author"; answerAuthor.textContent = "Assistente";
         const a = doc.createElement("div"); a.className = "reader-local-ai-answer"; renderFormattedText(a, turn.answer);
-        container.append(q, a);
+        answerMessage.append(answerAuthor, a);
+        container.append(questionMessage, answerMessage);
         if (index < state.history.length) {
           const saved = state.answerSaves[index];
+          const actions = doc.createElement("div"); actions.className = "reader-local-ai-answer-actions";
           const save = button(saved?.phase === "saved" ? "Salvo nas anotações" : saved?.phase === "saving" ? "Salvando…" : "Salvar nas anotações", "reader-local-ai-save-answer");
           save.disabled = saved?.phase === "saving" || saved?.phase === "saved";
           save.addEventListener("click", () => handlers.saveAnswer(index));
@@ -272,7 +282,7 @@ export function createPopup(doc: Document, anchor: DOMRect, selection: string, h
               if (!save.disabled) handlers.saveAnswer(index);
             }
           });
-          container.append(save);
+          actions.append(save);
           if (state.showDetail && index === state.history.length - 1) {
             const detail = button("Explicar com mais detalhes", "reader-local-ai-detail");
             const activate = () => { if (!detail.disabled) handlers.explainDetail(); };
@@ -283,11 +293,12 @@ export function createPopup(doc: Document, anchor: DOMRect, selection: string, h
                 event.preventDefault(); event.stopPropagation(); activate();
               }
             });
-            container.append(detail);
+            actions.append(detail);
           }
+          answerMessage.append(actions);
           if (saved?.error) {
             const message = doc.createElement("div"); message.className = "reader-local-ai-save-error reader-local-ai-error";
-            message.setAttribute("role", "alert"); message.textContent = saved.error; container.append(message);
+            message.setAttribute("role", "alert"); message.textContent = saved.error; answerMessage.append(message);
           }
         }
         history.append(container);

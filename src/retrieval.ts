@@ -107,7 +107,7 @@ export class RetrievalService {
       totalChunks: index.chunks.length,
     });
     const estimated = (indices: readonly number[]): number =>
-      estimatePromptTokens(buildMessages(paper, selection, question, history, settings.responseLanguage, mode, render(indices)));
+      estimatePromptTokens(buildMessages(paper, selection, question, history, mode, render(indices)));
     const base = estimated([]);
     if (base > maxTokens) {
       throw new ReaderError("context", `A pergunta, o trecho e a conversa usam cerca de ${base.toLocaleString("pt-BR")} tokens, acima do orçamento de ${maxTokens.toLocaleString("pt-BR")}. Inicie uma nova pergunta ou aumente o limite.`);

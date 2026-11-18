@@ -11,7 +11,7 @@ A Zotero add-on that helps readers understand PDF passages and ask questions abo
 - Explain selected passages and ask questions about a PDF.
 - View assistance alongside the text and optionally save useful answers as Zotero annotations.
 - Read formatted Markdown and mathematical expressions.
-- English is the default response language; Brazilian Portuguese is available in the settings.
+- Answers follow the language of each question automatically, with no separate language setting.
 - Uses local RAG by default: only the most relevant article excerpts are sent to the model, using Qwen3-Embedding-0.6B. The **Full article** mode remains available.
 - Inference runs locally by default; an optional Groq provider can be configured with your own API key.
 - Conversations are not saved automatically.

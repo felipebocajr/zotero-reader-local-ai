@@ -113,17 +113,19 @@ Para o teste real, instale o XPI, abra **Configurações → Assistente local**,
 
 ## Idioma das respostas
 
+O idioma é automático e não existe preferência salva. `src/language.ts` classifica cada pergunta com palavras funcionais e diacríticos; o system prompt manda responder no idioma da pergunta e um lembrete concreto é repetido depois de cada pergunta, inclusive nas continuações. O idioma do artigo, dos trechos e do histórico não muda a resposta. Um pedido explícito dentro da pergunta pode escolher outro idioma.
+
 Depois da suíte simulada, com Q4 dos dois modelos preparado:
 
 ```bash
 python3 scripts/rdp.py --file scripts/zotero-language-tests.js
 ```
 
-O teste abre o seletor nativo, verifica o padrão `en` num perfil sem preferência salva e a persistência ao reabrir a janela. Com o artigo completo em inglês, gera uma explicação em inglês, troca para português (Brasil) com uma pergunta em português e volta para inglês com uma pergunta em inglês na mesma conversa. Faz esse fluxo com ambos os modelos; o idioma não exige reiniciar o servidor. Revise os textos em `experiments/results/native-languages-en-default.json`: verificações de interface/protocolo não substituem a inspeção do idioma real.
+O teste verifica que o seletor foi removido, que um artigo em inglês recebe explicação em inglês, que uma pergunta em português na mesma conversa recebe resposta em português e que a pergunta seguinte em inglês volta ao inglês. Faz esse fluxo com ambos os modelos. Revise os textos em `experiments/results/native-languages-auto.json`: verificações de interface/protocolo não substituem a inspeção do idioma real. A evidência local com LFM3-1.7B está em `experiments/language-auto.md` e `experiments/results/language-auto-smoke.json`.
 
 O teste usa a porta 18095 e encerra somente o runtime que iniciou. Se já houver um servidor 8B compatível na porta 8080 (um slot e contexto 32.768), aproveita-o como servidor externo e o preserva. Nenhuma anotação é criada, e as preferências do perfil isolado são restauradas. Capturas ficam em `.runtime/native-language-*.png`.
 
-`responseLanguage` é lido no início de cada pedido; a instrução fica no system e após cada pergunta. Ela permite outro idioma quando solicitado explicitamente. Os lembretes fazem parte da contagem real de tokens, e perguntas/respostas originais permanecem no histórico e no salvamento. Essa alteração muda o prompt: novas comparações exigem uma pasta separada `LFM_RESULTS_DIR`.
+Os lembretes fazem parte da contagem real de tokens, e perguntas/respostas originais permanecem no histórico e no salvamento. A mudança altera o prompt: novas comparações exigem uma pasta separada `LFM_RESULTS_DIR` e não podem sobrescrever a baseline de precisão entregue.
 
 ## Salvar respostas nas anotações
 

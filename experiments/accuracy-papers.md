@@ -36,9 +36,13 @@ resposta diga isso explicitamente na primeira frase e indique o que falta, sem
 preencher a lacuna com conhecimento externo, suposições ou números inventados.
 Os casos `fa4-absent` e `dllm-absent` medem essa abstenção.
 
+Estes resultados foram medidos quando `responseLanguage` ainda era uma
+preferência. O plugin atual segue o idioma de cada pergunta; os números abaixo
+permanecem históricos e não devem ser misturados com novas execuções.
+
 Checagens determinísticas continuam separadas:
 
-- idioma detectado contra `responseLanguage`;
+- idioma detectado contra o idioma esperado do caso (`responseLanguage` no dataset);
 - limite de 250 palavras (ou `maxWords` do caso);
 - ausência de listas, tabelas, títulos e blocos de código;
 - ausência de tags de raciocínio (`<think>`, `reasoning_content`);

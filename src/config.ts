@@ -14,11 +14,6 @@ export const LEGACY_MODEL_OPTIONS = [
     description: "Pesos Q4: cerca de 1,67 GB. Não é oferecido nas preferências do plugin." },
 ] as const;
 
-export const RESPONSE_LANGUAGE_OPTIONS = [
-  { id: "en", label: "English" },
-  { id: "pt-BR", label: "Português (Brasil)" },
-] as const;
-
 export const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
 export const GROQ_DEFAULT_MODEL = "openai/gpt-oss-120b";
 export const GROQ_MAX_CONTEXT = 131072;
@@ -34,7 +29,7 @@ export const RETRIEVAL_RELATIVE_FLOOR = 0.75;
 export const DEFAULTS: Settings = {
   provider: "local",
   baseUrl: "http://127.0.0.1:8080", model: "lfm2.5-8b-a1b", apiKey: "",
-  responseLanguage: "en", retrievalMode: "embeddings",
+  retrievalMode: "embeddings",
   contextTokens: 64000, generationTokens: 4096, timeoutMs: 600000,
 };
 export const PREF_PREFIX = "extensions.reader-local-ai.";
@@ -46,9 +41,6 @@ export function validateSettings(input: Settings): Settings {
   }
   const provider = rawProvider === "groq" ? "groq" : "local";
   const apiKey = typeof input.apiKey === "string" ? input.apiKey : "";
-  if (!RESPONSE_LANGUAGE_OPTIONS.some(option => option.id === input.responseLanguage)) {
-    throw new ReaderError("config", "Escolha Português (Brasil) ou Inglês para o idioma das respostas.");
-  }
   if (input.retrievalMode !== "embeddings" && input.retrievalMode !== "full") {
     throw new ReaderError("config", "Escolha trechos relevantes ou o artigo completo como contexto.");
   }

@@ -11,7 +11,7 @@ Extensão do Zotero que ajuda a compreender trechos de PDFs e responder a pergun
 - Explica trechos selecionados e responde a perguntas sobre o PDF.
 - Exibe a assistência junto ao texto e permite salvar respostas úteis como anotações do Zotero.
 - Formata Markdown e expressões matemáticas.
-- O idioma padrão das respostas é inglês; português do Brasil está disponível nas configurações.
+- As respostas seguem automaticamente o idioma de cada pergunta, sem uma configuração separada de idioma.
 - Por padrão, usa RAG local: envia ao modelo apenas os trechos mais relevantes do artigo, com Qwen3-Embedding-0.6B. O modo **Artigo completo** continua disponível.
 - A inferência é local por padrão; um provedor Groq opcional pode ser configurado com sua própria chave de API.
 - A inferência é local, e as conversas não são salvas automaticamente.

@@ -101,7 +101,7 @@ node --experimental-strip-types scripts/embedding_benchmark.ts \
 - prompt com `TRECHOS RECUPERADOS DO ARTIGO`;
 - artigo completo ausente do prompt;
 - regra de insuficiência específica para trechos;
-- aviso no popup: **11 de 45 trechos · ~3.516 tokens**;
+- aviso no popup: **11 de 45 trechos · ~3.500 tokens**;
 - resposta renderizada pelo mock, sem erro.
 
 Evidências:

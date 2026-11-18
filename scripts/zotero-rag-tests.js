@@ -29,7 +29,7 @@
     await wait(() => view._pdfPages?.[0]?.chars?.length, "PDF pages", 30000);
 
     Zotero.ReaderLocalAI.saveSettings({ ...initial, baseUrl: "http://127.0.0.1:18080", model: "lfm2.5-8b-a1b",
-      retrievalMode: "embeddings", responseLanguage: "en", contextTokens: 32768, generationTokens: 4096 });
+      retrievalMode: "embeddings", contextTokens: 32768, generationTokens: 4096 });
     Zotero.ReaderLocalAI.runEmbeddingAction("start");
     await wait(() => ["ready", "external"].includes(Zotero.ReaderLocalAI.getEmbeddingState().phase), "embedding server", 120000);
     check("managed embedding server ready", Zotero.ReaderLocalAI.getEmbeddingState().model === "qwen3-embedding-0.6b",
@@ -59,8 +59,13 @@
     check("prompt declares retrieved excerpts", prompt.includes("TRECHOS RECUPERADOS DO ARTIGO"));
     check("prompt omits the full article", !prompt.includes((await Zotero.PDFWorker.getFullText(attachment.id, null)).text));
     check("prompt uses excerpt-specific rules", last.messages[0].content.includes("retrieved excerpts"));
+    check("prompt follows the Portuguese question", last.messages.at(-1).content.includes("Answer in Brazilian Portuguese (pt-BR)"));
     check("popup shows the retrieval note", popup.querySelector(".reader-local-ai-status").textContent.includes("Trechos relevantes"));
     check("RAG answer is rendered", !!popup.querySelector(".reader-local-ai-answer"));
+    check("popup separates question and answer like a conversation",
+      popup.querySelector(".reader-local-ai-question-message .reader-local-ai-author").textContent === "Você" &&
+      popup.querySelector(".reader-local-ai-answer-message .reader-local-ai-author").textContent === "Assistente" &&
+      !!popup.querySelector(".reader-local-ai-selection .reader-local-ai-author"));
     results.promptChars = prompt.length;
     results.retrievalNote = popup.querySelector(".reader-local-ai-status").textContent;
   } catch (error) {

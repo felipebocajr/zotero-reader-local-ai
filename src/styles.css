@@ -11,7 +11,7 @@
 }
 .reader-local-ai-popup {
   position: fixed !important; z-index: 2147483000; transform: none !important;
-  box-sizing: border-box; width: 400px; max-width: calc(100vw - 24px);
+  box-sizing: border-box; width: 440px; max-width: calc(100vw - 24px);
   max-height: min(560px, calc(100vh - 24px)); display: flex; flex-direction: column;
   gap: 10px; padding: 14px 14px 24px !important; font: 13px/1.5 system-ui, sans-serif;
   color: #25282e; background: #fff; border: 1px solid #b7bcc4; border-radius: 9px;
@@ -38,14 +38,34 @@
 }
 .reader-local-ai-popup header strong { font-size: 13px; font-weight: 600; }
 .reader-local-ai-popup .reader-local-ai-close { border: 0; padding: 0 6px; font-size: 20px; line-height: 1.2; }
-.reader-local-ai-popup blockquote {
+.reader-local-ai-selection { display: grid; gap: 2px; flex-shrink: 0; }
+.reader-local-ai-popup .reader-local-ai-selection blockquote {
   margin: 0; padding: 0 0 0 8px; border-left: 2px solid #8aa4c2; font-size: 12px; opacity: .8;
-  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex-shrink: 0;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
-.reader-local-ai-history { overflow: auto; min-height: 0; overscroll-behavior: contain; }
-.reader-local-ai-turn + .reader-local-ai-turn { border-top: 1px solid #80808040; margin-top: 12px; padding-top: 12px; }
-.reader-local-ai-question { font-size: 12px; font-weight: 600; margin-bottom: 5px; }
-.reader-local-ai-answer { white-space: normal; overflow-wrap: anywhere; user-select: text; }
+.reader-local-ai-author {
+  font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; opacity: .55;
+}
+.reader-local-ai-history {
+  display: flex; flex-direction: column; gap: 14px; overflow: auto; min-height: 0;
+  padding-right: 4px; overscroll-behavior: contain;
+}
+.reader-local-ai-turn { display: flex; flex-direction: column; gap: 9px; }
+.reader-local-ai-message { display: flex; flex-direction: column; min-width: 0; }
+.reader-local-ai-question-message { align-items: flex-end; }
+.reader-local-ai-question-message .reader-local-ai-author { margin: 0 7px 3px 0; }
+.reader-local-ai-answer-message { align-items: stretch; }
+.reader-local-ai-answer-message .reader-local-ai-author { margin: 0 0 3px 8px; }
+.reader-local-ai-question {
+  max-width: 88%; padding: 6px 10px; border: 1px solid #c7d8ee;
+  border-radius: 12px 12px 3px 12px; background: #e9f1fb;
+  white-space: pre-wrap; overflow-wrap: anywhere; user-select: text;
+}
+.reader-local-ai-answer {
+  padding: 8px 10px; border: 1px solid #e1e5ea; border-radius: 3px 12px 12px 12px;
+  background: #f7f8fa; white-space: normal; overflow-wrap: anywhere; user-select: text;
+}
+.reader-local-ai-answer-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .reader-local-ai-answer :is(h1,h2,h3,h4,h5,h6), .reader-local-ai-annotation-math :is(h1,h2,h3,h4,h5,h6) {
   font: inherit; font-weight: 700; margin: .8em 0 .3em;
 }
@@ -68,8 +88,7 @@
   position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none;
 }
 .reader-local-ai-math-comment:focus-within > .reader-local-ai-annotation-math { display: none; }
-.reader-local-ai-popup .reader-local-ai-save-answer { margin-top: 8px; font-size: 12px; }
-.reader-local-ai-popup .reader-local-ai-detail { margin-top: 8px; margin-left: 6px; font-size: 12px; }
+.reader-local-ai-popup .reader-local-ai-save-answer, .reader-local-ai-popup .reader-local-ai-detail { margin: 0; font-size: 12px; }
 .reader-local-ai-save-error { margin-top: 5px; }
 .reader-local-ai-status { font-size: 12px; opacity: .8; flex-shrink: 0; }
 .reader-local-ai-error { font-size: 12px; color: #ac3030; white-space: pre-wrap; flex-shrink: 0; }
@@ -84,5 +103,7 @@
 .reader-local-ai-popup [hidden] { display: none !important; }
 @media (prefers-color-scheme: dark) {
   .reader-local-ai-popup { background: #292c31; color: #e7e9ec; border-color: #565b64; }
+  .reader-local-ai-question { background: #33445c; border-color: #445a75; }
+  .reader-local-ai-answer { background: #33373d; border-color: #454a52; }
   .reader-local-ai-error { color: #ff9b9b; }
 }

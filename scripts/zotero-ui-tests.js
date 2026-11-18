@@ -63,21 +63,12 @@
   const originalSettings = Zotero.ReaderLocalAI.getSettings();
   try {
     // The mock serves the 8B only; persisted optional-model preferences are unrelated.
-    Zotero.ReaderLocalAI.saveSettings({...originalSettings,baseUrl:"http://127.0.0.1:18080",model:"lfm2.5-8b-a1b",responseLanguage:"en",retrievalMode:"full",contextTokens:32768,generationTokens:4096});
+    Zotero.ReaderLocalAI.saveSettings({...originalSettings,baseUrl:"http://127.0.0.1:18080",model:"lfm2.5-8b-a1b",retrievalMode:"full",contextTokens:32768,generationTokens:4096});
     const settingsBefore = Zotero.ReaderLocalAI.getSettings();
     const pref = Zotero.Utilities.Internal.openPreferences("reader-local-ai@local.invalid-preferences");
     await wait(() => pref.document.getElementById("reader-local-ai-baseUrl")?.value, "preferences loaded");
     check("native preference pane initializes", pref.document.getElementById("reader-local-ai-baseUrl").value === settingsBefore.baseUrl);
-    const languageSelect = pref.document.getElementById("reader-local-ai-responseLanguage");
-    check("native language selector offers English and Brazilian Portuguese", languageSelect.localName === "select" &&
-      [...languageSelect.options].map(option=>option.value).join(",") === "en,pt-BR");
-    check("native language selector initializes in English", languageSelect.value === "en");
-    languageSelect.value = "pt-BR";
-    pref.document.getElementById("reader-local-ai-preferences").requestSubmit();
-    check("native preferences save the Brazilian Portuguese response preference", Zotero.ReaderLocalAI.getSettings().responseLanguage === "pt-BR");
-    languageSelect.value = "en";
-    pref.document.getElementById("reader-local-ai-preferences").requestSubmit();
-    check("native preferences save the English response preference", Zotero.ReaderLocalAI.getSettings().responseLanguage === "en");
+    check("response language preference was removed", !pref.document.getElementById("reader-local-ai-responseLanguage"));
     const modelSelect = pref.document.getElementById("reader-local-ai-model");
     check("native model selector offers every model", modelSelect.localName === "select" &&
       [...modelSelect.options].map(option=>option.value).join(",") === "lfm2.5-8b-a1b,lfm3-1.7b");
@@ -146,11 +137,17 @@
     check("continuation displays both turns", popup(reader).querySelectorAll(".reader-local-ai-turn").length === 2);
     let requests = await (await win.fetch("http://127.0.0.1:18080/requests")).json();
     check("follow-up preserves history and one article", requests.at(-1).messages.length === 4 && requests.at(-1).messages.filter(m=>m.content.includes("<artigo")).length === 1);
+    check("Portuguese question requests a Portuguese answer",
+      requests.at(-1).messages.at(-1).content.includes("Answer in Brazilian Portuguese (pt-BR)"));
     const text = (await Zotero.PDFWorker.getFullText(reader.itemID, null)).text;
     check("entire native extracted paper sent", requests.at(-1).messages[1].content.includes(text), { chars: text.length, pages: 15 });
     button(reader, "Nova pergunta").click(); submit(reader, "Uma pergunta independente."); await complete(reader);
     requests = await (await win.fetch("http://127.0.0.1:18080/requests")).json();
     check("new question resets history", requests.at(-1).messages.length === 2 && popup(reader).querySelectorAll(".reader-local-ai-turn").length === 1);
+    button(reader, "Nova pergunta").click(); submit(reader, "What does the article report?"); await complete(reader);
+    requests = await (await win.fetch("http://127.0.0.1:18080/requests")).json();
+    check("English question requests an English answer",
+      requests.at(-1).messages.at(-1).content.includes("Answer in English (en)"));
     popup(reader).querySelector(".reader-local-ai-close").click();
     await open(reader, true); await complete(reader);
     const expand = button(reader, "Expandir");
@@ -183,9 +180,9 @@
     check("popup moves by dragging its header", afterMove.left > beforeMove.left + 70 && afterMove.top > beforeMove.top + 50);
     check("generic explanation action works", popup(reader).querySelector(".reader-local-ai-question").textContent.includes("Explique"));
     requests = await (await win.fetch("http://127.0.0.1:18080/requests")).json();
-    check("generic explanation sends English after the entire article",
-      requests.at(-1).messages[0].content.startsWith("Answer in English (en)") &&
-      requests.at(-1).messages.at(-1).content.lastIndexOf("Answer in English (en)") > requests.at(-1).messages.at(-1).content.indexOf("</artigo>"));
+    check("generic explanation follows its Portuguese question after the entire article",
+      requests.at(-1).messages[0].content.includes("same language as the user's question") &&
+      requests.at(-1).messages.at(-1).content.lastIndexOf("Answer in Brazilian Portuguese (pt-BR)") > requests.at(-1).messages.at(-1).content.indexOf("</artigo>"));
     const detail = button(reader, "Explicar com mais detalhes");
     check("brief explanation offers a detailed follow-up", !!detail && !detail.hidden);
     detail.click();
@@ -202,7 +199,7 @@
     await open(reader); submit(reader, "Contexto excedido"); await expectError(reader, "não será cortado");
     await win.fetch("http://127.0.0.1:18080/control", { method: "POST", body: JSON.stringify({tokens:10000}) });
     const settings = Zotero.ReaderLocalAI.getSettings();
-    Zotero.ReaderLocalAI.saveSettings({...settings, baseUrl:"http://127.0.0.1:18081"});
+    Zotero.ReaderLocalAI.saveSettings({...settings, baseUrl:"http://127.0.0.1:18099"});
     await open(reader); submit(reader, "Servidor indisponível"); await expectError(reader, "conectar");
     Zotero.ReaderLocalAI.saveSettings(settings);
     await open(reader); popup(reader).querySelector(".reader-local-ai-close").click(); await select(reader, true);

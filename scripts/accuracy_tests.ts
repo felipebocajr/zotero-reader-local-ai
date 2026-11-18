@@ -230,7 +230,7 @@ try {
     const baseUrl = externalUrl ?? `http://127.0.0.1:${port}`;
     const server = externalUrl ? undefined : await startServer(model);
     activeServer = server?.process;
-    const client = new LlamaClient(fetch, { ...DEFAULTS, baseUrl, model, responseLanguage: "en",
+    const client = new LlamaClient(fetch, { ...DEFAULTS, baseUrl, model,
       contextTokens, generationTokens, timeoutMs });
     console.log(`Modelo ${model}, ${precision}, contexto ${contextTokens}, servidor ${baseUrl}, avaliador ${evaluator}`);
     try {
@@ -254,7 +254,7 @@ try {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), timeoutMs);
         try {
-          const messages = buildMessages(paper, test.selectionPhrase, test.question, [], test.responseLanguage);
+          const messages = buildMessages(paper, test.selectionPhrase, test.question);
           const generated = await client.generate(messages, controller.signal, () => {}, false);
           const base = {
             status: "ok", answer: generated.answer, prompt_tokens: generated.promptTokens,

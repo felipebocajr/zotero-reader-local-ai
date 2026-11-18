@@ -13,13 +13,7 @@ var ReaderLocalAIPreferences = {
       option.value = model.id; option.textContent = model.label; select.append(option);
     }
     select.value = Zotero.ReaderLocalAI.getLocalModel();
-    const languages = document.getElementById("reader-local-ai-responseLanguage");
-    languages.replaceChildren();
-    for (const language of Zotero.ReaderLocalAI.getResponseLanguages()) {
-      const option = document.createElementNS("http://www.w3.org/1999/xhtml", "option");
-      option.value = language.id; option.textContent = language.label; languages.append(option);
-    }
-    for (const key of ["responseLanguage", "contextTokens", "generationTokens"]) {
+    for (const key of ["contextTokens", "generationTokens"]) {
       document.getElementById("reader-local-ai-" + key).value = settings[key];
     }
     document.getElementById("reader-local-ai-retrievalMode").value = settings.retrievalMode === "full" ? "full" : "embeddings";
@@ -190,7 +184,6 @@ var ReaderLocalAIPreferences = {
         baseUrl: provider === "groq" ? Zotero.ReaderLocalAI.getGroqDefaults().baseUrl : read("baseUrl"),
         model: provider === "groq" ? (this.groqModel || Zotero.ReaderLocalAI.getGroqModel()) : read("model"),
         apiKey: read("apiKey"),
-        responseLanguage: read("responseLanguage"),
         retrievalMode: read("retrievalMode"),
         contextTokens: Number(read("contextTokens")),
         generationTokens: Number(read("generationTokens")),

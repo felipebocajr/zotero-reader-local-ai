@@ -1,6 +1,6 @@
 import { LlamaClient } from "./client.ts";
 import type { ChatClient } from "./client.ts";
-import { DEFAULTS, EMBEDDING_BASE_URL, EMBEDDING_DIMENSIONS, EMBEDDING_MODEL, GROQ_BASE_URL, GROQ_DEFAULT_MODEL, GROQ_MAX_CONTEXT, MODEL_OPTIONS, RESPONSE_LANGUAGE_OPTIONS, PREF_PREFIX, validateSettings } from "./config.ts";
+import { DEFAULTS, EMBEDDING_BASE_URL, EMBEDDING_DIMENSIONS, EMBEDDING_MODEL, GROQ_BASE_URL, GROQ_DEFAULT_MODEL, GROQ_MAX_CONTEXT, MODEL_OPTIONS, PREF_PREFIX, validateSettings } from "./config.ts";
 import { EmbeddingClient } from "./embeddings.ts";
 import { EmbeddingController } from "./embedding-runtime.ts";
 import { GroqClient, parseGroqModels } from "./groq.ts";
@@ -11,7 +11,7 @@ import { EXPLAIN_BRIEF_QUESTION, EXPLAIN_QUESTION } from "./prompt.ts";
 import { ReadingSession, RequestGate } from "./session.ts";
 import { createPopup } from "./view.ts";
 import type { PopupView } from "./view.ts";
-import type { FetchLike, ResponseLanguage, Settings } from "./types.ts";
+import type { FetchLike, Settings } from "./types.ts";
 import { zoteroPaperSource } from "./zotero-paper.ts";
 import { createAnswerAnnotationWriter } from "./zotero-annotations.ts";
 import type { SelectionAnnotation } from "./zotero-annotations.ts";
@@ -52,7 +52,6 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
       baseUrl: provider === "groq" ? GROQ_BASE_URL : String(value("baseUrl")),
       model: provider === "groq" ? groqModel : localModel,
       apiKey: String(zotero.Prefs.get(PREF_PREFIX + "apiKey", true) ?? ""),
-      responseLanguage: String(value("responseLanguage")) as ResponseLanguage,
       retrievalMode: String(value("retrievalMode")) === "full" ? "full" : "embeddings",
       contextTokens,
       generationTokens: Number(value("generationTokens")),
@@ -193,7 +192,6 @@ export async function start(data: { id: string; rootURI: string }, host: Host): 
     requestGroqModels,
     getGroqModels: () => ({ ...groqModelsState, models: groqModelsState.models.map(model => ({ ...model })) }),
     getModels: () => MODEL_OPTIONS.map(model => ({ ...model })),
-    getResponseLanguages: () => RESPONSE_LANGUAGE_OPTIONS.map(language => ({ ...language })),
     saveSettings(input: Settings) {
       persistSettings(validateSettings(input));
     },

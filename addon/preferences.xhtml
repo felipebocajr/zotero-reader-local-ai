@@ -34,7 +34,7 @@
       }
     </html:style>
     <label><html:h2>Assistente local de leitura</html:h2></label>
-    <description>O plugin envia o texto completo do PDF ao servidor local ou ao Groq, conforme o provedor escolhido.</description>
+    <description>O plugin envia os trechos relevantes do PDF ao servidor local ou ao Groq, conforme o provedor escolhido. O artigo completo é uma opção explícita.</description>
     <html:form id="reader-local-ai-preferences" style="display:grid;gap:12px;max-width:560px" onsubmit="event.preventDefault();Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.save()">
       <html:fieldset style="display:grid;gap:8px;border:1px solid var(--color-border,#999);border-radius:6px">
         <html:legend>Provedor</html:legend>
@@ -56,8 +56,6 @@
       </html:fieldset>
       <html:label id="reader-local-ai-model-label">Modelo <html:select id="reader-local-ai-model" style="width:100%" onchange="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.updateModel()" /></html:label>
       <html:p id="reader-local-ai-model-description" style="margin:0;font-size:12px" />
-      <html:label>Idioma das respostas <html:select id="reader-local-ai-responseLanguage" style="width:100%" /></html:label>
-      <html:p style="margin:0;font-size:12px">Preferência para novas respostas, inclusive nas continuações. Você pode pedir outro idioma na pergunta. Não é necessário reiniciar o servidor.</html:p>
       <html:label>Contexto enviado
         <html:select id="reader-local-ai-retrievalMode" style="width:100%" onchange="Zotero_Preferences.getScope('reader-local-ai@local.invalid-preferences').ReaderLocalAIPreferences.updateRetrieval()">
           <html:option value="embeddings">Trechos relevantes (padrão)</html:option>

@@ -16,12 +16,15 @@ avaliação humana geral nem substitui o benchmark de precisões já entregue.
 
 ## Dataset
 
+Este artefato foi medido quando `responseLanguage` ainda era uma preferência. O
+plugin atual segue o idioma de cada pergunta; os números continuam históricos.
+
 `experiments/accuracy-attention.json` contém os casos, a resposta esperada e as
 verificações. Cada caso tem:
 
 - `selectionPhrase`: trecho selecionado, como no popup;
 - `question`: pergunta independente, sem histórico;
-- `responseLanguage`: `en` (padrão) ou `pt-BR`;
+- `responseLanguage`: idioma esperado do caso (`en` ou `pt-BR`), usado só na avaliação;
 - `expected`: resposta de referência para revisão;
 - `checks`: verificações objetivas de conteúdo, instrução e idioma.
 

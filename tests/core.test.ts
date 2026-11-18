@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { validateSettings, DEFAULTS } from "../src/config.ts";
 import { buildMessages } from "../src/prompt.ts";
-import type { ResponseLanguage } from "../src/types.ts";
+import { detectQuestionLanguage } from "../src/language.ts";
 import { PaperCache } from "../src/paper.ts";
 import { placePopup } from "../src/position.ts";
 import { FinalTextFilter, readSSE } from "../src/sse.ts";
@@ -15,37 +15,46 @@ test("full article appears once, including final page, across follow-ups", () =>
   assert.deepEqual(messages.slice(2).map(m => [m.role, m.content.split("\n\nRESPONSE LANGUAGE")[0]]), [["assistant", "Explicação."], ["user", "Por quê?"], ["assistant", "Motivo."], ["user", "E o resultado?"]]);
   assert.equal(buildMessages(paper, "trecho", "Independente").length, 2);
 });
-test("English is the default regardless of article and question language", () => {
-  const article = { ...paper, text: "O trecho selecionado descreve a arquitetura do modelo.\n".repeat(3000) };
-  const messages = buildMessages(article, "arquitetura do modelo", "Explique este trecho.");
-  assert.equal(DEFAULTS.responseLanguage, "en");
-  assert.match(messages[0].content, /Answer in English \(en\)/);
-  assert.ok(messages[1].content.includes(article.text));
-  assert.ok(messages[1].content.indexOf("RESPONSE LANGUAGE") > messages[1].content.indexOf("</artigo>"));
-  assert.match(messages.at(-1)!.content, /Explique este trecho\.\n\nRESPONSE LANGUAGE[\s\S]*Answer in English/);
+test("response language follows the question, not the article", () => {
+  const article = { ...paper, text: "The selected passage describes the model architecture.\n".repeat(3000) };
+  const portuguese = buildMessages(article, "a arquitetura do modelo", "Explique este trecho.");
+  assert.match(portuguese[0].content, /same language as the user's question/);
+  assert.doesNotMatch(portuguese[0].content, /Answer in English \(en\)/);
+  assert.ok(portuguese[1].content.includes(article.text));
+  assert.ok(portuguese[1].content.indexOf("RESPONSE LANGUAGE") > portuguese[1].content.indexOf("</artigo>"));
+  assert.match(portuguese.at(-1)!.content, /Explique este trecho\.\n\nRESPONSE LANGUAGE[\s\S]*Answer in Brazilian Portuguese \(pt-BR\)/);
+  const english = buildMessages(article, "the model architecture", "Explain this passage.");
+  assert.match(english.at(-1)!.content, /RESPONSE LANGUAGE[\s\S]*Answer in English \(en\)/);
 });
-test("language changes apply to follow-ups without altering stored turns or copying the article", () => {
-  const history = [{ question: "Primeira?", answer: "Resposta original." }, { question: "Segunda?", answer: "Another original answer." }];
+test("each follow-up follows its own question without altering stored turns", () => {
+  const history = [
+    { question: "O que significa a atenção?", answer: "Resposta original." },
+    { question: "What does the paper report?", answer: "Another original answer." },
+  ];
   const before = JSON.stringify(history);
-  for (const language of ["en", "pt-BR"] as const) {
-    const messages = buildMessages(paper, "trecho", "Mais detalhes?", history, language);
-    const instruction = language === "en" ? "Answer in English (en)" : "Answer in Brazilian Portuguese (pt-BR)";
-    assert.ok(messages[0].content.startsWith(instruction));
-    for (const message of messages.filter(message => message.role === "user")) assert.ok(message.content.includes(instruction));
-    assert.equal(messages.map(message => message.content).join("\n").split(paper.text).length - 1, 1);
-    assert.deepEqual(messages.filter(message => message.role === "assistant").map(message => message.content), history.map(turn => turn.answer));
-    assert.ok(messages.at(-1)!.content.startsWith("Mais detalhes?\n\nRESPONSE LANGUAGE"));
-  }
+  const messages = buildMessages(paper, "trecho", "Mais detalhes?", history);
+  assert.match(messages[0].content, /same language as the user's question/);
+  const userMessages = messages.filter(message => message.role === "user");
+  assert.match(userMessages[0].content, /Answer in Brazilian Portuguese \(pt-BR\)/);
+  assert.match(userMessages[1].content, /Answer in English \(en\)/);
+  assert.match(userMessages[2].content, /Answer in Brazilian Portuguese \(pt-BR\)/);
+  assert.equal(messages.map(message => message.content).join("\n").split(paper.text).length - 1, 1);
+  assert.deepEqual(messages.filter(message => message.role === "assistant").map(message => message.content), history.map(turn => turn.answer));
+  assert.ok(messages.at(-1)!.content.startsWith("Mais detalhes?\n\nRESPONSE LANGUAGE"));
   assert.equal(JSON.stringify(history), before);
 });
-test("only supported language preferences are accepted and explicit requests remain possible", () => {
-  assert.equal(validateSettings({ ...DEFAULTS, responseLanguage: "en" }).responseLanguage, "en");
-  assert.equal(validateSettings({ ...DEFAULTS, responseLanguage: "pt-BR" }).responseLanguage, "pt-BR");
-  assert.throws(() => validateSettings({ ...DEFAULTS, responseLanguage: "fr" as ResponseLanguage }), /idioma das respostas/);
-  assert.throws(() => buildMessages(paper, "trecho", "Pergunta", [], "fr" as ResponseLanguage), /idioma das respostas/);
-  const messages = buildMessages(paper, "trecho", "Responda em inglês, por favor.");
-  assert.ok(messages[1].content.includes("Responda em inglês, por favor."));
-  assert.match(messages[0].content, /Change language only if the user explicitly requests it/);
+test("language detection handles short questions and keeps explicit requests possible", () => {
+  assert.equal("responseLanguage" in DEFAULTS, false);
+  assert.equal(detectQuestionLanguage("por que não utilizar simplesmente quantização per-channel para ambos?"), "pt-BR");
+  assert.equal(detectQuestionLanguage("What is the difference between per-channel and per-token quantization?"), "en");
+  assert.equal(detectQuestionLanguage("KV cache"), "unknown");
+  const explicit = buildMessages(paper, "trecho", "Responda em inglês, por favor.");
+  assert.ok(explicit[1].content.includes("Responda em inglês, por favor."));
+  assert.match(explicit[0].content, /explicitly asks for another language/);
+  assert.match(explicit.at(-1)!.content, /Brazilian Portuguese \(pt-BR\)/);
+  assert.match(buildMessages(paper, "trecho", "How does the cache work?").at(-1)!.content, /Answer in English \(en\)/);
+  assert.match(buildMessages(paper, "trecho", "Como o cache funciona?").at(-1)!.content, /Answer in Brazilian Portuguese \(pt-BR\)/);
+  assert.match(buildMessages(paper, "trecho", "KV cache").at(-1)!.content, /same language as the question above/);
 });
 test("retrieval mode defaults to embeddings and rejects unknown modes", () => {
   assert.equal(DEFAULTS.retrievalMode, "embeddings");
@@ -76,13 +85,13 @@ test("prompt requires an explicit insufficient-information statement", () => {
   assert.match(messages[0].content, /first sentence/);
   assert.match(messages[0].content, /Do not fill the gap/);
   assert.match(messages[0].content, /clearly mark the rest as not reported/);
-  const brief = buildMessages(paper, "trecho", "Explique", [], "en", "explain");
+  const brief = buildMessages(paper, "trecho", "Explique", [], "explain");
   assert.match(brief[0].content, /does not contain enough information/);
 });
 test("explain and detail modes use different instruction budgets", () => {
-  const brief = buildMessages(paper, "trecho", "Explique brevemente.", [], "en", "explain");
-  const detail = buildMessages(paper, "trecho", "Explique melhor.", [], "en", "detail");
-  const typed = buildMessages(paper, "trecho", "Pergunta.", [], "en");
+  const brief = buildMessages(paper, "trecho", "Explique brevemente.", [], "explain");
+  const detail = buildMessages(paper, "trecho", "Explique melhor.", [], "detail");
+  const typed = buildMessages(paper, "trecho", "Pergunta.");
   assert.match(brief[0].content, /under 120 words/);
   assert.doesNotMatch(brief[0].content, /under 250 words/);
   assert.match(detail[0].content, /under 250 words/);

@@ -7,19 +7,7 @@
       "passed": true
     },
     {
-      "name": "native language selector offers English and Brazilian Portuguese",
-      "passed": true
-    },
-    {
-      "name": "native language selector initializes in English",
-      "passed": true
-    },
-    {
-      "name": "native preferences save the Brazilian Portuguese response preference",
-      "passed": true
-    },
-    {
-      "name": "native preferences save the English response preference",
+      "name": "response language preference was removed",
       "passed": true
     },
     {
@@ -84,6 +72,10 @@
       "passed": true
     },
     {
+      "name": "Portuguese question requests a Portuguese answer",
+      "passed": true
+    },
+    {
       "name": "entire native extracted paper sent",
       "passed": true,
       "chars": 36990,
@@ -91,6 +83,10 @@
     },
     {
       "name": "new question resets history",
+      "passed": true
+    },
+    {
+      "name": "English question requests an English answer",
       "passed": true
     },
     {
@@ -122,7 +118,7 @@
       "passed": true
     },
     {
-      "name": "generic explanation sends English after the entire article",
+      "name": "generic explanation follows its Portuguese question after the entire article",
       "passed": true
     },
     {
@@ -166,18 +162,18 @@
       "name": "popup clamped to viewport edges",
       "passed": true,
       "bounds": {
-        "x": 839,
-        "y": 932.25,
-        "width": 400,
-        "height": 257.75,
-        "top": 932.25,
-        "right": 1239,
-        "bottom": 1190,
-        "left": 839
+        "x": 479,
+        "y": 555.25,
+        "width": 440,
+        "height": 274.75,
+        "top": 555.25,
+        "right": 919,
+        "bottom": 830,
+        "left": 479
       },
       "viewport": [
-        1251,
-        1277
+        931,
+        917
       ]
     },
     {
@@ -212,6 +208,14 @@
     },
     {
       "name": "no mandatory annotation created",
+      "passed": true
+    },
+    {
+      "name": "retrieval mode shows the excerpt note",
+      "passed": true
+    },
+    {
+      "name": "RAG request contains excerpts and not the full article",
       "passed": true
     },
     {

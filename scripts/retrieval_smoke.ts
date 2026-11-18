@@ -17,7 +17,7 @@ const service = new RetrievalService({
 const settings = { ...DEFAULTS, provider: "groq" as const, retrievalMode: "embeddings" as const };
 const question = "Como o artigo usa atenção para impedir que o decoder consulte tokens futuros?";
 const context = await service.getContext(paper, "Scaled Dot-Product Attention", question, [], settings, "default", new AbortController().signal);
-const messages = buildMessages(paper, "Scaled Dot-Product Attention", question, [], settings.responseLanguage, "default", context);
+const messages = buildMessages(paper, "Scaled Dot-Product Attention", question, [], "default", context);
 const result = {
   chunks: context.chunks.length,
   totalChunks: context.totalChunks,

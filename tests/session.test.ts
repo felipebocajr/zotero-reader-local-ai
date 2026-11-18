@@ -15,21 +15,18 @@ function sessionWith(gate: RequestGate, generate: LlamaClient["generate"], chang
   const cache = new PaperCache({ describe: async () => ({ path: "/a", title: "A", size: 1, modified: 1 }), extract: async () => paper });
   return new ReadingSession(1, "trecho", cache, gate, () => ({ generate }) as LlamaClient, settings, changed, save, retrieval);
 }
-test("session reads the language for each request, including an existing conversation", async () => {
-  let settings = { ...DEFAULTS };
+test("session follows the language of each question, including follow-ups", async () => {
   const requests: Message[][] = [];
   const session = sessionWith(new RequestGate(), async messages => {
     requests.push(messages); return { answer: "Original answer " + requests.length, promptTokens: 1 };
-  }, () => {}, undefined, () => settings);
+  });
   await session.ask("Explain this English passage.");
-  settings = { ...settings, responseLanguage: "pt-BR" };
   await session.ask("Uma continuação em português.", true);
-  settings = { ...settings, responseLanguage: "en" };
-  await session.ask("Outra continuação.", true);
-  assert.match(requests[0][0].content, /^Answer in English \(en\)/);
+  await session.ask("What does the article report?", true);
+  assert.match(requests[0][0].content, /same language as the user's question/);
   assert.match(requests[1].at(-1)!.content, /Answer in Brazilian Portuguese \(pt-BR\)/);
   assert.match(requests[2].at(-1)!.content, /Answer in English \(en\)/);
-  assert.deepEqual(session.state.history.map(turn => turn.question), ["Explain this English passage.", "Uma continuação em português.", "Outra continuação."]);
+  assert.deepEqual(session.state.history.map(turn => turn.question), ["Explain this English passage.", "Uma continuação em português.", "What does the article report?"]);
   assert.deepEqual(session.state.history.map(turn => turn.answer), ["Original answer 1", "Original answer 2", "Original answer 3"]);
 });
 test("explain flow offers one detailed follow-up and typed questions do not", async () => {

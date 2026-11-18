@@ -39,7 +39,7 @@ function sectionMatches(heading: string | undefined, evidence: string): boolean 
   return h.includes(e);
 }
 function estimate(paper: Paper, chunks: readonly TextChunk[], total: number, selection: string, question: string): number {
-  return estimatePromptTokens(buildMessages(paper, selection, question, [], "en", "default", { chunks, totalChunks: total }));
+  return estimatePromptTokens(buildMessages(paper, selection, question, [], "default", { chunks, totalChunks: total }));
 }
 function coverage(selected: ReadonlySet<number>, chunks: readonly TextChunk[], evidence: readonly string[]): { hit: boolean; allHit: boolean } {
   const sections = evidence.filter(section => normalize(section) !== "artigo completo");

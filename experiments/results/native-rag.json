@@ -5,10 +5,9 @@
     {
       "name": "managed embedding server ready",
       "passed": true,
-      "phase": "ready",
-      "owned": true,
+      "phase": "external",
+      "owned": false,
       "model": "qwen3-embedding-0.6b",
-      "pid": 253707,
       "message": "Embeddings prontos: qwen3-embedding-0.6b."
     },
     {
@@ -24,15 +23,23 @@
       "passed": true
     },
     {
+      "name": "prompt follows the Portuguese question",
+      "passed": true
+    },
+    {
       "name": "popup shows the retrieval note",
       "passed": true
     },
     {
       "name": "RAG answer is rendered",
       "passed": true
+    },
+    {
+      "name": "popup separates question and answer like a conversation",
+      "passed": true
     }
   ],
   "errors": [],
-  "promptChars": 9741,
-  "retrievalNote": "Trechos relevantes: 11 de 45 · ~3.516 tokens"
+  "promptChars": 9581,
+  "retrievalNote": "Trechos relevantes: 11 de 45 · ~3.500 tokens"
 }

@@ -1,0 +1,69 @@
+{
+  "generatedAt": "2026-11-18",
+  "purpose": "Confirm that response language follows the question without a language preference.",
+  "model": "lfm3-1.7b",
+  "backend": "cuda",
+  "precision": "Q4_K_M",
+  "contextMode": "full article",
+  "server": "http://127.0.0.1:18087",
+  "runs": [
+    {
+      "status": "ok",
+      "question": "Por que o artigo usa atenção em vez de recorrência? Responda em até 80 palavras.",
+      "model": "lfm3-1.7b",
+      "backend": "cuda",
+      "precision": "Q4_K_M",
+      "pages": 15,
+      "paperSha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476",
+      "preflightMatchesRuntime": true,
+      "answer": "O artigo propõe o Transformer como alternativa aos RNNs porque as redes recorrentes são sequenciais, exigindo operações \\(O(n)\\) por camada e impedindo paralelização durante o treinamento. A atenção permite que cada posição relate a todas (ou uma janela) com um número constante de operações, reduzindo a complexidade computacional e permitindo maior paralelismo e treinamento mais rápido. Além disso, a atenção captura dependências longas sem precisar armazenar estados passados.",
+      "promptTokens": 10347,
+      "completionTokens": 926,
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 10347,
+        "prompt_ms": 1084.512,
+        "prompt_per_token_ms": 0.10481414902870397,
+        "prompt_per_second": 9540.696645127025,
+        "predicted_n": 926,
+        "predicted_ms": 4457.561,
+        "predicted_per_token_ms": 4.8189848648648645,
+        "predicted_per_second": 207.51258367524304
+      },
+      "firstVisibleMs": 5088.12416,
+      "totalMs": 5616.269107
+    },
+    {
+      "status": "ok",
+      "question": "Why does the paper use attention instead of recurrence? Answer in at most 80 words.",
+      "model": "lfm3-1.7b",
+      "backend": "cuda",
+      "precision": "Q4_K_M",
+      "pages": 15,
+      "paperSha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476",
+      "preflightMatchesRuntime": true,
+      "answer": "The authors replace recurrence and convolutions with self‑attention so that each position can attend to every other position directly, eliminating the O(n) sequential steps of RNNs and the growing path length of convolutions; this makes training much faster (parallelizable) and allows capturing long‑range dependencies in constant time.",
+      "promptTokens": 10340,
+      "completionTokens": 694,
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 10340,
+        "prompt_ms": 1038.423,
+        "prompt_per_token_ms": 0.10042775628626692,
+        "prompt_per_second": 9957.40656745854,
+        "predicted_n": 694,
+        "predicted_ms": 3337.958,
+        "predicted_per_token_ms": 4.8166782106782104,
+        "predicted_per_second": 207.61195916785053
+      },
+      "firstVisibleMs": 4117.263989,
+      "totalMs": 4439.470992
+    }
+  ],
+  "notes": [
+    "The article is in English; the Portuguese question still received a Portuguese answer.",
+    "The English question received an English answer in the same setup.",
+    "Real Groq validation is pending a replacement API key.",
+    "Real local RAG generation is not covered by this smoke test."
+  ]
+}

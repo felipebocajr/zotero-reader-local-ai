@@ -78,7 +78,7 @@ test("retrieval caches document embeddings and only embeds the query again", asy
 
 test("retrieval prompt uses excerpts and the excerpt-specific insufficiency rule", () => {
   const chunks = splitRecursive(paper.text).slice(0, 2);
-  const messages = buildMessages(paper, "Results show a speedup.", "How does the cache work?", [], "en", "default",
+  const messages = buildMessages(paper, "Results show a speedup.", "How does the cache work?", [], "default",
     { chunks, totalChunks: 20 });
   const system = messages[0].content;
   const user = messages[1].content;

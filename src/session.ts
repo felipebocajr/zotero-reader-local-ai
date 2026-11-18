@@ -102,7 +102,7 @@ export class ReadingSession {
         abortIfNeeded(abort.signal);
         this.publish({ phase: "preparing" });
       }
-      const messages = buildMessages(paper, this.selection, question, this.state.history, settings.responseLanguage, mode, retrievalContext);
+      const messages = buildMessages(paper, this.selection, question, this.state.history, mode, retrievalContext);
       const result = await this.makeClient().generate(messages, abort.signal,
         text => this.publish({ draft: this.state.draft + text }), true, () => this.publish({ phase: "generating" }));
       abortIfNeeded(abort.signal);
