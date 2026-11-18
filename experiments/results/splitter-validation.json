@@ -1,0 +1,250 @@
+{
+  "splitter": {
+    "chunkSize": 1200,
+    "chunkOverlap": 160,
+    "separators": [
+      "\n\n",
+      ". ",
+      ".\n",
+      "\n",
+      " ",
+      ""
+    ],
+    "estimatedTokensPerChunk": 389
+  },
+  "directories": [
+    "data",
+    "zotero-splitter-corpus"
+  ],
+  "passed": true,
+  "results": [
+    {
+      "source": "pdftotext-corpus",
+      "file": "attention.txt",
+      "chars": 37304,
+      "chunks": 39,
+      "maxCoreChars": 1199,
+      "maxPromptChars": 1342,
+      "naturalPercent": 100,
+      "boundaries": {
+        "paragraph": 30,
+        "line": 0,
+        "sentence": 8,
+        "word": 0,
+        "char": 0,
+        "end": 1
+      },
+      "headings": 6,
+      "errors": []
+    },
+    {
+      "source": "pdftotext-corpus",
+      "file": "fastdllm.txt",
+      "chars": 75966,
+      "chunks": 80,
+      "maxCoreChars": 1200,
+      "maxPromptChars": 1349,
+      "naturalPercent": 100,
+      "boundaries": {
+        "paragraph": 6,
+        "line": 10,
+        "sentence": 63,
+        "word": 0,
+        "char": 0,
+        "end": 1
+      },
+      "headings": 18,
+      "errors": []
+    },
+    {
+      "source": "pdftotext-corpus",
+      "file": "flashattention4.txt",
+      "chars": 56091,
+      "chunks": 60,
+      "maxCoreChars": 1200,
+      "maxPromptChars": 1358,
+      "naturalPercent": 100,
+      "boundaries": {
+        "paragraph": 7,
+        "line": 5,
+        "sentence": 47,
+        "word": 0,
+        "char": 0,
+        "end": 1
+      },
+      "headings": 22,
+      "errors": []
+    },
+    {
+      "source": "pdftotext-corpus",
+      "file": "llada.txt",
+      "chars": 86998,
+      "chunks": 93,
+      "maxCoreChars": 1199,
+      "maxPromptChars": 1355,
+      "naturalPercent": 100,
+      "boundaries": {
+        "paragraph": 73,
+        "line": 1,
+        "sentence": 18,
+        "word": 0,
+        "char": 0,
+        "end": 1
+      },
+      "headings": 15,
+      "errors": []
+    },
+    {
+      "source": "pdftotext-corpus",
+      "file": "lora.txt",
+      "chars": 60544,
+      "chunks": 62,
+      "maxCoreChars": 1200,
+      "maxPromptChars": 1355,
+      "naturalPercent": 100,
+      "boundaries": {
+        "paragraph": 35,
+        "line": 0,
+        "sentence": 26,
+        "word": 0,
+        "char": 0,
+        "end": 1
+      },
+      "headings": 11,
+      "errors": []
+    },
+    {
+      "source": "pdftotext-corpus",
+      "file": "rmsnorm.txt",
+      "chars": 46675,
+      "chunks": 51,
+      "maxCoreChars": 1199,
+      "maxPromptChars": 1354,
+      "naturalPercent": 100,
+      "boundaries": {
+        "paragraph": 34,
+        "line": 0,
+        "sentence": 16,
+        "word": 0,
+        "char": 0,
+        "end": 1
+      },
+      "headings": 6,
+      "errors": []
+    },
+    {
+      "source": "pdftotext-corpus",
+      "file": "rope.txt",
+      "chars": 30896,
+      "chunks": 31,
+      "maxCoreChars": 1198,
+      "maxPromptChars": 1355,
+      "naturalPercent": 100,
+      "boundaries": {
+        "paragraph": 25,
+        "line": 0,
+        "sentence": 5,
+        "word": 0,
+        "char": 0,
+        "end": 1
+      },
+      "headings": 4,
+      "errors": []
+    },
+    {
+      "source": "zotero-pdfworker",
+      "file": "attention.txt",
+      "chars": 36990,
+      "chunks": 45,
+      "maxCoreChars": 1199,
+      "maxPromptChars": 1323,
+      "naturalPercent": 100,
+      "boundaries": {
+        "paragraph": 10,
+        "line": 2,
+        "sentence": 32,
+        "word": 0,
+        "char": 0,
+        "end": 1
+      },
+      "headings": 24,
+      "errors": []
+    },
+    {
+      "source": "zotero-pdfworker",
+      "file": "llada.txt",
+      "chars": 85883,
+      "chunks": 89,
+      "maxCoreChars": 1199,
+      "maxPromptChars": 1356,
+      "naturalPercent": 100,
+      "boundaries": {
+        "paragraph": 2,
+        "line": 1,
+        "sentence": 85,
+        "word": 0,
+        "char": 0,
+        "end": 1
+      },
+      "headings": 15,
+      "errors": []
+    },
+    {
+      "source": "zotero-pdfworker",
+      "file": "lora.txt",
+      "chars": 59938,
+      "chunks": 64,
+      "maxCoreChars": 1191,
+      "maxPromptChars": 1349,
+      "naturalPercent": 100,
+      "boundaries": {
+        "paragraph": 11,
+        "line": 1,
+        "sentence": 51,
+        "word": 0,
+        "char": 0,
+        "end": 1
+      },
+      "headings": 16,
+      "errors": []
+    },
+    {
+      "source": "zotero-pdfworker",
+      "file": "rmsnorm.txt",
+      "chars": 46410,
+      "chunks": 51,
+      "maxCoreChars": 1197,
+      "maxPromptChars": 1355,
+      "naturalPercent": 100,
+      "boundaries": {
+        "paragraph": 6,
+        "line": 2,
+        "sentence": 42,
+        "word": 0,
+        "char": 0,
+        "end": 1
+      },
+      "headings": 14,
+      "errors": []
+    },
+    {
+      "source": "zotero-pdfworker",
+      "file": "rope.txt",
+      "chars": 30403,
+      "chunks": 35,
+      "maxCoreChars": 1181,
+      "maxPromptChars": 1305,
+      "naturalPercent": 100,
+      "boundaries": {
+        "paragraph": 3,
+        "line": 5,
+        "sentence": 26,
+        "word": 0,
+        "char": 0,
+        "end": 1
+      },
+      "headings": 18,
+      "errors": []
+    }
+  ]
+}
